@@ -121,15 +121,7 @@
         "invoke-injectable": true,
         "use-isnan": true,
 
-        "trailing-comma": [true, {
-            "singleline": "never",
-            "multiline": {
-                "objects": "always",
-                "arrays": "always",
-                "functions": "never",
-                "typeLiterals": "ignore"
-            }
-        }],
+        "trailing-comma": [false],
         "triple-equals": [true, "allow-null-check"],
         "type-literal-delimiter": true,
         // tslint-react

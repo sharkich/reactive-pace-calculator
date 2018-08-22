@@ -1,5 +1,4 @@
 .App {
-  text-align: center;
 }
 
 .App-header {
@@ -15,6 +14,10 @@
 .App-content {
   width: 800px;
   margin: 20px auto;
+}
+
+.App-content h2 {
+  text-align: center;
 }
 
 .App-footer {
