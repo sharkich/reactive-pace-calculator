@@ -4,10 +4,12 @@ import { getReturnOfExpression } from 'utility-types';
 
 import * as countersActions from './counters/actions';
 
+// tslint:disable-next-line
 export const actions = {
   counters: countersActions,
 };
 
+// tslint:disable-next-line
 const returnsOfActions = [
   ...Object.values(countersActions),
 ].map(getReturnOfExpression);

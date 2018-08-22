@@ -5,14 +5,14 @@ interface ListViewProps {
 }
 
 export class ListView extends React.Component<ListViewProps, {}> {
-  render() {
+  render(): JSX.Element {
     const { title, children } = this.props;
 
     return (
-      <>
-      {title && <h2>{title}</h2>}
-      <div>{children}</div>
-      </>
+      <div>
+        {title && <h2>{title}</h2>}
+        <div>{children}</div>
+      </div>
     );
   }
 }

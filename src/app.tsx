@@ -14,7 +14,7 @@ interface Props {
 }
 
 export class App extends React.Component<Props, {}> {
-  render() {
+  render(): JSX.Element {
     const { store, history } = this.props;
     return (
       <Provider store={store}>

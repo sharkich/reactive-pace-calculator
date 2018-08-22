@@ -1,9 +1,19 @@
-import { createAction } from 'typesafe-actions';
+import {createAction} from 'typesafe-actions';
+import {FunctionActionEmpty} from '../../interfaces/functions.interfaces';
 
-const INCREMENT = 'INCREMENT';
-const ADD = 'ADD';
+export interface SingleAction {
+  type: string;
+  payload?: any;
+}
 
-export const increment = createAction(INCREMENT);
-export const add = createAction(ADD, (amount: number) => ({
-  type: ADD, payload: amount,
+const INCREMENT: string = 'INCREMENT';
+const ADD: string = 'ADD';
+
+type FunctionActionAdd = ((amount: number) => { type: string; payload: number });
+
+export const increment: FunctionActionEmpty = createAction(INCREMENT);
+
+export const add: FunctionActionAdd = createAction(ADD, (amount: number) => ({
+  type: ADD,
+  payload: amount,
 }));

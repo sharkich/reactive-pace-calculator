@@ -36,7 +36,7 @@
     "no-submodule-imports": [false],
     "no-this-assignment": [true, { "allow-destructuring": true }],
     "no-trailing-whitespace": true,
-    "no-unused-variable": [true, "react"],
+    "no-unused-variable": [true, "react", "react-dom", "redux", "react-hot-loader"],
     "object-literal-sort-keys": false,
     "object-literal-shorthand": false,
     "one-variable-per-declaration": [false],
