@@ -5,7 +5,7 @@ import {AppState} from '../App/app.state';
 import {Counter} from './counter.model';
 import {ActionCreatorsMapObject, bindActionCreators, Dispatch} from 'redux';
 import {CountersActions} from './counters.actions';
-import {CountersListState} from './counters-list.state';
+import {CountersListDispatchers, CountersListState} from './counters-list.state';
 
 class CountersList extends React.Component {
 
@@ -54,14 +54,24 @@ class CountersList extends React.Component {
           key={counter.id}
         >
           <i>{counter.id}&nbsp;)</i> {counter.name}: <b>{counter.value}</b>
+          &nbsp;
+          <button onClick={() => this.onPlusCounterClick(counter)}>+</button>
+          <button onClick={() => this.onMinusCounterClick(counter)}>&minus;</button>
         </li>
       );
     });
   }
 
   onSelectCounterClick(counter: Counter): void {
-    console.log('click', counter, this.props);
-    this.props['select'](counter);
+    (this.props as CountersListDispatchers).select(counter);
+  }
+
+  onPlusCounterClick(counter: Counter): void {
+    (this.props as CountersListDispatchers).increase(counter);
+  }
+
+  onMinusCounterClick(counter: Counter): void {
+    (this.props as CountersListDispatchers).decrease(counter);
   }
 
 }
