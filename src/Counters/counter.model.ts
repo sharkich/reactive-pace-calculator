@@ -3,8 +3,8 @@ export class Counter {
   public readonly name: string;
   private _value: number;
 
-  constructor(data: {value: number; name?: string} = {value: 0, name: ''}) {
-    this.id = '' + Math.random();
+  constructor(data: {value: number; name?: string; id?: string} = {value: 0, name: '', id: ''}) {
+    this.id = data.id || '' + Math.random();
     this.name = data.name || this.id;
     this._value = data.value;
   }
@@ -13,14 +13,14 @@ export class Counter {
     return this._value;
   }
 
-  public inc(): number {
+  public inc(): Counter {
     ++this._value;
-    return this._value;
+    return this;
   }
 
-  public dec(): number {
+  public dec(): Counter {
     --this._value;
-    return this._value;
+    return this;
   }
 
 }

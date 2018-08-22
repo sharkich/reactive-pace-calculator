@@ -26,7 +26,7 @@
         "no-conditional-assignment": true,
         "no-console": [true, "debug", "info", "time", "timeEnd", "trace"],
         "member-access": false,
-        "member-ordering": [true, { "order": "fields-first" }],
+        "member-ordering": [true],
         "newline-before-return": false,
         "no-any": false,
         "no-import-side-effect": [true],

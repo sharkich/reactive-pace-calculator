@@ -4,9 +4,8 @@ import {connect} from 'react-redux';
 import {AppState} from '../App/app.state';
 import {Counter} from './counter.model';
 import {ActionCreatorsMapObject, bindActionCreators, Dispatch} from 'redux';
-import {decCounterAction, incCounterAction} from './counters.actions';
-
-type CountersListState = Pick<AppState, 'counters'>;
+import {CountersActions} from './counters.actions';
+import {CountersListState} from './counters-list.state';
 
 class CountersList extends React.Component {
 
@@ -14,6 +13,7 @@ class CountersList extends React.Component {
     return (
       <div>
         <h2>Counters List</h2>
+        {this.renderActiveCounter()}
         <ul>
           {this.renderCounter()}
         </ul>
@@ -21,8 +21,22 @@ class CountersList extends React.Component {
     );
   }
 
+  renderActiveCounter(): JSX.Element {
+    const counter: Counter = (this.props as CountersListState).activeCounter;
+    if (!counter) {
+      return (<div><i>No selected counter.</i></div>);
+    }
+    return (
+      <div>
+        <hr />
+        <b>Active: {counter.name}: {counter.value}</b>
+        <hr />
+      </div>
+    );
+  }
+
   renderCounter(): JSX.Element[] {
-    const counters: Counter[] = this.props['counters'];
+    const counters: Counter[] = (this.props as CountersListState).counters;
     if (!counters) {
       return [(
         <li key={0}><i>Loading...</i></li>
@@ -35,25 +49,35 @@ class CountersList extends React.Component {
     }
     return counters.map((counter: Counter) => {
       return (
-        <li key={counter.id}>
+        <li
+          onClick={() => this.onSelectCounterClick(counter)}
+          key={counter.id}
+        >
           <i>{counter.id}&nbsp;)</i> {counter.name}: <b>{counter.value}</b>
         </li>
       );
     });
   }
 
+  onSelectCounterClick(counter: Counter): void {
+    console.log('click', counter, this.props);
+    this.props['select'](counter);
+  }
+
 }
 
 function mapStateToProps(state: AppState): CountersListState {
   return {
-    counters: state.counters
+    counters: state.counters,
+    activeCounter: state.activeCounter
   };
 }
 
 function mapDispatchToProps(dispatch: Dispatch): ActionCreatorsMapObject {
   return bindActionCreators({
-    inc: incCounterAction,
-    dec: decCounterAction
+    select: CountersActions.select,
+    increase: CountersActions.increase,
+    decrease: CountersActions.decrease
   }, dispatch);
 }
 
