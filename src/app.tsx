@@ -1,35 +1,24 @@
 import * as React from 'react';
-import { Provider } from 'react-redux';
-import { Store } from 'redux';
-import { ConnectedRouter } from 'react-router-redux';
-import { Route } from 'react-router-dom';
-import { History } from 'history';
 
-import { ListView } from 'Components/list-view';
-import { Counter } from 'Components/counter';
+// tslint:disable-next-line
+import './App.css';
 
-interface Props {
-  store: Store<any>;
-  history: History;
-}
+import logo from './logo.svg';
 
-export class App extends React.Component<Props, {}> {
-  render(): JSX.Element {
-    const { store, history } = this.props;
+class App extends React.Component {
+  public render(): JSX.Element {
     return (
-      <Provider store={store}>
-        <ConnectedRouter history={history}>
-          <Route
-            exact={true}
-            path="/"
-            render={() => (
-              <ListView title="List of counters" >
-                <Counter />
-              </ListView>
-            )}
-          />
-        </ConnectedRouter>
-      </Provider>
+      <div className="App">
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <h1 className="App-title">Welcome to React</h1>
+        </header>
+        <p className="App-intro">
+          To get started, edit <code>src/App.tsx</code> and save to reload.
+        </p>
+      </div>
     );
   }
 }
+
+export default App;
