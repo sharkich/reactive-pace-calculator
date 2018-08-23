@@ -22,5 +22,4 @@ export class Counter {
     --this._value;
     return this;
   }
-
 }

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 
+// import {Atom, F} from '@grammarly/focal';
+
 import {AppState} from '../App/app.state';
 import {Counter} from './counter.model';
 import {ActionCreatorsMapObject, bindActionCreators, Dispatch} from 'redux';
@@ -8,15 +10,12 @@ import {CountersActions} from './counters.actions';
 import {CountersListDispatchers, CountersListState} from './counters-list.state';
 
 class CountersList extends React.Component {
-
   render(): JSX.Element {
     return (
       <div>
         <h2>Counters List</h2>
         {this.renderActiveCounter()}
-        <ul>
-          {this.renderCounter()}
-        </ul>
+        <ul>{this.renderCounter()}</ul>
       </div>
     );
   }
@@ -24,12 +23,18 @@ class CountersList extends React.Component {
   renderActiveCounter(): JSX.Element {
     const counter: Counter = (this.props as CountersListState).activeCounter;
     if (!counter) {
-      return (<div><i>No selected counter.</i></div>);
+      return (
+        <div>
+          <i>No selected counter.</i>
+        </div>
+      );
     }
     return (
       <div>
         <hr />
-        <b>Active: {counter.name}: {counter.value}</b>
+        <b>
+          Active: {counter.name}: {counter.value}
+        </b>
         <hr />
       </div>
     );
@@ -38,22 +43,31 @@ class CountersList extends React.Component {
   renderCounter(): JSX.Element[] {
     const counters: Counter[] = (this.props as CountersListState).counters;
     if (!counters) {
-      return [(
-        <li key={0}><i>Loading...</i></li>
-      )];
+      return [
+        (
+          <li key={0}>
+            <i>Loading...</i>
+          </li>
+        )
+      ];
     }
     if (!counters.length) {
-      return [(
-        <li><i>Empty counters.</i></li>
-      )];
+      return [
+        (
+          <li key={0}>
+            <i>Empty counters.</i>
+          </li>
+        )
+      ];
     }
     return counters.map((counter: Counter) => {
       return (
-        <li
-          onClick={() => this.onSelectCounterClick(counter)}
-          key={counter.id}
-        >
-          <i>{counter.id}&nbsp;)</i> {counter.name}: <b>{counter.value}</b>
+        <li onClick={() => this.onSelectCounterClick(counter)} key={counter.id}>
+          <i>
+            {counter.id}
+            &nbsp;)
+          </i>{' '}
+          {counter.name}: <b>{counter.value}</b>
           &nbsp;
           <button onClick={() => this.onPlusCounterClick(counter)}>+</button>
           <button onClick={() => this.onMinusCounterClick(counter)}>&minus;</button>
@@ -73,7 +87,6 @@ class CountersList extends React.Component {
   onMinusCounterClick(counter: Counter): void {
     (this.props as CountersListDispatchers).decrease(counter);
   }
-
 }
 
 function mapStateToProps(state: AppState): CountersListState {
@@ -84,11 +97,17 @@ function mapStateToProps(state: AppState): CountersListState {
 }
 
 function mapDispatchToProps(dispatch: Dispatch): ActionCreatorsMapObject {
-  return bindActionCreators({
-    select: CountersActions.select,
-    increase: CountersActions.increase,
-    decrease: CountersActions.decrease
-  }, dispatch);
+  return bindActionCreators(
+    {
+      select: CountersActions.select,
+      increase: CountersActions.increase,
+      decrease: CountersActions.decrease
+    },
+    dispatch
+  );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CountersList);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CountersList);

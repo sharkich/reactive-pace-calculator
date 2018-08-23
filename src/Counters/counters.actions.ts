@@ -7,7 +7,6 @@ export interface CountersActionsResult {
 }
 
 export class CountersActions {
-
   static SELECT: CountersActionsType = 'SELECT';
   static select(counter: Counter): CountersActionsResult {
     console.log(CountersActions.SELECT, counter);
@@ -34,5 +33,4 @@ export class CountersActions {
       payload: new Counter(counter.dec())
     };
   }
-
 }

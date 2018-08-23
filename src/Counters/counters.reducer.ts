@@ -12,23 +12,17 @@ export function countersReducer(): Counter[] {
 }
 
 export function activeCounterReducer(state: any = null, action: any): any {
-  console.log('reduce', state, action);
   switch (action.type) {
-
     case CountersActions.SELECT:
-      console.log('SELECT');
       return action.payload;
 
     case CountersActions.INC:
-      console.log('INC');
       return action.payload;
 
     case CountersActions.DEC:
-      console.log('DEC');
       return action.payload;
 
     default:
       return state;
-
   }
 }
