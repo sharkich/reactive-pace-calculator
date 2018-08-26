@@ -15,7 +15,6 @@ const DEFAULT_TRAININGS: Training[] = [
 ];
 
 export function trainingsInitReducer(): Training[] {
-  console.log('init.trainings.reducer');
   return DEFAULT_TRAININGS;
 }
 
@@ -26,7 +25,6 @@ export function trainingsReducer(state: Training | null = null, action: Training
       return action.payload;
 
     default:
-      console.log('default.trainings.reducer');
       return state;
   }
 }

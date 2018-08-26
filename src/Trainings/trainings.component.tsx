@@ -14,9 +14,7 @@ interface Dispatchers {
 }
 
 class TrainingsComponent extends React.Component {
-
   render(): JSX.Element {
-
     return (
       <div>
         <h2>Trainings</h2>
@@ -27,42 +25,46 @@ class TrainingsComponent extends React.Component {
 
   renderList(): JSX.Element[] {
     const trainings: Training[] = (this.props as State).trainings;
+    let error: JSX.Element | null = null;
     if (!trainings) {
-      return [
-        (
-          <li key={0}>
-            <i>Loading...</i>
-          </li>
-        )
-      ];
+      error = <i>Loading...</i>;
     }
     if (!trainings.length) {
-      return [
-        (
-          <li key={0}>
-            <i>Empty trainings.</i>
-          </li>
-        )
-      ];
+      error = <i>Empty trainings.</i>;
+    }
+    if (error) {
+      return [<li key={0}>{error}</li>];
     }
     return trainings.map((training: Training) => {
+      const selected: JSX.Element = this.isSelected(training) ? <b> [Selected]</b> : <i />;
       return (
         <li onClick={() => this.onSelectClick(training)} key={training.id}>
           <i>
             {training.id}
             &nbsp;)
           </i>{' '}
-          <b>{training.pace}, {training.distance}, {training.time}</b>
+          <b>
+            {training.pace}, {training.distance}, {training.time}
+          </b>
           <i>{training.date}</i>
+          {selected}
         </li>
       );
     });
   }
 
   onSelectClick(training: Training): void {
+    const activeTraining: Training = (this.props as State).activeTraining;
+    if (activeTraining === training) {
+      return;
+    }
     (this.props as Dispatchers).select(training);
   }
 
+  private isSelected(training: Training): boolean {
+    const activeTraining: Training = (this.props as State).activeTraining;
+    return activeTraining === training;
+  }
 }
 
 function mapStateToProps(state: AppState): State {

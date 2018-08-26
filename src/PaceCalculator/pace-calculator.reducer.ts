@@ -1,9 +1,13 @@
 import {Training} from '../Trainings/training.model';
+import {TrainingsActions, TrainingsActionsResult} from '../Trainings/trainings.actions';
 
-export function paceCalculatorReducer(): Training {
-  return new Training({
-    pace: 5.00 * 60,
-    distance: 21097,
-    time: 2 * 60 * 60
-  });
+export function paceCalculatorReducer(state: Training | null = null, action: TrainingsActionsResult): Training | null {
+  switch (action.type) {
+
+    case TrainingsActions.SELECT:
+      return action.payload;
+
+    default:
+      return state;
+  }
 }

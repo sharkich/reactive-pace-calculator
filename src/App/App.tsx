@@ -8,7 +8,7 @@ import image from './usain-bolt.jpg';
 
 import CountersList from '../Counters/counters-list.component';
 import TrainingsComponent from '../Trainings/trainings.component';
-import {PaceCalculator} from '../PaceCalculator/pace-calculator.component';
+import PaceCalculatorComponent from '../PaceCalculator/pace-calculator.component';
 
 class App extends React.Component {
   public render(): JSX.Element {
@@ -32,7 +32,7 @@ class App extends React.Component {
         <div className="App-content">
 
           <div>
-            <PaceCalculator />
+            <PaceCalculatorComponent />
             <TrainingsComponent />
           </div>
 
