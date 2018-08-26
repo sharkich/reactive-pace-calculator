@@ -49,7 +49,6 @@ class CountersListComponent extends React.Component {
 
   renderCounter(): JSX.Element[] {
     const counters: Counter[] = (this.props as State).counters;
-    console.log('counters', counters);
     if (!counters) {
       return [
         (

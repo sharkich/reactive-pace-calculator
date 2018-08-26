@@ -1,6 +1,6 @@
 import {Counter} from './counter.model';
 
-export type CountersActionsType = 'SELECT' | 'INC' | 'DEC';
+export type CountersActionsType = 'CountersActions.SELECT' | 'CountersActions.INC' | 'CountersActions.DEC';
 
 export interface CountersActionsResult {
   type: string;
@@ -8,8 +8,7 @@ export interface CountersActionsResult {
 }
 
 export class CountersActions {
-
-  static SELECT: CountersActionsType = 'SELECT';
+  static SELECT: CountersActionsType = 'CountersActions.SELECT';
   static select(counter: Counter): CountersActionsResult {
     return {
       type: CountersActions.SELECT,
@@ -17,7 +16,7 @@ export class CountersActions {
     };
   }
 
-  static INC: CountersActionsType = 'INC';
+  static INC: CountersActionsType = 'CountersActions.INC';
   static increase(counter: Counter): CountersActionsResult {
     return {
       type: CountersActions.INC,
@@ -25,12 +24,11 @@ export class CountersActions {
     };
   }
 
-  static DEC: CountersActionsType = 'DEC';
+  static DEC: CountersActionsType = 'CountersActions.DEC';
   static decrease(counter: Counter): CountersActionsResult {
     return {
       type: CountersActions.DEC,
       payload: new Counter(counter.dec())
     };
   }
-
 }

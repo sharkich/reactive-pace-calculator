@@ -1,5 +1,5 @@
 import {Training} from './training.model';
-import {TrainingsActionsResult} from './trainings.actions';
+import {TrainingsActions, TrainingsActionsResult} from './trainings.actions';
 
 const DEFAULT_TRAININGS: Training[] = [
   new Training({
@@ -19,8 +19,11 @@ export function trainingsInitReducer(): Training[] {
   return DEFAULT_TRAININGS;
 }
 
-export function trainingsReducer(state: Training[] | null = null, action: TrainingsActionsResult): Training[] | null {
+export function trainingsReducer(state: Training | null = null, action: TrainingsActionsResult): Training | null {
   switch (action.type) {
+
+    case TrainingsActions.SELECT:
+      return action.payload;
 
     default:
       console.log('default.trainings.reducer');

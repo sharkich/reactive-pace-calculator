@@ -2,8 +2,16 @@ import * as React from 'react';
 import {AppState} from '../App/app.state';
 import {Training} from './training.model';
 import {connect} from 'react-redux';
+import {ActionCreatorsMapObject, bindActionCreators, Dispatch} from 'redux';
+import {TrainingsActions, TrainingsActionsResult} from './trainings.actions';
 
-type State = Pick<AppState, 'trainings'>;
+type State = Pick<AppState, 'trainings' | 'activeTraining'>;
+
+type Dispatcher = (training: Training) => TrainingsActionsResult;
+
+interface Dispatchers {
+  select: Dispatcher;
+}
 
 class TrainingsComponent extends React.Component {
 
@@ -52,18 +60,28 @@ class TrainingsComponent extends React.Component {
   }
 
   onSelectClick(training: Training): void {
-    console.log('onSelect', training);
+    (this.props as Dispatchers).select(training);
   }
 
 }
 
 function mapStateToProps(state: AppState): State {
   return {
-    trainings: state.trainings
+    trainings: state.trainings,
+    activeTraining: state.activeTraining
   };
+}
+
+function mapDispatchToProps(dispatch: Dispatch): ActionCreatorsMapObject {
+  return bindActionCreators(
+    {
+      select: TrainingsActions.select
+    },
+    dispatch
+  );
 }
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(TrainingsComponent);
