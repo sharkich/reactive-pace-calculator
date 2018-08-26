@@ -1,5 +1,5 @@
 import {Counter} from './counter.model';
-import {CountersActions} from './counters.actions';
+import {CountersActions, CountersActionsResult} from './counters.actions';
 
 const DEFAULT_COUNTERS: Counter[] = [
   new Counter(),
@@ -11,7 +11,7 @@ export function countersReducer(): Counter[] {
   return DEFAULT_COUNTERS;
 }
 
-export function activeCounterReducer(state: any = null, action: any): any {
+export function activeCounterReducer(state: Counter | null = null, action: CountersActionsResult): Counter | null {
   switch (action.type) {
     case CountersActions.SELECT:
       return action.payload;
