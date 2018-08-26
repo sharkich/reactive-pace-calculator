@@ -7,8 +7,8 @@ import './App.css';
 import image from './usain-bolt.jpg';
 
 import CountersList from '../Counters/counters-list.component';
+import TrainingsComponent from '../Trainings/trainings.component';
 import {PaceCalculator} from '../PaceCalculator/pace-calculator.component';
-import {TrainingsComponent} from '../Trainings/trainings.component';
 
 class App extends React.Component {
   public render(): JSX.Element {

@@ -1,15 +1,22 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 
-// import {Atom, F} from '@grammarly/focal';
-
 import {AppState} from '../App/app.state';
 import {Counter} from './counter.model';
 import {ActionCreatorsMapObject, bindActionCreators, Dispatch} from 'redux';
-import {CountersActions} from './counters.actions';
-import {CountersListDispatchers, CountersListState} from './counters-list.state';
+import {CountersActions, CountersActionsResult} from './counters.actions';
 
-class CountersList extends React.Component {
+type State = Pick<AppState, 'counters' | 'activeCounter'>;
+
+type CountersDispatcher = (counter: Counter) => CountersActionsResult;
+
+interface Dispatchers {
+  select: CountersDispatcher;
+  increase: CountersDispatcher;
+  decrease: CountersDispatcher;
+}
+
+class CountersListComponent extends React.Component {
   render(): JSX.Element {
     return (
       <div>
@@ -21,7 +28,7 @@ class CountersList extends React.Component {
   }
 
   renderActiveCounter(): JSX.Element {
-    const counter: Counter = (this.props as CountersListState).activeCounter;
+    const counter: Counter = (this.props as State).activeCounter;
     if (!counter) {
       return (
         <div>
@@ -41,7 +48,8 @@ class CountersList extends React.Component {
   }
 
   renderCounter(): JSX.Element[] {
-    const counters: Counter[] = (this.props as CountersListState).counters;
+    const counters: Counter[] = (this.props as State).counters;
+    console.log('counters', counters);
     if (!counters) {
       return [
         (
@@ -77,19 +85,19 @@ class CountersList extends React.Component {
   }
 
   onSelectCounterClick(counter: Counter): void {
-    (this.props as CountersListDispatchers).select(counter);
+    (this.props as Dispatchers).select(counter);
   }
 
   onPlusCounterClick(counter: Counter): void {
-    (this.props as CountersListDispatchers).increase(counter);
+    (this.props as Dispatchers).increase(counter);
   }
 
   onMinusCounterClick(counter: Counter): void {
-    (this.props as CountersListDispatchers).decrease(counter);
+    (this.props as Dispatchers).decrease(counter);
   }
 }
 
-function mapStateToProps(state: AppState): CountersListState {
+function mapStateToProps(state: AppState): State {
   return {
     counters: state.counters,
     activeCounter: state.activeCounter
@@ -110,4 +118,4 @@ function mapDispatchToProps(dispatch: Dispatch): ActionCreatorsMapObject {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CountersList);
+)(CountersListComponent);
