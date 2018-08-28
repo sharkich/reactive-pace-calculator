@@ -3,12 +3,12 @@ import {Atom} from '@grammarly/focal';
 
 // tslint:disable-next-line
 import './App.css';
-import image from './usain-bolt.jpg';
+import image from '../static/usain-bolt.jpg';
 
 import {AppModel} from './App.model';
-import {TrainingsComponent} from '../Trainings/trainings.component';
-import {PaceCalculatorComponent} from '../PaceCalculator/pace-calculator.component';
-import {Training, Trainings} from '../Trainings/training.model';
+import {TrainingsListComponent} from '../TrainingsListComponent/TrainingsListComponent';
+import {SingleTrainingComponent} from '../SingleTrainingComponent/SingleTrainingComponent';
+import {Training, Trainings} from '../TrainingsListComponent/training.model';
 
 export class AppComponent extends React.Component<any, any> {
 
@@ -34,18 +34,18 @@ export class AppComponent extends React.Component<any, any> {
     });
 
     return (
-      <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">Reactive Pace Calculator</h1>
+      <div className="app main">
+        <header className="app__header">
+          <h1 className="app__header__title">Reactive Pace Calculator</h1>
         </header>
 
-        <div className="App-content">
-          <PaceCalculatorComponent training={activeTraining} />
-          <TrainingsComponent trainings={trainings} />
+        <div className="app__content">
+          <SingleTrainingComponent training={activeTraining} />
+          <TrainingsListComponent trainings={trainings} />
         </div>
 
-        <footer className="App-footer">
-          <img src={image} className="App-image" alt="Usain Bolt" />
+        <footer className="app__footer">
+          <img src={image} className="app__footer__image" alt="Usain Bolt" />
         </footer>
       </div>
     );

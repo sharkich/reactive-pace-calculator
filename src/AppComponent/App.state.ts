@@ -1,4 +1,4 @@
-import {Training, Trainings} from '../Trainings/training.model';
+import {Training, Trainings} from '../TrainingsListComponent/training.model';
 
 export interface AppState {
   activeTraining: Training | null;

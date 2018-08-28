@@ -1,4 +1,4 @@
-import {Training, Trainings} from '../Trainings/training.model';
+import {Training, Trainings} from '../TrainingsListComponent/training.model';
 import {AppState} from './App.state';
 
 export class AppModel {

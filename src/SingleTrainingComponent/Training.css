@@ -1,0 +1,29 @@
+.training {
+}
+
+.training__main {
+}
+
+.training__main__title {
+  margin: 0 0 10px 0;
+}
+
+.training__data {
+  display: flex;
+  justify-content: space-around;
+  font-family: 'WeberHandITCStd', 'Helvetica', 'Verdana', sans-serif;
+}
+
+.training__data__single {
+}
+
+.training__data__single mark {
+  font-size: 16pt;
+  font-weight: bold;
+}
+
+.training__additional {
+  font-size: 60%;
+  border-top: 1px solid #eee;
+  margin-top: 10px;
+}

@@ -1,31 +1,33 @@
-.App {
+.app {
+  margin: 0 auto;
+  flex: 1;
 }
 
-.App-header {
+.app__header {
   background-color: #666;
   padding: 20px;
   color: white;
 }
 
-.App-title {
+.app__header__title {
   font-size: 1.5em;
 }
 
-.App-content {
-  width: 800px;
+.app__content {
   margin: 20px auto;
 }
 
-.App-content h2 {
+.app__content h2 {
   text-align: center;
 }
 
-.App-footer {
+.app__footer {
   margin-top: 40px;
   padding: 20px;
   text-align: center;
 }
 
-.App-image {
+.app__footer__image {
   width: 100%;
 }
+

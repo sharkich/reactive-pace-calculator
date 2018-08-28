@@ -4,3 +4,100 @@ body {
   font-family: sans-serif;
   color: #333;
 }
+
+@font-face {
+  font-family: 'WeberHandITCStd';
+  src: url('/static/fonts/WeberHandITCStd.woff2') format('woff2'),
+  url('/static/fonts/WeberHandITCStd.woff') format('woff'),
+  url('/static/fonts/WeberHandITCStd.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'WeberHandITCStd', 'Helvetica', 'Verdana', sans-serif;
+}
+
+h1 {
+  text-align: center;
+}
+
+a {
+  color: #3ba0d4;
+}
+
+a:visited {
+  color: #7a2877;
+}
+
+a:hover {
+  color: #dd423e;
+}
+
+.acenter {
+  text-align: center;
+}
+
+.small {
+  font-size: 75%;
+}
+
+.grey {
+  color: #9f9f9f;
+}
+
+dl dt {
+  font-weight: bold;
+}
+
+dl dd {
+  margin-bottom: 16px;
+}
+
+.width-100 {
+  flex-grow: 1;
+}
+
+.nobr {
+  white-space: nowrap;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/**
+App
+ */
+
+.main {
+  padding-top: 32px;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 100vh;
+  -webkit-overflow-scrolling: touch;
+}
+
+.main .title {
+  min-height: 40px;
+  text-align: center;
+  background-color: #565656;
+  color: transparent;
+  text-shadow: 0px 2px 3px rgba(255, 255, 255, 0.5);
+}
+
+.main .card {
+  padding: 16px;
+  position: relative;
+  box-sizing: border-box;
+  background: #fff;
+  border-radius: 2px;
+  margin: 16px;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+  0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
