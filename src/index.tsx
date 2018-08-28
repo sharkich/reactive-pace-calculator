@@ -1,27 +1,20 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {Provider} from 'react-redux';
-import {createStore, Store} from 'redux';
 
-import App from './App/App';
+import {Atom} from '@grammarly/focal';
+
+import {AppComponent} from './App/AppComponent';
 
 // tslint:disable-next-line
 import './index.css';
 
-import registerServiceWorker from './registerServiceWorker';
-import rootReducer from './redusers';
+import {AppModel} from './App/App.model';
+// @ts-ignore
+import {APP_DEFAULT_STATE} from './App/App.state';
 
-const store: Store = createStore(
-  rootReducer /* preloadedState, */,
-  // tslint:disable-next-line
-  window['__REDUX_DEVTOOLS_EXTENSION__'] && window['__REDUX_DEVTOOLS_EXTENSION__']()
-);
+const state: Atom<AppModel> = Atom.create(new AppModel(APP_DEFAULT_STATE));
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <AppComponent state={state} />,
   document.getElementById('root') as HTMLElement
 );
-
-registerServiceWorker();

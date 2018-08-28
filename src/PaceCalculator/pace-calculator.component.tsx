@@ -1,62 +1,49 @@
 import * as React from 'react';
-import {AppState} from '../App/app.state';
-import {ActionCreatorsMapObject, bindActionCreators, Dispatch} from 'redux';
-import {connect} from 'react-redux';
+import {Atom, F} from '@grammarly/focal';
+
+// @ts-ignore
+// import {AppState} from '../App/App.state';
 import {Training} from '../Trainings/training.model';
-import {PaceCalculatorActions, PaceCalculatorActionsTypeResult} from './pace-calculator.actions';
 
-type State = Pick<AppState, 'activeTraining'>;
-
-type Dispatcher = (training: Training) => PaceCalculatorActionsTypeResult;
-
-interface Dispatchers {
-  save: Dispatcher;
-}
-
-export class PaceCalculatorComponent extends React.Component {
-  render(): JSX.Element {
-    const activeTraining: Training = (this.props as State).activeTraining;
-    if (!activeTraining) {
-      return <div />;
-    }
-    return (
-      <div>
-        <h2>Pace Calculator</h2>
-        <i>
-          {activeTraining.id}
-          &nbsp;)
-        </i>{' '}
-        <b>
-          {activeTraining.pace}, {activeTraining.distance}, {activeTraining.time}
-        </b>
-        <i>{activeTraining.date}</i>
-        <hr />
-      </div>
-    );
-  }
-
-  onSaveSubmit(): void {
-    const activeTraining: Training = (this.props as State).activeTraining;
-    (this.props as Dispatchers).save(activeTraining);
-  }
-}
-
-function mapStateToProps(state: AppState): State {
-  return {
-    activeTraining: state.activeTraining
-  };
-}
-
-function mapDispatchToProps(dispatch: Dispatch): ActionCreatorsMapObject {
-  return bindActionCreators(
-    {
-      save: PaceCalculatorActions.save
-    },
-    dispatch
+export function PaceCalculatorComponent(props: { state: Atom<Training | null> }): JSX.Element {
+  return (
+    <F.div>
+      ID: [{props.state.view((x: Training | null) => x && x.id)}]
+    </F.div>
   );
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PaceCalculatorComponent);
+// export class PaceCalculatorComponent extends React.Component<any, any> {
+//
+//   render(): JSX.Element {
+//     // const appState: AppState = this.props.state;
+//     // const activeTraining: Training = this.props.training;
+//     if (!this.props.state) {
+//       console.log('1');
+//       return <div>Loading...</div>;
+//     }
+//     console.log('2', this.props.state);
+//     return (
+//       <F.div>
+//         <h2>Pace Calculator</h2>
+//         <i>
+//           {this.props.state ? this.props.state.id : 'nono'}
+//           &nbsp;)
+//           [{this.props.state.view((x: Training) => x && x.id)}]
+//         </i>{' '}
+//         {/*<b>*/}
+//           {/*{appState.view((t: AppState) => t.activeTraining.pace)},*/}
+//           {/*{appState.view((t: AppState) => t.activeTraining.distance)},*/}
+//           {/*{appState.view((t: Training) => t.activeTraining.time)}*/}
+//         {/*</b>*/}
+//         {/*<i>{appState.view((t: AppState) => t.activeTraining.date)}</i>*/}
+//         <hr />
+//       </F.div>
+//     );
+//   }
+//
+//   // onSaveSubmit(): void {
+//   //   const activeTraining: Training | null = (this.props as State).activeTraining;
+//   //   console.log('save', activeTraining);
+//   // }
+// }

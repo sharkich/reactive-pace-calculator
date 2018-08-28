@@ -9,6 +9,8 @@ export interface ITraining {
   time: number;
 }
 
+export type Trainings = Map<string, Training>;
+
 export class Training {
   public id: string;
   public date: number;

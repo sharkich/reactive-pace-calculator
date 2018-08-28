@@ -8,14 +8,14 @@
     "react-dom": "^16.4.2",
     "react-redux": "^5.0.7",
     "react-scripts-ts": "2.17.0",
-    "rxjs": "^6.2.2",
-    "prettier": "prettier --write \"src/**/*\""
+    "rxjs": "^6.2.2"
   },
   "scripts": {
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
+    "eject": "react-scripts-ts eject",
+    "prettier": "prettier --write \"src/**/*\""
   },
   "devDependencies": {
     "@reactivex/rxjs": "^6.2.2",
@@ -27,7 +27,6 @@
     "husky": "^1.0.0-rc.13",
     "lint-staged": "^7.2.2",
     "prettier": "1.14.2",
-    "redux-devtools": "^3.4.1",
     "rxjs-compat": "^6.2.2",
     "typescript": "^3.0.1"
   }
