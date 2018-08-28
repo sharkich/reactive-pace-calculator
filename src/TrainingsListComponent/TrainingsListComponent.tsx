@@ -1,7 +1,10 @@
 import * as React from 'react';
+import {Atom, F, Lens, reactiveList} from '@grammarly/focal';
+
+// tslint:disable-next-line
+import './TrainingsList.css';
 
 import {Trainings} from './training.model';
-import {Atom, F, Lens, reactiveList} from '@grammarly/focal';
 import {SingleTrainingComponent} from '../SingleTrainingComponent/SingleTrainingComponent';
 
 export function TrainingsListComponent(props: {trainings: Atom<Trainings>}): JSX.Element {
@@ -18,6 +21,11 @@ export function TrainingsListComponent(props: {trainings: Atom<Trainings>}): JSX
       </F.div>
 
       <F.div className="trainings-list--not-empty">
+
+        <div className="trainings-list__header">
+          <button>Add training</button>
+        </div>
+
         {reactiveList(
           props.trainings.view((trainings: Trainings) => Object.keys(trainings)),
           (id: string) => (
@@ -28,6 +36,11 @@ export function TrainingsListComponent(props: {trainings: Atom<Trainings>}): JSX
             />
           )
         )}
+
+        <div className="trainings-list__footer">
+          <button>Add training</button>
+        </div>
+
       </F.div>
     </div>
   );

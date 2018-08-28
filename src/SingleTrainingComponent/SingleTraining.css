@@ -14,6 +14,11 @@
   font-family: 'WeberHandITCStd', 'Helvetica', 'Verdana', sans-serif;
 }
 
+.training__data__additional {
+  font-size: 76%;
+  color: #777;
+}
+
 .training__data__single {
 }
 

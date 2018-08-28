@@ -7,7 +7,6 @@ import image from '../static/usain-bolt.jpg';
 
 import {AppModel} from './App.model';
 import {TrainingsListComponent} from '../TrainingsListComponent/TrainingsListComponent';
-import {SingleTrainingComponent} from '../SingleTrainingComponent/SingleTrainingComponent';
 import {Training, Trainings} from '../TrainingsListComponent/training.model';
 
 export class AppComponent extends React.Component<any, any> {
@@ -39,7 +38,6 @@ export class AppComponent extends React.Component<any, any> {
         </header>
 
         <div className="app__content">
-          <SingleTrainingComponent training={activeTraining} />
           <TrainingsListComponent trainings={trainings} />
         </div>
 

@@ -6,16 +6,17 @@ export interface AppState {
 }
 
 export const APP_DEFAULT_STATE: AppState = {
-  activeTraining: new Training({
-    pace: 4.15 * 60,
-    distance: 10000,
-    time: 15 * 60
-  }),
+  activeTraining: null,
   trainings: getInitTrainings()
 };
 
 function getInitTrainings(): Trainings {
   const DEFAULT_TRAININGS: Training[] = [
+    new Training({
+      pace: 4.15 * 60,
+      distance: 10000,
+      time: 15 * 60
+    }),
     new Training({
       pace: 6.0 * 60,
       distance: 21097,
