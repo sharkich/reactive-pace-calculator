@@ -1,7 +1,6 @@
 /* tslint:disable:no-bitwise */
 
 export class UUIDService {
-
   static generate(): string {
     let date: number = new Date().getTime();
     const uuid: string = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c: string) => {
@@ -11,5 +10,4 @@ export class UUIDService {
     });
     return uuid;
   }
-
 }

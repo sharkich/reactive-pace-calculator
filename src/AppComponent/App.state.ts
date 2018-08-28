@@ -30,5 +30,5 @@ function getInitTrainings(): Trainings {
   return DEFAULT_TRAININGS.reduce((trainings: Trainings, training: Training) => {
     trainings[training.id] = training;
     return trainings;
-  } , new Map());
+  }, new Map());
 }

@@ -14,7 +14,4 @@ import {APP_DEFAULT_STATE} from './AppComponent/App.state';
 
 const state: Atom<AppModel> = Atom.create(new AppModel(APP_DEFAULT_STATE));
 
-ReactDOM.render(
-  <AppComponent state={state} />,
-  document.getElementById('root') as HTMLElement
-);
+ReactDOM.render(<AppComponent state={state} />, document.getElementById('root') as HTMLElement);

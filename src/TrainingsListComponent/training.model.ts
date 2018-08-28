@@ -27,5 +27,4 @@ export class Training {
     this.distance = data.distance;
     this.time = data.time;
   }
-
 }

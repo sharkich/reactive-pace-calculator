@@ -11,7 +11,6 @@ import {SingleTrainingComponent} from '../SingleTrainingComponent/SingleTraining
 import {Training, Trainings} from '../TrainingsListComponent/training.model';
 
 export class AppComponent extends React.Component<any, any> {
-
   componentDidMount(): void {
     console.log('mount.app');
     const state: Atom<AppModel> = this.props.state;

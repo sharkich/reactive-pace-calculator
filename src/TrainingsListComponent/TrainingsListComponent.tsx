@@ -1,25 +1,34 @@
 import * as React from 'react';
 
-import {Training, Trainings} from './training.model';
-import {Atom, F} from '@grammarly/focal';
+import {Trainings} from './training.model';
+import {Atom, F, Lens, reactiveList} from '@grammarly/focal';
+import {SingleTrainingComponent} from '../SingleTrainingComponent/SingleTrainingComponent';
 
 export function TrainingsListComponent(props: {trainings: Atom<Trainings>}): JSX.Element {
   return (
-    <F.div className="card">
+    <div className="trainings-list card">
       <h2>Trainings</h2>
-      {props.trainings.view((trainings: Trainings) => {
-        if (!trainings) {
-          return <div className="card">No Trainings</div>;
-        }
-        return Object.keys(trainings).map((id: string) => {
-          const training: Training = trainings[id];
-          return (
-            <div className="card" key={training.id}>
-              <div>ID: [{training.id}]</div>
-            </div>
-          );
-        });
-      })}
-    </F.div>
+      <F.div>
+        {props.trainings.view((trainings: Trainings) => {
+          if (!trainings) {
+            return <div className="trainings-list--empty">No Trainings</div>;
+          }
+          return <div />;
+        })}
+      </F.div>
+
+      <F.div className="trainings-list--not-empty">
+        {reactiveList(
+          props.trainings.view((trainings: Trainings) => Object.keys(trainings)),
+          (id: string) => (
+            <SingleTrainingComponent
+              key={id}
+              // @ts-ignore
+              training={props.trainings.lens(Lens.key(id))}
+            />
+          )
+        )}
+      </F.div>
+    </div>
   );
 }
