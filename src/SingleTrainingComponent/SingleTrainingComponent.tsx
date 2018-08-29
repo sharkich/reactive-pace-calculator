@@ -19,7 +19,7 @@ export class SingleTrainingComponent extends React.Component {
     const trainingAtom: Atom<Training | null> = props.training;
     const activeTrainingAtom: Atom<Training | null> = props.activeTraining;
     return (
-      <F.div className="training card">
+      <F.div>
         {trainingAtom.view((training: Training | null) => {
           if (!training) {
             return <div>Loading...</div>;
@@ -27,14 +27,16 @@ export class SingleTrainingComponent extends React.Component {
 
           return (
             <F.div
+              onClick={() => this.onClick(training)}
               {...classes(
                 activeTrainingAtom.view(
                   (activeTraining: Training) => activeTraining === training && 'training--active'
-                )
+                ),
+                'training card'
               )}
             >
-              <div className="training__main">
-                <h2 className="training__main__title">Monday Training</h2>
+              <div>
+                <h2 className="training__title">{training.name}</h2>
                 <div className="training__data">
                   <F.div className="training__data__single">
                     Distance: <span className="mark">{training.distance}</span>{' '}
@@ -57,7 +59,7 @@ export class SingleTrainingComponent extends React.Component {
     );
   }
 
-  renderAdditional(): Observable<JSX.Element> {
+  private renderAdditional(): Observable<JSX.Element> {
     const props: Props = this.props as Props;
     const trainingAtom: Atom<Training | null> = props.training;
     const activeTrainingAtom: Atom<Training | null> = props.activeTraining;
@@ -71,18 +73,20 @@ export class SingleTrainingComponent extends React.Component {
       filter(this.isExistObservableData.bind(this)),
       map(([training]: Training[]) => (
         <div key={`additional-${training.id}`} className="training__additional">
-          <p>
+          <div className="training__data__single">
             Speed: <span className="mark">10.00</span>{' '}
             <span className="training__data__additional">km/h</span>,
+          </div>
+          <div>
             <span className="grey"> ID: {training.id}</span>
-          </p>
+          </div>
         </div>
       ))
     );
 
     const emptyObservable: Observable<JSX.Element> = dataObservable.pipe(
       filter(this.isEmptyObservableData.bind(this)),
-      map(([training]: Training[]) => (<div key={`additional-${training.id}`} />))
+      map(([training]: Training[]) => <div key={`additional-${training.id}`} />)
     );
 
     return existObservable.pipe(merge(emptyObservable));
@@ -94,5 +98,11 @@ export class SingleTrainingComponent extends React.Component {
 
   private isEmptyObservableData([training, activeTraining]: Array<Training | null>): boolean {
     return !this.isExistObservableData([training, activeTraining]);
+  }
+
+  private onClick(training: Training): void {
+    const props: Props = this.props as Props;
+    const activeTrainingAtom: Atom<Training | null> = props.activeTraining;
+    activeTrainingAtom.set(training);
   }
 }

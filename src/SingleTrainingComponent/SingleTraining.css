@@ -2,36 +2,17 @@
   cursor: pointer;
 }
 
-.training__main {
-}
-
-.training__main__title {
+.training__title {
   margin: 0 0 10px 0;
 }
+
+/**
+ Data
+ */
 
 .training__data {
   display: flex;
   justify-content: space-around;
-  font-family: 'WeberHandITCStd', 'Helvetica', 'Verdana', sans-serif;
-}
-
-.training__data__additional {
-  font-size: 76%;
-  color: #777;
-}
-
-.training__data__single {
-}
-
-.mark {
-}
-
-.main .card .training:hover {
-  background: #eee;
-}
-
-.training:hover .mark {
-  background: yellow;
 }
 
 .training--active .mark {
@@ -43,8 +24,36 @@
   font-weight: bold;
 }
 
+.training__data__additional {
+  font-size: 76%;
+  color: #777;
+}
+
+.training__data__single {
+  font-family: 'WeberHandITCStd', 'Helvetica', 'Verdana', sans-serif;
+}
+
+.mark {
+  font-weight: bold;
+}
+
+.main .card .training:hover {
+  background: #eee;
+}
+
+.main .card .training.training--active:hover {
+  background: inherit;
+}
+
+  /**
+    Additional
+   */
+
 .training__additional {
+  display: flex;
+  justify-content: space-around;
   font-size: 60%;
   border-top: 1px solid #eee;
   margin-top: 10px;
+  padding-top: 10px;
 }
