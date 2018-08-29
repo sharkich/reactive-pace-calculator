@@ -1,5 +1,5 @@
-import {Training, Trainings} from '../TrainingsListComponent/training.model';
-import {AppState} from './App.state';
+import {Training, Trainings} from '../_shared/Training.model';
+import {AppState} from './AppState';
 
 export class AppModel {
   public readonly trainings: Trainings;

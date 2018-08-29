@@ -1,9 +1,5 @@
-import {Training, Trainings} from '../TrainingsListComponent/training.model';
-
-export interface AppState {
-  activeTraining: Training | null;
-  trainings: Trainings;
-}
+import {Training, Trainings} from '../_shared/Training.model';
+import {AppState} from './AppState';
 
 const DEFAULT_TRAININGS: Training[] = [
   new Training({

@@ -1,19 +1,18 @@
 import * as React from 'react';
-import {Observable} from 'rxjs/Observable';
-import {filter, map, merge} from 'rxjs/operators';
 import {Atom, classes, F} from '@grammarly/focal';
 
 // tslint:disable-next-line
-import './SingleTraining.css';
+import './TrainingComponent.css';
 
-import {Training} from '../TrainingsListComponent/training.model';
+import {Training} from '../_shared/Training.model';
+import {TrainingFooterComponent} from '../TrainingFooterComponent/TrainingFooterComponent';
 
-interface Props {
+export interface Props {
   training: Atom<Training | null>;
   activeTraining: Atom<Training | null>;
 }
 
-export class SingleTrainingComponent extends React.Component {
+export class TrainingComponent extends React.Component {
   render(): JSX.Element {
     const props: Props = this.props as Props;
     const trainingAtom: Atom<Training | null> = props.training;
@@ -51,53 +50,16 @@ export class SingleTrainingComponent extends React.Component {
                   </div>
                 </div>
               </div>
-              {this.renderAdditional()}
+              <TrainingFooterComponent
+                // @ts-ignore
+                training={trainingAtom}
+                activeTraining={activeTrainingAtom}
+              />
             </F.div>
           );
         })}
       </F.div>
     );
-  }
-
-  private renderAdditional(): Observable<JSX.Element> {
-    const props: Props = this.props as Props;
-    const trainingAtom: Atom<Training | null> = props.training;
-    const activeTrainingAtom: Atom<Training | null> = props.activeTraining;
-
-    const dataObservable: Observable<Array<Training | null>> = Observable.combineLatest(
-      trainingAtom,
-      activeTrainingAtom
-    );
-
-    const existObservable: Observable<JSX.Element> = dataObservable.pipe(
-      filter(this.isExistObservableData.bind(this)),
-      map(([training]: Training[]) => (
-        <div key={`additional-${training.id}`} className="training__additional">
-          <div className="training__data__single">
-            Speed: <span className="mark">10.00</span>{' '}
-            <span className="training__data__additional">km/h</span>,
-          </div>
-          <div>
-            <span className="grey"> ID: {training.id}</span>
-          </div>
-        </div>
-      ))
-    );
-
-    const emptyObservable: Observable<JSX.Element> = dataObservable.pipe(
-      filter(this.isEmptyObservableData.bind(this)),
-      map(([training]: Training[]) => <div key={`additional-${training.id}`} />)
-    );
-
-    return existObservable.pipe(merge(emptyObservable));
-  }
-
-  private isExistObservableData([training, activeTraining]: Array<Training | null>): boolean {
-    return !!training && training === activeTraining;
-  }
-
-  private isEmptyObservableData([training, activeTraining]: Array<Training | null>): boolean {
-    return !this.isExistObservableData([training, activeTraining]);
   }
 
   private onClick(training: Training): void {

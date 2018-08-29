@@ -8,9 +8,8 @@ import {AppComponent} from './AppComponent/AppComponent';
 // tslint:disable-next-line
 import './index.css';
 
-import {AppModel} from './AppComponent/App.model';
-// @ts-ignore
-import {APP_DEFAULT_STATE} from './AppComponent/App.state';
+import {AppModel} from './AppComponent/AppModel';
+import {APP_DEFAULT_STATE} from './AppComponent/APP_DEFAULT_STATE';
 
 const state: Atom<AppModel> = Atom.create(new AppModel(APP_DEFAULT_STATE));
 

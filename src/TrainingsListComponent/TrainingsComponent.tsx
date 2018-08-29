@@ -2,17 +2,17 @@ import * as React from 'react';
 import {Atom, F, Lens, reactiveList} from '@grammarly/focal';
 
 // tslint:disable-next-line
-import './TrainingsList.css';
+import './TrainingsComponent.css';
 
-import {Training, Trainings} from './training.model';
-import {SingleTrainingComponent} from '../SingleTrainingComponent/SingleTrainingComponent';
+import {Training, Trainings} from '../_shared/Training.model';
+import {TrainingComponent} from '../TrainingComponent/TrainingComponent';
 
-export function TrainingsListComponent(props: {
+export function TrainingsComponent(props: {
   trainings: Atom<Trainings>;
   activeTraining: Atom<Training | null>;
 }): JSX.Element {
   return (
-    <div className="trainings-list card">
+    <F.div className="trainings-list card">
       <h2>Trainings</h2>
       <F.div>
         {props.trainings.view((trainings: Trainings) => {
@@ -31,7 +31,7 @@ export function TrainingsListComponent(props: {
         {reactiveList(
           props.trainings.view((trainings: Trainings) => Object.keys(trainings)),
           (id: string) => (
-            <SingleTrainingComponent
+            <TrainingComponent
               key={id}
               // @ts-ignore
               training={props.trainings.lens(Lens.key(id))}
@@ -44,6 +44,6 @@ export function TrainingsListComponent(props: {
           <button>Add training</button>
         </div>
       </F.div>
-    </div>
+    </F.div>
   );
 }

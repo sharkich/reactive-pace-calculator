@@ -44,16 +44,3 @@
 .main .card .training.training--active:hover {
   background: inherit;
 }
-
-  /**
-    Additional
-   */
-
-.training__additional {
-  display: flex;
-  justify-content: space-around;
-  font-size: 60%;
-  border-top: 1px solid #eee;
-  margin-top: 10px;
-  padding-top: 10px;
-}
