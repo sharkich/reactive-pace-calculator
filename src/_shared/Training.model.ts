@@ -1,6 +1,6 @@
 import {UUIDService} from './uuid.service';
 
-export interface ITraining {
+interface ITraining {
   id?: string;
   date?: number;
 
@@ -10,8 +10,6 @@ export interface ITraining {
   distance: number;
   time: number;
 }
-
-export type Trainings = Map<string, Training>;
 
 export class Training {
   public id: string;

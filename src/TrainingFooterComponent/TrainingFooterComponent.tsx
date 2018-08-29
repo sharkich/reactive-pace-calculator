@@ -22,18 +22,18 @@ export class TrainingFooterComponent extends React.Component {
 
     const existObservable: Observable<JSX.Element> = dataObservable.pipe(
       filter(this.isExistObservableData),
-      map(([training]: Training[]) => this.additionalView(training))
+      map(([training]: Training[]) => this.existView(training))
     );
 
     const emptyObservable: Observable<JSX.Element> = dataObservable.pipe(
       filter(this.isEmptyObservableData.bind(this)),
-      map(([training]: Training[]) => <div key={`additional-${training.id}`} />)
+      map(([training]: Training[]) => this.emptyView(training))
     );
 
     return <F.div>{existObservable.pipe(merge(emptyObservable))}</F.div>;
   }
 
-  private additionalView(training: Training): JSX.Element {
+  private existView(training: Training): JSX.Element {
     return (
       <div key={`additional-${training.id}`} className="training__additional">
         <div className="training__data__single">
@@ -45,6 +45,10 @@ export class TrainingFooterComponent extends React.Component {
         </div>
       </div>
     );
+  }
+
+  private emptyView(training: Training): JSX.Element {
+    return <div key={`additional-${training.id}`} />;
   }
 
   private isExistObservableData([training, activeTraining]: Array<Training | null>): boolean {
