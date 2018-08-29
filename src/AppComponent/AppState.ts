@@ -1,5 +1,4 @@
-import {Training} from '../_shared/Training.model';
-import {Trainings} from '../_shared/Trainings.model';
+import {Training, Trainings} from '../_shared/models';
 
 export interface AppState {
   activeTraining: Training | null;

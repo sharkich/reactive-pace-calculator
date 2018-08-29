@@ -6,7 +6,7 @@ import {filter, map, merge} from 'rxjs/operators';
 // tslint:disable-next-line
 import './TrainingFooterComponent.css';
 
-import {Training} from '../_shared/Training.model';
+import {Training} from '../_shared/models';
 import {Props} from '../TrainingComponent/TrainingComponent';
 
 export class TrainingFooterComponent extends React.Component {

@@ -4,8 +4,7 @@ import {Atom, F, Lens, reactiveList} from '@grammarly/focal';
 // tslint:disable-next-line
 import './TrainingsComponent.css';
 
-import {Training} from '../_shared/Training.model';
-import {Trainings} from '../_shared/Trainings.model';
+import {Training, Trainings} from '../_shared/models';
 import {TrainingComponent} from '../TrainingComponent/TrainingComponent';
 
 export function TrainingsComponent(props: {

@@ -1,6 +1,5 @@
-import {Training} from '../_shared/Training.model';
 import {AppState} from './AppState';
-import {Trainings} from '../_shared/Trainings.model';
+import {Training, Trainings} from '../_shared/models';
 
 export class AppModel {
   public readonly trainings: Trainings;

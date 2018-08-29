@@ -6,9 +6,8 @@ import './AppComponent.css';
 import image from '../_static/usain-bolt.jpg';
 
 import {AppModel} from './AppModel';
-import {Training} from '../_shared/Training.model';
+import {Training, Trainings} from '../_shared/models';
 import {TrainingsComponent} from '../TrainingsListComponent/TrainingsComponent';
-import {Trainings} from '../_shared/Trainings.model';
 
 export class AppComponent extends React.Component<any, any> {
   componentDidMount(): void {

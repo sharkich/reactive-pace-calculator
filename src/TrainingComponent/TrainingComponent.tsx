@@ -4,7 +4,7 @@ import {Atom, classes, F} from '@grammarly/focal';
 // tslint:disable-next-line
 import './TrainingComponent.css';
 
-import {Training} from '../_shared/Training.model';
+import {Training} from '../_shared/models';
 import {TrainingFooterComponent} from '../TrainingFooterComponent/TrainingFooterComponent';
 
 export interface Props {

@@ -1,4 +1,4 @@
-import {UUIDService} from './uuid.service';
+import {UUIDService} from '../UUIDService';
 
 interface ITraining {
   id?: string;
