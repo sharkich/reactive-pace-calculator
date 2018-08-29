@@ -7,7 +7,7 @@ export interface AppState {
 
 const DEFAULT_TRAININGS: Training[] = [
   new Training({
-    pace: 4.15 * 60,
+    pace: Math.round(4.15 * 60),
     distance: 10000,
     time: 15 * 60
   }),
@@ -24,7 +24,7 @@ const DEFAULT_TRAININGS: Training[] = [
 ];
 
 export const APP_DEFAULT_STATE: AppState = {
-  activeTraining: DEFAULT_TRAININGS[0],
+  activeTraining: DEFAULT_TRAININGS[1],
   trainings: DEFAULT_TRAININGS.reduce((trainings: Trainings, training: Training) => {
     trainings[training.id] = training;
     return trainings;

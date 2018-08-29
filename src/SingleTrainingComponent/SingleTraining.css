@@ -1,4 +1,5 @@
 .training {
+  cursor: pointer;
 }
 
 .training__main {
@@ -20,6 +21,21 @@
 }
 
 .training__data__single {
+}
+
+.mark {
+}
+
+.main .card .training:hover {
+  background: #eee;
+}
+
+.training:hover .mark {
+  background: yellow;
+}
+
+.training--active .mark {
+  background: yellow;
 }
 
 .training__data__single mark {
