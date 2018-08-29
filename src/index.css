@@ -7,9 +7,9 @@ body {
 
 @font-face {
   font-family: 'WeberHandITCStd';
-  src: url('/static/fonts/WeberHandITCStd.woff2') format('woff2'),
-    url('/static/fonts/WeberHandITCStd.woff') format('woff'),
-    url('/static/fonts/WeberHandITCStd.ttf') format('truetype');
+  src: url('/src/_static/fonts/WeberHandITCStd.woff2') format('woff2'),
+    url('/src/_static/fonts/WeberHandITCStd.woff') format('woff'),
+    url('/src/_static/fonts/WeberHandITCStd.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -88,7 +88,7 @@ App
   text-align: center;
   background-color: #565656;
   color: transparent;
-  text-shadow: 0px 2px 3px rgba(255, 255, 255, 0.5);
+  text-shadow: 0 2px 3px rgba(255, 255, 255, 0.5);
 }
 
 .main .card {
