@@ -4,12 +4,14 @@ import {Atom, F, Lens, reactiveList} from '@grammarly/focal';
 // tslint:disable-next-line
 import './TrainingsComponent.css';
 
+import {AppEvent} from '../_shared/AppEvent';
 import {Training, Trainings} from '../_shared/models';
 import {TrainingComponent} from '../TrainingComponent/TrainingComponent';
 
 interface Props {
   trainings: Atom<Trainings>;
   activeTraining: Atom<Training | null>;
+  event: Atom<AppEvent>;
 }
 
 export class TrainingsComponent extends React.Component {
@@ -40,6 +42,7 @@ export class TrainingsComponent extends React.Component {
                 // @ts-ignore
                 training={props.trainings.lens(Lens.key(id))}
                 activeTraining={props.activeTraining}
+                event={props.event}
               />
             )
           )}
