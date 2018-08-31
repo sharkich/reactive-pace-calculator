@@ -28,7 +28,11 @@ export class AppComponent extends React.Component<any, any> {
         </header>
 
         <div className="app__content">
-          <TrainingsComponent trainings={trainings} activeTraining={activeTraining} />
+          <TrainingsComponent
+            // @ts-ignore
+            trainings={trainings}
+            activeTraining={activeTraining}
+          />
         </div>
 
         <footer className="app__footer">
