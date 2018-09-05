@@ -18,7 +18,6 @@ export interface Props {
 }
 
 export class TrainingComponent extends React.Component {
-
   training: Training;
   activeTraining: Training | null;
   event: Atom<AppEvent>;
@@ -56,10 +55,7 @@ export class TrainingComponent extends React.Component {
   private view(): JSX.Element {
     const activeClassName: string = this.isActiveTraining() ? 'training--active' : '';
     return (
-      <F.div
-        onClick={() => this.onClick()}
-        className={'training card ' + activeClassName}
-      >
+      <F.div onClick={() => this.onClick()} className={'training card ' + activeClassName}>
         <div>
           <h2 className="training__title">{this.training.name}</h2>
           <div className="training__data">
@@ -86,7 +82,7 @@ export class TrainingComponent extends React.Component {
   }
 
   private emptyView(training: Training): JSX.Element {
-    return (<div key={`additional-${training.id}`}>Loading...</div>);
+    return <div key={`additional-${training && training.id}`}>Loading...</div>;
   }
 
   private isExistObservableData([training]: Array<Training | null>): boolean {

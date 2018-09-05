@@ -1,11 +1,10 @@
 import {Atom} from '@grammarly/focal';
 
-import {Training} from './models';
+import {Training, Trainings} from './models';
 import {AppEvent} from './AppEvent';
 import {AppModel} from '../AppComponent/AppModel';
 
 export class AppService {
-
   state: Atom<AppModel>;
   eventAtom: Atom<AppEvent>;
 
@@ -13,18 +12,23 @@ export class AppService {
     this.state = state;
     this.eventAtom = eventAtom;
 
-    this.eventAtom
-      .subscribe(({event, payload}: AppEvent) => {
-        console.log('event', event, payload);
-        switch (event) {
-          case AppService.ACTION_ACTIVE_TRAINING_SET:
-            this.setActiveTraining(payload as Training);
-            break;
-          case AppService.ACTION_ACTIVE_TRAINING_RESET:
-            this.resetActiveTraining();
-            break;
-        }
-      });
+    this.eventAtom.subscribe(({event, payload}: AppEvent) => {
+      console.log('event', event, payload);
+      switch (event) {
+        case AppService.ACTION_ACTIVE_TRAINING_SET:
+          this.setActiveTraining(payload as Training);
+          break;
+        case AppService.ACTION_ACTIVE_TRAINING_RESET:
+          this.resetActiveTraining();
+          break;
+        case AppService.ACTION_ADD_NEW_TRAINING_ON_TOP:
+          this.addNewTrainingOnTop();
+          break;
+        case AppService.ACTION_ADD_NEW_TRAINING_ON_BOTTOM:
+          this.addNewTrainingOnBottom();
+          break;
+      }
+    });
     // this.eventAtom
     //   .pipe(
     //     filter(({event}: AppEvent) => event === 'TRAINING_SET_ACTIVE')
@@ -44,4 +48,21 @@ export class AppService {
     activeTrainingAtom.set(null);
   }
 
+  static ACTION_ADD_NEW_TRAINING_ON_TOP: string = 'ACTION_ADD_NEW_TRAINING_ON_TOP';
+  private addNewTrainingOnTop(): void {
+    console.log('ACTION_ADD_NEW_TRAINING_ON_TOP');
+    const trainingsAtom: Atom<Trainings> = this.state.lens('trainings');
+    trainingsAtom.modify((originTrainings: Trainings) => {
+      const newTrainings: Trainings = Object.assign({}, originTrainings);
+      const training: Training = new Training();
+      newTrainings[training.id] = training;
+      return newTrainings;
+    });
+  }
+
+  static ACTION_ADD_NEW_TRAINING_ON_BOTTOM: string = 'ACTION_ADD_NEW_TRAINING_ON_BOTTOM';
+  private addNewTrainingOnBottom(): void {
+    console.log('ACTION_ADD_NEW_TRAINING_ON_BOTTOM');
+    this.addNewTrainingOnTop(); // TODO :)
+  }
 }
