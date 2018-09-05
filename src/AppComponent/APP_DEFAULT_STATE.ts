@@ -1,7 +1,7 @@
 import {AppState} from './AppState';
 import {Training, Trainings} from '../_shared/models';
 
-const DEFAULT_TRAININGS: Training[] = [
+const DEFAULT_TRAININGS: Trainings = [
   new Training({
     name: '10 km training',
     pace: Math.round(4.15 * 60),
@@ -24,8 +24,5 @@ const DEFAULT_TRAININGS: Training[] = [
 
 export const APP_DEFAULT_STATE: AppState = {
   activeTraining: DEFAULT_TRAININGS[1],
-  trainings: DEFAULT_TRAININGS.reduce((trainings: Trainings, training: Training) => {
-    trainings[training.id] = training;
-    return trainings;
-  }, new Map())
+  trainings: [...DEFAULT_TRAININGS]
 };

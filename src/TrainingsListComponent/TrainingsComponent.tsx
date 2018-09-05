@@ -2,7 +2,6 @@ import * as React from 'react';
 import {Observable} from 'rxjs/Observable';
 import {filter, map, merge} from 'rxjs/operators';
 import {Atom, F, Lens} from '@grammarly/focal';
-
 // tslint:disable-next-line
 import './TrainingsComponent.css';
 
@@ -42,7 +41,6 @@ export class TrainingsComponent extends React.Component {
     const existObservable: Observable<JSX.Element> = this.trainingsAtom.pipe(
       filter(this.isExistObservableData),
       map((trainings: Trainings) => {
-        console.log('new trainings', trainings);
         this.trainings = trainings;
         return this.view(trainings);
       })
@@ -78,12 +76,12 @@ export class TrainingsComponent extends React.Component {
   }
 
   private renderTrainingsComponents(trainings: Trainings): JSX.Element[] {
-    return Object.keys(trainings).map((id: string) => {
+    return trainings.map((training: Training, index: number) => {
       return (
         <TrainingComponent
-          key={id}
+          key={training.id}
           // @ts-ignore
-          training={this.trainingsAtom.lens(Lens.key(id))}
+          training={this.trainingsAtom.lens(Lens.key(index))}
           activeTraining={this.activeTrainingAtom}
           event={this.event}
         />
@@ -109,7 +107,7 @@ export class TrainingsComponent extends React.Component {
   }
 
   private isExistObservableData(trainings: Trainings): boolean {
-    return !!Object.keys(trainings);
+    return !!trainings.length;
   }
 
   private isEmptyObservableData(trainings: Trainings): boolean {

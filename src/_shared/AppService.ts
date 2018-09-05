@@ -13,7 +13,6 @@ export class AppService {
     this.eventAtom = eventAtom;
 
     this.eventAtom.subscribe(({event, payload}: AppEvent) => {
-      console.log('event', event, payload);
       switch (event) {
         case AppService.ACTION_ACTIVE_TRAINING_SET:
           this.setActiveTraining(payload as Training);
@@ -53,9 +52,8 @@ export class AppService {
     console.log('ACTION_ADD_NEW_TRAINING_ON_TOP');
     const trainingsAtom: Atom<Trainings> = this.state.lens('trainings');
     trainingsAtom.modify((originTrainings: Trainings) => {
-      const newTrainings: Trainings = Object.assign({}, originTrainings);
-      const training: Training = new Training();
-      newTrainings[training.id] = training;
+      const newTrainings: Trainings = [...originTrainings];
+      newTrainings.unshift(new Training());
       return newTrainings;
     });
   }
@@ -63,6 +61,11 @@ export class AppService {
   static ACTION_ADD_NEW_TRAINING_ON_BOTTOM: string = 'ACTION_ADD_NEW_TRAINING_ON_BOTTOM';
   private addNewTrainingOnBottom(): void {
     console.log('ACTION_ADD_NEW_TRAINING_ON_BOTTOM');
-    this.addNewTrainingOnTop(); // TODO :)
+    const trainingsAtom: Atom<Trainings> = this.state.lens('trainings');
+    trainingsAtom.modify((originTrainings: Trainings) => {
+      const newTrainings: Trainings = [...originTrainings];
+      newTrainings.push(new Training());
+      return newTrainings;
+    });
   }
 }

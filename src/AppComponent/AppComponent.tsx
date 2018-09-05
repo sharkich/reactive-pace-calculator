@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {Atom, F} from '@grammarly/focal';
-
 // tslint:disable-next-line
 import './AppComponent.css';
 import image from '../_static/usain-bolt.jpg';
@@ -17,12 +16,6 @@ export class AppComponent extends React.Component {
   state: Atom<AppModel> = Atom.create(new AppModel(APP_DEFAULT_STATE));
   event: Atom<AppEvent> = Atom.create(new AppEvent('init'));
   service: AppService = new AppService(this.state, this.event);
-
-  // componentDidMount(): void {
-  //   this.state.subscribe((newState: AppModel) => {
-  //     console.log('state.newState', newState);
-  //   });
-  // }
 
   render(): JSX.Element {
     const activeTraining: Atom<Training | null> = this.state.lens('activeTraining');
