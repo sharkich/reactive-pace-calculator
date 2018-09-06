@@ -11,9 +11,9 @@ import {TrainingComponent} from '../TrainingComponent/TrainingComponent';
 import {AppService} from '../_shared/AppService';
 
 interface Props {
-  trainings: Atom<Trainings>;
-  activeTraining: Atom<Training | null>;
-  event: Atom<AppEvent>;
+  trainingsAtom: Atom<Trainings>;
+  activeTrainingAtom: Atom<Training | null>;
+  eventAtom: Atom<AppEvent>;
 }
 
 enum NewTrainingPosition {
@@ -23,20 +23,20 @@ enum NewTrainingPosition {
 
 export class TrainingsComponent extends React.Component {
 
-  trainings: Trainings;
-  activeTraining: Training | null;
-  event: Atom<AppEvent>;
+  eventAtom: Atom<AppEvent>;
 
   trainingsAtom: Atom<Trainings>;
   activeTrainingAtom: Atom<Training | null>;
 
+  trainings: Trainings;
+
   render(): JSX.Element {
     const props: Props = this.props as Props;
 
-    this.trainingsAtom = props.trainings;
-    this.activeTrainingAtom = props.activeTraining;
+    this.eventAtom = props.eventAtom;
 
-    this.event = props.event;
+    this.trainingsAtom = props.trainingsAtom;
+    this.activeTrainingAtom = props.activeTrainingAtom;
 
     const existObservable: Observable<JSX.Element> = this.trainingsAtom.pipe(
       filter(this.isExistObservableData),
@@ -81,9 +81,9 @@ export class TrainingsComponent extends React.Component {
         <TrainingComponent
           key={training.id}
           // @ts-ignore
-          training={this.trainingsAtom.lens(Lens.key(index))}
-          activeTraining={this.activeTrainingAtom}
-          event={this.event}
+          trainingAtom={this.trainingsAtom.lens(Lens.key(index))}
+          activeTrainingAtom={this.activeTrainingAtom}
+          eventAtom={this.eventAtom}
         />
       );
     });
@@ -92,10 +92,10 @@ export class TrainingsComponent extends React.Component {
   private onAddTrainingClick(newTrainingPosition: NewTrainingPosition): void {
     switch (newTrainingPosition) {
       case NewTrainingPosition.Top:
-        this.event.set(new AppEvent(AppService.ACTION_ADD_NEW_TRAINING_ON_TOP));
+        this.eventAtom.set(new AppEvent(AppService.ACTION_ADD_NEW_TRAINING_ON_TOP));
         break;
       case NewTrainingPosition.Bottom:
-        this.event.set(new AppEvent(AppService.ACTION_ADD_NEW_TRAINING_ON_BOTTOM));
+        this.eventAtom.set(new AppEvent(AppService.ACTION_ADD_NEW_TRAINING_ON_BOTTOM));
         break;
     }
   }

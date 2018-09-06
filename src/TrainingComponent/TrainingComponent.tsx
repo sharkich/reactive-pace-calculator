@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {RefObject} from 'react';
-import {Atom, F} from '@grammarly/focal'; // classes
+import {Atom, F} from '@grammarly/focal';
 import {Observable} from 'rxjs/Observable';
 import {filter, map, merge} from 'rxjs/operators';
+import ContentEditable from 'react-contenteditable';
 // tslint:disable-next-line
 import './TrainingComponent.css';
 
@@ -12,36 +12,41 @@ import {AppService} from '../_shared/AppService';
 import {TrainingFooterComponent} from '../TrainingFooterComponent/TrainingFooterComponent';
 
 export interface Props {
-  training: Atom<Training | null>;
-  activeTraining: Atom<Training | null>;
-  event: Atom<AppEvent>;
+  trainingAtom: Atom<Training | null>;
+  activeTrainingAtom: Atom<Training | null>;
+  eventAtom: Atom<AppEvent>;
 }
 
 export class TrainingComponent extends React.Component {
+
+  eventAtom: Atom<AppEvent>;
+
+  trainingAtom: Atom<Training | null>;
+  activeTrainingAtom: Atom<Training | null>;
+
   training: Training;
   activeTraining: Training | null;
-  event: Atom<AppEvent>;
-
-  componentRef: RefObject<HTMLDivElement> = React.createRef();
-  titleInputRef: RefObject<HTMLInputElement> = React.createRef();
 
   constructor(data: any) {
     super(data);
 
-    this.onKeyUp = this.onKeyUp.bind(this);
+    this.onTitleKeyUp = this.onTitleKeyUp.bind(this);
+    this.onDistanceKeyUp = this.onDistanceKeyUp.bind(this);
+    this.onPaceKeyUp = this.onPaceKeyUp.bind(this);
+    this.onTimeKeyUp = this.onTimeKeyUp.bind(this);
   }
 
   render(): JSX.Element {
     const props: Props = this.props as Props;
 
-    const trainingAtom: Atom<Training | null> = props.training;
-    const activeTrainingAtom: Atom<Training | null> = props.activeTraining;
+    this.eventAtom = props.eventAtom;
 
-    this.event = props.event;
+    this.trainingAtom = props.trainingAtom;
+    this.activeTrainingAtom = props.activeTrainingAtom;
 
     const dataObservable: Observable<Array<Training | null>> = Observable.combineLatest(
-      trainingAtom,
-      activeTrainingAtom
+      this.trainingAtom,
+      this.activeTrainingAtom
     );
 
     const existObservable: Observable<JSX.Element> = dataObservable.pipe(
@@ -61,45 +66,51 @@ export class TrainingComponent extends React.Component {
     return <F.div>{existObservable.pipe(merge(emptyObservable))}</F.div>;
   }
 
-  componentDidMount(): void {
-    console.log('x', this.titleInputRef);
-  }
-
   private view(): JSX.Element {
     const activeClassName: string = this.isActiveTraining() ? 'training--active' : '';
     return (
       <F.div
-        ref={this.componentRef}
         onClick={() => this.onClick()}
         className={'training card ' + activeClassName}
       >
-        <div>
-          <div className="training__title">
-            <F.input
-              ref={this.titleInputRef}
-              className="training__title__input"
-              type="text"
-              defaultValue={this.training.name}
-              onKeyUp={this.onKeyUp}
+        <div className="training__header">
+          <ContentEditable
+            html={this.training.name}
+            onChange={this.onTitleKeyUp}
+            tagName="h2"
+            className="training__title"
+          />
+        </div>
+
+        <div className="training__data">
+          <div className="training__data__single">
+            Distance:{' '}
+            <ContentEditable
+              html={'' + this.training.distance}
+              onChange={this.onDistanceKeyUp}
+              tagName="span"
+            />
+            <span className="training__data__additional">km,</span>
+          </div>
+          <div className="training__data__single">
+            Pace:{' '}
+            <ContentEditable
+              html={'' + this.training.pace}
+              onChange={this.onPaceKeyUp}
+              tagName="span"
+            />
+            <span className="training__data__additional">min/km</span>,
+          </div>
+          <div className="training__data__single">
+            Time:{' '}
+            <ContentEditable
+              html={'' + this.training.time}
+              onChange={this.onTimeKeyUp}
+              tagName="span"
             />
           </div>
-          <div className="training__data">
-            <F.div className="training__data__single">
-              Distance:
-              <span className="mark">{this.training.distance}</span>{' '}
-              <span className="training__data__additional">km,</span>
-            </F.div>
-            <F.div className="training__data__single">
-              Pace:
-              <span className="mark">{this.training.pace}</span>{' '}
-              <span className="training__data__additional">min/km</span>,
-            </F.div>
-            <div className="training__data__single">
-              Time:
-              <span className="mark">{this.training.time}</span>
-            </div>
-          </div>
         </div>
+
         <TrainingFooterComponent
           // @ts-ignore
           training={this.training}
@@ -110,9 +121,8 @@ export class TrainingComponent extends React.Component {
   }
 
   private emptyView(training: Training): JSX.Element {
-    return (
-      <div key={`additional-${training && training.id}`}>Loading...</div>
-    );
+    const key: string = `additional-${training && training.id}`;
+    return <div key={key}>Loading...</div>;
   }
 
   private isExistObservableData([training]: Array<Training | null>): boolean {
@@ -129,20 +139,31 @@ export class TrainingComponent extends React.Component {
 
   private onClick(): void {
     if (!this.isActiveTraining()) {
-      this.event.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET, this.training));
+      this.eventAtom.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET, this.training));
     }
   }
 
-  private onKeyUp(event: React.KeyboardEvent<HTMLInputElement>): void {
+  private onTitleKeyUp(event: React.KeyboardEvent<HTMLInputElement>): void {
     const inputElement: HTMLInputElement = event.target as HTMLInputElement;
     const title: string = inputElement.value.trim();
-    if ([13, 27].indexOf(event.which) === -1) {
-      this.event.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET_NAME, title));
-    } else if (this.componentRef.current) {
-      console.log('1');
-      this.componentRef.current.focus();
-    } else {
-      console.log('2');
-    }
+    this.eventAtom.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET_NAME, title));
+  }
+
+  private onDistanceKeyUp(event: React.KeyboardEvent<HTMLInputElement>): void {
+    const inputElement: HTMLInputElement = event.target as HTMLInputElement;
+    const distance: string = inputElement.value.trim();
+    this.eventAtom.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET_DISTANCE, distance));
+  }
+
+  private onPaceKeyUp(event: React.KeyboardEvent<HTMLInputElement>): void {
+    const inputElement: HTMLInputElement = event.target as HTMLInputElement;
+    const pace: string = inputElement.value.trim();
+    this.eventAtom.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET_PACE, pace));
+  }
+
+  private onTimeKeyUp(event: React.KeyboardEvent<HTMLInputElement>): void {
+    const inputElement: HTMLInputElement = event.target as HTMLInputElement;
+    const time: string = inputElement.value.trim();
+    this.eventAtom.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET_TIME, time));
   }
 }

@@ -29,6 +29,15 @@ export class AppService {
         case AppService.ACTION_ACTIVE_TRAINING_SET_NAME:
           this.setActiveTrainingName(payload as string);
           break;
+        case AppService.ACTION_ACTIVE_TRAINING_SET_DISTANCE:
+          this.setActiveTrainingDistance(payload as string);
+          break;
+        case AppService.ACTION_ACTIVE_TRAINING_SET_PACE:
+          this.setActiveTrainingPace(payload as number);
+          break;
+        case AppService.ACTION_ACTIVE_TRAINING_SET_TIME:
+          this.setActiveTrainingTime(payload as number);
+          break;
       }
     });
     // this.eventAtom
@@ -78,14 +87,33 @@ export class AppService {
 
   static ACTION_ACTIVE_TRAINING_SET_NAME: string = 'ACTION_ACTIVE_TRAINING_SET_NAME';
   private setActiveTrainingName(newName: string): void {
-    // this.trainingsAtom.lens(Lens.key(index))
-    // const activeTrainingAtom: Atom<Training | null> = this.state.lens('activeTraining');
+    this.changeActiveTrainingProperty('name', newName);
+  }
+
+  static ACTION_ACTIVE_TRAINING_SET_DISTANCE: string = 'ACTION_ACTIVE_TRAINING_SET_DISTANCE';
+  private setActiveTrainingDistance(newDistance: string): void {
+    this.changeActiveTrainingProperty('distance', newDistance);
+  }
+
+  static ACTION_ACTIVE_TRAINING_SET_PACE: string = 'ACTION_ACTIVE_TRAINING_SET_PACE';
+  private setActiveTrainingPace(newPace: number): void {
+    this.changeActiveTrainingProperty('pace', newPace);
+  }
+
+  static ACTION_ACTIVE_TRAINING_SET_TIME: string = 'ACTION_ACTIVE_TRAINING_SET_TIME';
+  private setActiveTrainingTime(newTime: number): void {
+    this.changeActiveTrainingProperty('time', newTime);
+  }
+
+  private changeActiveTrainingProperty(propertyName: keyof Training, value: any): void {
     this.state.modify((state: AppModel) => {
       const newState: AppModel = {...state};
 
       let activeTraining: Training = {...newState.activeTraining} as Training;
       activeTraining = new Training(newState.activeTraining);
-      activeTraining.name = newName;
+
+      activeTraining[propertyName] = value;
+
       newState.activeTraining = activeTraining;
 
       const trainings: Trainings = [...state.trainings];

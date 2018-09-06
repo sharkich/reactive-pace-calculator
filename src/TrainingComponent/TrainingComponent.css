@@ -2,28 +2,14 @@
   cursor: pointer;
 }
 
+.training__header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
 .training__title {
-  margin: 0 0 10px 0;
-}
-
-.training__title__input {
-  height: 40px;
-  width: 92%;
-  font-family: 'WeberHandITCStd', 'Helvetica', 'Verdana', sans-serif;
-  font-size: 16pt;
-  font-weight: bold;
-  margin: 0 auto;
-  text-align: center;
-  background-color: inherit;
-  color: #565656;
-  text-shadow: 0 2px 3px rgba(255, 255, 255, 0.5);
-  border: none;
-}
-
-.training__title__input:focus {
-  border: none;
-  outline-width: 0;
-  outline: none;
+  display: inline-block;
 }
 
 /**
@@ -35,8 +21,15 @@
   justify-content: space-around;
 }
 
-.training--active .mark {
+.training--active .mark,
+.training--active *[contenteditable=true]{
   background: yellow;
+}
+
+.training--active *[contenteditable=true]:focus {
+  border: none;
+  outline-width: 0;
+  outline: none;
 }
 
 .training__data__single mark {

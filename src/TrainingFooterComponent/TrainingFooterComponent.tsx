@@ -26,10 +26,15 @@ export class TrainingFooterComponent extends React.Component {
     return (
       <div key={`additional-${training.id}`} className="training__additional">
         <div className="training__data__single">
-          Speed: <span className="mark">10.00</span>{' '}
-          <span className="training__data__additional">km/h</span>,
 
-          Name: <span className="mark">{training.name}</span>{' '}
+          Name: <span className="mark">{training.name}</span>{' '},
+          Distance: <span className="mark">{training.distance}</span>{' '},
+          Pace: <span className="mark">{training.pace}</span>{' '},
+          Time: <span className="mark">{training.time}</span>{' '},
+
+          Speed:{' '}
+          <span className="mark">x</span>{' '}
+          <span className="training__data__additional">km/h</span>,
         </div>
         <div>
           <span className="grey"> ID: {training.id}</span>

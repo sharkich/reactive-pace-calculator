@@ -13,13 +13,13 @@ import {TrainingsComponent} from '../TrainingsListComponent/TrainingsComponent';
 
 export class AppComponent extends React.Component {
 
-  state: Atom<AppModel> = Atom.create(new AppModel(APP_DEFAULT_STATE));
-  event: Atom<AppEvent> = Atom.create(new AppEvent('init'));
-  service: AppService = new AppService(this.state, this.event);
+  stateAtom: Atom<AppModel> = Atom.create(new AppModel(APP_DEFAULT_STATE));
+  eventAtom: Atom<AppEvent> = Atom.create(new AppEvent('init'));
+  service: AppService = new AppService(this.stateAtom, this.eventAtom);
 
   render(): JSX.Element {
-    const activeTraining: Atom<Training | null> = this.state.lens('activeTraining');
-    const trainings: Atom<Trainings> = this.state.lens('trainings');
+    const activeTrainingAtom: Atom<Training | null> = this.stateAtom.lens('activeTraining');
+    const trainingsAtom: Atom<Trainings> = this.stateAtom.lens('trainings');
     return (
       <F.div className="app main">
         <header className="app__header">
@@ -29,9 +29,9 @@ export class AppComponent extends React.Component {
         <div className="app__content">
           <TrainingsComponent
             // @ts-ignore
-            trainings={trainings}
-            activeTraining={activeTraining}
-            event={this.event}
+            trainingsAtom={trainingsAtom}
+            activeTrainingAtom={activeTrainingAtom}
+            eventAtom={this.eventAtom}
           />
         </div>
 
