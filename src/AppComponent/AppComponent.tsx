@@ -4,12 +4,12 @@ import {Atom, F} from '@grammarly/focal';
 import './AppComponent.css';
 import image from '../_static/usain-bolt.jpg';
 
-import {AppModel} from './AppModel';
-import {AppEvent} from '../_shared/AppEvent';
-import {AppService} from '../_shared/AppService';
-import {Training, Trainings} from '../_shared/models';
-import {APP_DEFAULT_STATE} from './APP_DEFAULT_STATE';
-import {TrainingsComponent} from '../TrainingsListComponent/TrainingsComponent';
+import {AppEvent} from 'src/_shared/AppEvent';
+import {AppService} from 'src/_shared/AppService';
+import {AppModel} from 'src/AppComponent/AppModel';
+import {Training, Trainings} from 'src/_shared/models';
+import {APP_DEFAULT_STATE} from 'src/AppComponent/APP_DEFAULT_STATE';
+import {TrainingsComponent} from './TrainingsListComponent/TrainingsComponent';
 
 export class AppComponent extends React.Component {
 

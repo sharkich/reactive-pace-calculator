@@ -5,10 +5,10 @@ import {Atom, F, Lens} from '@grammarly/focal';
 // tslint:disable-next-line
 import './TrainingsComponent.css';
 
-import {AppEvent} from '../_shared/AppEvent';
-import {Training, Trainings} from '../_shared/models';
-import {TrainingComponent} from '../TrainingComponent/TrainingComponent';
-import {AppService} from '../_shared/AppService';
+import {AppEvent} from 'src/_shared/AppEvent';
+import {AppService} from 'src/_shared/AppService';
+import {Training, Trainings} from 'src/_shared/models';
+import {TrainingComponent} from './TrainingComponent/TrainingComponent';
 
 interface Props {
   trainingsAtom: Atom<Trainings>;

@@ -1,11 +1,11 @@
 import * as React from 'react';
+import {Atom} from '@grammarly/focal';
 // tslint:disable-next-line
 import './TrainingFormComponent.css';
 
-import {Training} from '../_shared/models';
+import {Training} from 'src/_shared/models';
 import {AppEvent} from 'src/_shared/AppEvent';
 import {AppService} from 'src/_shared/AppService';
-import {Atom} from '@grammarly/focal';
 
 export interface Props {
   training: Training;

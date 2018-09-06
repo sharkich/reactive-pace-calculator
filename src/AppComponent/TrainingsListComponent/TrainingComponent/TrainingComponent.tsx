@@ -5,10 +5,10 @@ import {filter, map, merge} from 'rxjs/operators';
 // tslint:disable-next-line
 import './TrainingComponent.css';
 
-import {Training} from '../_shared/models';
-import {AppEvent} from '../_shared/AppEvent';
-import {AppService} from '../_shared/AppService';
-import {TrainingFormComponent} from '../TrainingFormComponent/TrainingFormComponent';
+import {Training} from 'src/_shared/models';
+import {AppEvent} from 'src/_shared/AppEvent';
+import {AppService} from 'src/_shared/AppService';
+import {TrainingFormComponent} from './TrainingFormComponent/TrainingFormComponent';
 
 export interface Props {
   trainingAtom: Atom<Training | null>;
@@ -17,7 +17,6 @@ export interface Props {
 }
 
 export class TrainingComponent extends React.Component<Props> {
-
   eventAtom: Atom<AppEvent>;
 
   trainingAtom: Atom<Training | null>;
@@ -66,18 +65,15 @@ export class TrainingComponent extends React.Component<Props> {
 
         <div className="training__data">
           <div className="training__data__single">
-            Distance:{' '}
-            <mark>{this.training.distance}</mark>
+            Distance: <mark>{this.training.distance}</mark>
             <span className="training__data__additional">km,</span>
           </div>
           <div className="training__data__single">
-            Pace:{' '}
-            <mark>{this.training.pace}</mark>
+            Pace: <mark>{this.training.pace}</mark>
             <span className="training__data__additional">min/km</span>,
           </div>
           <div className="training__data__single">
-            Time:{' '}
-            <mark>{this.training.time}</mark>
+            Time: <mark>{this.training.time}</mark>
           </div>
         </div>
 
@@ -114,5 +110,4 @@ export class TrainingComponent extends React.Component<Props> {
     }
     this.eventAtom.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET, this.training));
   }
-
 }

@@ -25,6 +25,10 @@
   background: inherit;
 }
 
+.main .card .training--active {
+  background: #eee;
+}
+
 .training--active .mark, .training--active mark,
 .training--active *[contenteditable=true]{
   background: yellow;
@@ -59,6 +63,5 @@
 }
 
 .main .card .training.training--active:hover {
-  background: inherit;
   cursor: default;
 }
