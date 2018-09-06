@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {FormEvent} from 'react';
 import {Atom} from '@grammarly/focal';
 // tslint:disable-next-line
 import './TrainingFormComponent.css';
@@ -6,6 +7,7 @@ import './TrainingFormComponent.css';
 import {Training} from 'src/_shared/models';
 import {AppEvent} from 'src/_shared/AppEvent';
 import {AppService} from 'src/_shared/AppService';
+import {FormRowComponent} from './FormRowComponent/FormRowComponent';
 
 export interface Props {
   training: Training;
@@ -16,15 +18,6 @@ export interface Props {
 export class TrainingFormComponent extends React.Component<Props> {
 
   eventAtom: Atom<AppEvent>;
-
-  constructor(data: any) {
-    super(data);
-
-    this.onTitleKeyUp = this.onTitleKeyUp.bind(this);
-    this.onDistanceKeyUp = this.onDistanceKeyUp.bind(this);
-    this.onPaceKeyUp = this.onPaceKeyUp.bind(this);
-    this.onTimeKeyUp = this.onTimeKeyUp.bind(this);
-  }
 
   render(): JSX.Element {
     const props: Props = this.props as Props;
@@ -48,20 +41,43 @@ export class TrainingFormComponent extends React.Component<Props> {
         className="training-form"
       >
 
-        <form className="form">
-          <div className="row">
-            <div className="col-1">
-              <label htmlFor={`field-name-${training.id}`}>Training name:</label>
-            </div>
-            <div className="col--2">
-              <input
-                type="text"
-                id={`field-name-${training.id}`}
-                defaultValue={training.name}
-                onKeyUp={this.onTitleKeyUp}
-              />
-            </div>
-          </div>
+        <form
+          onSubmit={(e: FormEvent<HTMLFormElement>) => e.preventDefault()}
+          className="form"
+        >
+
+          <FormRowComponent
+            training={training}
+            label="Training name:"
+            field="name"
+            action={AppService.ACTION_ACTIVE_TRAINING_SET_NAME}
+            eventAtom={this.eventAtom}
+          />
+
+          <FormRowComponent
+            training={training}
+            label="Distance:"
+            field="distance"
+            action={AppService.ACTION_ACTIVE_TRAINING_SET_DISTANCE}
+            eventAtom={this.eventAtom}
+          />
+
+          <FormRowComponent
+            training={training}
+            label="Pace:"
+            field="pace"
+            action={AppService.ACTION_ACTIVE_TRAINING_SET_PACE}
+            eventAtom={this.eventAtom}
+          />
+
+          <FormRowComponent
+            training={training}
+            label="Time:"
+            field="time"
+            action={AppService.ACTION_ACTIVE_TRAINING_SET_TIME}
+            eventAtom={this.eventAtom}
+          />
+
         </form>
 
         <div className="training__additional">
@@ -85,55 +101,5 @@ export class TrainingFormComponent extends React.Component<Props> {
 
   private emptyView(training: Training): JSX.Element {
     return <div key={`additional-${training.id}`} />;
-  }
-
-  private onTitleKeyUp(event: React.KeyboardEvent<HTMLInputElement>): void {
-    if (!this.isValidStringKey(event.key)) {
-      event.stopPropagation();
-      return;
-    }
-    const inputElement: HTMLInputElement = event.target as HTMLInputElement;
-    this.eventAtom.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET_NAME, inputElement.value));
-  }
-
-  private onDistanceKeyUp(event: React.KeyboardEvent<HTMLInputElement>): void {
-    if (!this.isValidNumberKey(event.key)) {
-      event.stopPropagation();
-      return;
-    }
-    const inputElement: HTMLInputElement = event.target as HTMLInputElement;
-    this.eventAtom.set(
-      new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET_DISTANCE, inputElement.value)
-    );
-  }
-
-  private onPaceKeyUp(event: React.KeyboardEvent<HTMLInputElement>): void {
-    if (!this.isValidNumberKey(event.key)) {
-      event.stopPropagation();
-      return;
-    }
-    const inputElement: HTMLInputElement = event.target as HTMLInputElement;
-    this.eventAtom.set(
-      new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET_PACE, inputElement.value)
-    );
-  }
-
-  private onTimeKeyUp(event: React.KeyboardEvent<HTMLInputElement>): void {
-    if (!this.isValidNumberKey(event.key)) {
-      event.stopPropagation();
-      return;
-    }
-    const inputElement: HTMLInputElement = event.target as HTMLInputElement;
-    this.eventAtom.set(
-      new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET_TIME, inputElement.value)
-    );
-  }
-
-  private isValidNumberKey(key: string): boolean {
-    return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].indexOf(+key) !== -1;
-  }
-
-  private isValidStringKey(key: string): boolean {
-    return ['Enter', 'Escape'].indexOf(key) === -1;
   }
 }

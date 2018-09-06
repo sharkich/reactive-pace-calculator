@@ -12,19 +12,3 @@
   border-top: 1px solid #eee;
   padding-top: 10px;
 }
-
-.training-form .row {
-  display: flex;
-}
-
-.training-form .col-1 {
-  flex-grow: 1;
-}
-
-.training-form .col--2 {
-  flex-grow: 5;
-}
-
-.training-form input[type=text] {
-  font-size: 16pt;
-}

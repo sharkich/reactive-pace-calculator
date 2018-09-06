@@ -1,0 +1,16 @@
+.training-form-row {
+  display: flex;
+}
+
+.training-form-row .col-1 {
+  flex-grow: 1;
+  min-width: 140px;
+}
+
+.training-form-row .col--2 {
+  flex-grow: 5;
+}
+
+.training-form-row input[type=text] {
+  font-size: 16pt;
+}
