@@ -1,4 +1,5 @@
 import {Atom} from '@grammarly/focal';
+
 import {Training, Trainings} from './models';
 import {AppEvent} from './AppEvent';
 import {AppModel} from '../AppComponent/AppModel';

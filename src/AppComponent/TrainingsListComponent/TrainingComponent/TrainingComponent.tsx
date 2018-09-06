@@ -8,6 +8,7 @@ import './TrainingComponent.css';
 import {Training} from 'src/_shared/models';
 import {AppEvent} from 'src/_shared/AppEvent';
 import {AppService} from 'src/_shared/AppService';
+import {TimePipe} from 'src/_shared/pipes/time.pipe';
 import {DistancePipe} from 'src/_shared/pipes/distance.pipe';
 import {TrainingFormComponent} from './TrainingFormComponent/TrainingFormComponent';
 
@@ -70,11 +71,11 @@ export class TrainingComponent extends React.Component<Props> {
             <span className="training__data__additional">km,</span>
           </div>
           <div className="training__data__single">
-            Pace: <mark>{this.training.pace}</mark>
+            Pace: <mark>{TimePipe(this.training.pace)}</mark>
             <span className="training__data__additional">min/km</span>,
           </div>
           <div className="training__data__single">
-            Time: <mark>{this.training.time}</mark>
+            Time: <mark>{TimePipe(this.training.time)}</mark>
           </div>
         </div>
 

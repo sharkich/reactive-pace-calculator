@@ -9,6 +9,7 @@ import {AppEvent} from 'src/_shared/AppEvent';
 import {AppService} from 'src/_shared/AppService';
 import {DistancePipe} from 'src/_shared/pipes/distance.pipe';
 import {FormRowComponent} from './FormRowComponent/FormRowComponent';
+import {TimePipe} from 'src/_shared/pipes/time.pipe';
 
 export interface Props {
   training: Training;
@@ -68,6 +69,7 @@ export class TrainingFormComponent extends React.Component<Props> {
             training={training}
             label="Pace:"
             field="pace"
+            value={TimePipe(training.pace)}
             action={AppService.ACTION_ACTIVE_TRAINING_SET_PACE}
             eventAtom={this.eventAtom}
           />
@@ -76,6 +78,7 @@ export class TrainingFormComponent extends React.Component<Props> {
             training={training}
             label="Time:"
             field="time"
+            value={TimePipe(training.time)}
             action={AppService.ACTION_ACTIVE_TRAINING_SET_TIME}
             eventAtom={this.eventAtom}
           />
