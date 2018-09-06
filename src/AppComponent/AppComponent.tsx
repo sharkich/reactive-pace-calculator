@@ -37,6 +37,8 @@ export class AppComponent extends React.Component {
 
         <footer className="app__footer">
           <img src={image} className="app__footer__image" alt="Usain Bolt" />
+          <br />
+          <span className="small grey">&copy; Usain Bolt snapped by Cameron Spencer for Getty Images</span>
         </footer>
       </F.div>
     );

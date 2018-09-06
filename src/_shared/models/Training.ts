@@ -11,6 +11,13 @@ interface ITraining {
   time: number;
 }
 
+const DEFAULT_DATA: ITraining = {
+  name: '',
+  pace: 0,
+  distance: 0,
+  time: 0
+};
+
 export class Training {
   public id: string;
   public date: number;
@@ -21,7 +28,10 @@ export class Training {
   public distance: number;
   public time: number;
 
-  constructor(data: ITraining = {name: '', pace: 0, distance: 0, time: 0}) {
+  constructor(data: ITraining | null = DEFAULT_DATA) {
+    if (!data) {
+      data = {...DEFAULT_DATA};
+    }
     this.id = data.id || UUIDService.generate();
     this.date = data.date || Date.now();
 
@@ -30,5 +40,9 @@ export class Training {
     this.pace = data.pace;
     this.distance = data.distance;
     this.time = data.time;
+  }
+
+  theSame(training: Training | null): boolean {
+    return !!training && this.id === training.id;
   }
 }

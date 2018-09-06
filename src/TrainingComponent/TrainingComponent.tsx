@@ -2,7 +2,6 @@ import * as React from 'react';
 import {Atom, F} from '@grammarly/focal'; // classes
 import {Observable} from 'rxjs/Observable';
 import {filter, map, merge} from 'rxjs/operators';
-
 // tslint:disable-next-line
 import './TrainingComponent.css';
 
@@ -21,6 +20,12 @@ export class TrainingComponent extends React.Component {
   training: Training;
   activeTraining: Training | null;
   event: Atom<AppEvent>;
+
+  constructor(data: any) {
+    super(data);
+
+    this.onKeyUp = this.onKeyUp.bind(this);
+  }
 
   render(): JSX.Element {
     const props: Props = this.props as Props;
@@ -58,17 +63,28 @@ export class TrainingComponent extends React.Component {
       <F.div onClick={() => this.onClick()} className={'training card ' + activeClassName}>
         <div>
           <h2 className="training__title">{this.training.name}</h2>
+          <div>
+            <F.input
+              className="edit"
+              type="text"
+              defaultValue={this.training.name}
+              onKeyUp={this.onKeyUp}
+            />
+          </div>
           <div className="training__data">
             <F.div className="training__data__single">
-              Distance: <span className="mark">{this.training.distance}</span>{' '}
+              Distance:
+              <span className="mark">{this.training.distance}</span>{' '}
               <span className="training__data__additional">km,</span>
             </F.div>
             <F.div className="training__data__single">
-              Pace: <span className="mark">{this.training.pace}</span>{' '}
+              Pace:
+              <span className="mark">{this.training.pace}</span>{' '}
               <span className="training__data__additional">min/km</span>,
             </F.div>
             <div className="training__data__single">
-              Time: <span className="mark">{this.training.time}</span>
+              Time:
+              <span className="mark">{this.training.time}</span>
             </div>
           </div>
         </div>
@@ -94,14 +110,16 @@ export class TrainingComponent extends React.Component {
   }
 
   private isActiveTraining(): boolean {
-    return !!this.training && this.training === this.activeTraining;
+    return !!this.training && this.training.theSame(this.activeTraining);
   }
 
   private onClick(): void {
-    if (this.isActiveTraining()) {
-      this.event.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_RESET));
-    } else {
-      this.event.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET, this.training));
-    }
+    this.event.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET, this.training));
+  }
+
+  private onKeyUp(event: React.KeyboardEvent<HTMLInputElement>): void {
+    const inputElement: HTMLInputElement = event.target as HTMLInputElement;
+    const title: string = inputElement.value.trim();
+    this.event.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET_NAME, title));
   }
 }

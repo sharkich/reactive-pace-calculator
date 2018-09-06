@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 // tslint:disable-next-line
 import './TrainingFooterComponent.css';
 
@@ -16,11 +15,11 @@ export class TrainingFooterComponent extends React.Component {
     const training: Training = props.training;
     const activeTraining: Training | null = props.activeTraining;
 
-    if (!this.isExistData(training, activeTraining)) {
-      return this.emptyView(training);
+    if (training && !training.theSame(activeTraining)) {
+      return this.view(training);
     }
 
-    return this.view(training);
+    return this.emptyView(training);
   }
 
   private view(training: Training): JSX.Element {
@@ -39,9 +38,5 @@ export class TrainingFooterComponent extends React.Component {
 
   private emptyView(training: Training): JSX.Element {
     return <div key={`additional-${training.id}`} />;
-  }
-
-  private isExistData(training: Training | null, activeTraining: Training | null): boolean {
-    return !!training && training === activeTraining;
   }
 }
