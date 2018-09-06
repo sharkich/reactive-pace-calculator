@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {RefObject} from 'react';
 import {Atom, F} from '@grammarly/focal'; // classes
 import {Observable} from 'rxjs/Observable';
 import {filter, map, merge} from 'rxjs/operators';
@@ -20,6 +21,9 @@ export class TrainingComponent extends React.Component {
   training: Training;
   activeTraining: Training | null;
   event: Atom<AppEvent>;
+
+  componentRef: RefObject<HTMLDivElement> = React.createRef();
+  titleInputRef: RefObject<HTMLInputElement> = React.createRef();
 
   constructor(data: any) {
     super(data);
@@ -57,15 +61,23 @@ export class TrainingComponent extends React.Component {
     return <F.div>{existObservable.pipe(merge(emptyObservable))}</F.div>;
   }
 
+  componentDidMount(): void {
+    console.log('x', this.titleInputRef);
+  }
+
   private view(): JSX.Element {
     const activeClassName: string = this.isActiveTraining() ? 'training--active' : '';
     return (
-      <F.div onClick={() => this.onClick()} className={'training card ' + activeClassName}>
+      <F.div
+        ref={this.componentRef}
+        onClick={() => this.onClick()}
+        className={'training card ' + activeClassName}
+      >
         <div>
-          <h2 className="training__title">{this.training.name}</h2>
-          <div>
+          <div className="training__title">
             <F.input
-              className="edit"
+              ref={this.titleInputRef}
+              className="training__title__input"
               type="text"
               defaultValue={this.training.name}
               onKeyUp={this.onKeyUp}
@@ -98,7 +110,9 @@ export class TrainingComponent extends React.Component {
   }
 
   private emptyView(training: Training): JSX.Element {
-    return <div key={`additional-${training && training.id}`}>Loading...</div>;
+    return (
+      <div key={`additional-${training && training.id}`}>Loading...</div>
+    );
   }
 
   private isExistObservableData([training]: Array<Training | null>): boolean {
@@ -114,12 +128,21 @@ export class TrainingComponent extends React.Component {
   }
 
   private onClick(): void {
-    this.event.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET, this.training));
+    if (!this.isActiveTraining()) {
+      this.event.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET, this.training));
+    }
   }
 
   private onKeyUp(event: React.KeyboardEvent<HTMLInputElement>): void {
     const inputElement: HTMLInputElement = event.target as HTMLInputElement;
     const title: string = inputElement.value.trim();
-    this.event.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET_NAME, title));
+    if ([13, 27].indexOf(event.which) === -1) {
+      this.event.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET_NAME, title));
+    } else if (this.componentRef.current) {
+      console.log('1');
+      this.componentRef.current.focus();
+    } else {
+      console.log('2');
+    }
   }
 }

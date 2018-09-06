@@ -15,7 +15,7 @@ export class TrainingFooterComponent extends React.Component {
     const training: Training = props.training;
     const activeTraining: Training | null = props.activeTraining;
 
-    if (training && !training.theSame(activeTraining)) {
+    if (training && training.theSame(activeTraining)) {
       return this.view(training);
     }
 
@@ -28,6 +28,8 @@ export class TrainingFooterComponent extends React.Component {
         <div className="training__data__single">
           Speed: <span className="mark">10.00</span>{' '}
           <span className="training__data__additional">km/h</span>,
+
+          Name: <span className="mark">{training.name}</span>{' '}
         </div>
         <div>
           <span className="grey"> ID: {training.id}</span>

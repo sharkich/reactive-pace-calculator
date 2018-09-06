@@ -84,6 +84,7 @@ App
 }
 
 .main .title {
+  font-family: 'WeberHandITCStd', 'Helvetica', 'Verdana', sans-serif;
   min-height: 40px;
   text-align: center;
   background-color: #565656;
