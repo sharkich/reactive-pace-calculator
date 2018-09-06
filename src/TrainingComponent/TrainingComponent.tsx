@@ -2,7 +2,6 @@ import * as React from 'react';
 import {Atom, F} from '@grammarly/focal';
 import {Observable} from 'rxjs/Observable';
 import {filter, map, merge} from 'rxjs/operators';
-import ContentEditable from 'react-contenteditable';
 // tslint:disable-next-line
 import './TrainingComponent.css';
 
@@ -70,10 +69,10 @@ export class TrainingComponent extends React.Component {
     return (
       <F.div onClick={() => this.onClick()} className={'training card ' + activeClassName}>
         <div className="training__header">
-          <ContentEditable
-            html={this.training.name}
-            onChange={this.onTitleKeyUp}
-            tagName="h2"
+          <h2
+            dangerouslySetInnerHTML={{__html: this.training.name}}
+            contentEditable={true}
+            onKeyUp={this.onTitleKeyUp}
             className="training__title"
           />
         </div>
@@ -81,28 +80,28 @@ export class TrainingComponent extends React.Component {
         <div className="training__data">
           <div className="training__data__single">
             Distance:{' '}
-            <ContentEditable
-              html={'' + this.training.distance}
-              onChange={this.onDistanceKeyUp}
-              tagName="span"
+            <span
+              dangerouslySetInnerHTML={{__html: '' + this.training.distance}}
+              contentEditable={true}
+              onKeyUp={this.onDistanceKeyUp}
             />
             <span className="training__data__additional">km,</span>
           </div>
           <div className="training__data__single">
             Pace:{' '}
-            <ContentEditable
-              html={'' + this.training.pace}
-              onChange={this.onPaceKeyUp}
-              tagName="span"
+            <span
+              dangerouslySetInnerHTML={{__html: '' + this.training.pace}}
+              contentEditable={true}
+              onKeyUp={this.onPaceKeyUp}
             />
             <span className="training__data__additional">min/km</span>,
           </div>
           <div className="training__data__single">
             Time:{' '}
-            <ContentEditable
-              html={'' + this.training.time}
-              onChange={this.onTimeKeyUp}
-              tagName="span"
+            <span
+              dangerouslySetInnerHTML={{__html: '' + this.training.time}}
+              contentEditable={true}
+              onKeyUp={this.onTimeKeyUp}
             />
           </div>
         </div>
@@ -134,35 +133,59 @@ export class TrainingComponent extends React.Component {
   }
 
   private onClick(): void {
-    if (!this.isActiveTraining()) {
-      this.eventAtom.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET, this.training));
+    if (this.isActiveTraining()) {
+      return;
     }
+    this.eventAtom.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET, this.training));
   }
 
   private onTitleKeyUp(event: React.KeyboardEvent<HTMLInputElement>): void {
+    if (!this.isValidStringKey(event.key)) {
+      event.stopPropagation();
+      return;
+    }
     const inputElement: HTMLInputElement = event.target as HTMLInputElement;
-    const title: string = inputElement.value.trim();
-    this.eventAtom.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET_NAME, title));
+    this.eventAtom.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET_NAME, inputElement.innerText));
   }
 
   private onDistanceKeyUp(event: React.KeyboardEvent<HTMLInputElement>): void {
+    if (!this.isValidNumberKey(event.key)) {
+      event.stopPropagation();
+      return;
+    }
     const inputElement: HTMLInputElement = event.target as HTMLInputElement;
     this.eventAtom.set(
-      new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET_DISTANCE, inputElement.value)
+      new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET_DISTANCE, inputElement.innerText)
     );
   }
 
   private onPaceKeyUp(event: React.KeyboardEvent<HTMLInputElement>): void {
+    if (!this.isValidNumberKey(event.key)) {
+      event.stopPropagation();
+      return;
+    }
     const inputElement: HTMLInputElement = event.target as HTMLInputElement;
     this.eventAtom.set(
-      new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET_PACE, inputElement.value)
+      new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET_PACE, inputElement.innerText)
     );
   }
 
   private onTimeKeyUp(event: React.KeyboardEvent<HTMLInputElement>): void {
+    if (!this.isValidNumberKey(event.key)) {
+      event.stopPropagation();
+      return;
+    }
     const inputElement: HTMLInputElement = event.target as HTMLInputElement;
     this.eventAtom.set(
-      new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET_TIME, inputElement.value)
+      new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET_TIME, inputElement.innerText)
     );
+  }
+
+  private isValidNumberKey(key: string): boolean {
+    return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].indexOf(+key) !== -1;
+  }
+
+  private isValidStringKey(key: string): boolean {
+    return ['Enter', 'Escape'].indexOf(key) === -1;
   }
 }
