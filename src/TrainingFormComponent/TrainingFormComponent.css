@@ -1,0 +1,30 @@
+.training-form .training__additional {
+  display: flex;
+  justify-content: space-around;
+  font-size: 60%;
+  border-top: 1px solid #eee;
+  margin-top: 10px;
+  padding-top: 10px;
+}
+
+.training-form .form {
+  margin-top: 10px;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+}
+
+.training-form .row {
+  display: flex;
+}
+
+.training-form .col-1 {
+  flex-grow: 1;
+}
+
+.training-form .col--2 {
+  flex-grow: 5;
+}
+
+.training-form input[type=text] {
+  font-size: 16pt;
+}

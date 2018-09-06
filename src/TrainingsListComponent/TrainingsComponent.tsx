@@ -21,7 +21,7 @@ enum NewTrainingPosition {
   Bottom
 }
 
-export class TrainingsComponent extends React.Component {
+export class TrainingsComponent extends React.Component<Props> {
 
   eventAtom: Atom<AppEvent>;
 

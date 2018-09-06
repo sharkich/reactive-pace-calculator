@@ -21,7 +21,11 @@
   justify-content: space-around;
 }
 
-.training--active .mark,
+.mark, mark {
+  background: inherit;
+}
+
+.training--active .mark, .training--active mark,
 .training--active *[contenteditable=true]{
   background: yellow;
 }
