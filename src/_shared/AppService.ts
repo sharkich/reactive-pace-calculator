@@ -33,10 +33,10 @@ export class AppService {
           this.setActiveTrainingDistance(payload as string);
           break;
         case AppService.ACTION_ACTIVE_TRAINING_SET_PACE:
-          this.setActiveTrainingPace(payload as number);
+          this.setActiveTrainingPace(payload as string);
           break;
         case AppService.ACTION_ACTIVE_TRAINING_SET_TIME:
-          this.setActiveTrainingTime(payload as number);
+          this.setActiveTrainingTime(payload as string);
           break;
       }
     });
@@ -87,22 +87,33 @@ export class AppService {
 
   static ACTION_ACTIVE_TRAINING_SET_NAME: string = 'ACTION_ACTIVE_TRAINING_SET_NAME';
   private setActiveTrainingName(newName: string): void {
-    this.changeActiveTrainingProperty('name', newName);
+    const name: string = this.clearText(newName) || '(noname)';
+    this.changeActiveTrainingProperty('name', name);
   }
 
   static ACTION_ACTIVE_TRAINING_SET_DISTANCE: string = 'ACTION_ACTIVE_TRAINING_SET_DISTANCE';
   private setActiveTrainingDistance(newDistance: string): void {
-    this.changeActiveTrainingProperty('distance', newDistance);
+    const distance: number = +(this.clearText(newDistance) || '0') || 0;
+    this.changeActiveTrainingProperty('distance', distance);
   }
 
   static ACTION_ACTIVE_TRAINING_SET_PACE: string = 'ACTION_ACTIVE_TRAINING_SET_PACE';
-  private setActiveTrainingPace(newPace: number): void {
-    this.changeActiveTrainingProperty('pace', newPace);
+  private setActiveTrainingPace(newPace: string): void {
+    const pace: number = +(this.clearText(newPace) || '0') || 0;
+    this.changeActiveTrainingProperty('pace', pace);
   }
 
   static ACTION_ACTIVE_TRAINING_SET_TIME: string = 'ACTION_ACTIVE_TRAINING_SET_TIME';
-  private setActiveTrainingTime(newTime: number): void {
-    this.changeActiveTrainingProperty('time', newTime);
+  private setActiveTrainingTime(newTime: string): void {
+    const time: number = +(this.clearText(newTime) || '0') || 0;
+    this.changeActiveTrainingProperty('time', time);
+  }
+
+  private clearText(inputValue: string): string {
+    const div: HTMLDivElement = document.createElement('div');
+    div.innerHTML = inputValue;
+    const text: string = div.textContent || div.innerText || '';
+    return text.trim();
   }
 
   private changeActiveTrainingProperty(propertyName: keyof Training, value: any): void {

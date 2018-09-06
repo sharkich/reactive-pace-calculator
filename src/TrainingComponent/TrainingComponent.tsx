@@ -18,7 +18,6 @@ export interface Props {
 }
 
 export class TrainingComponent extends React.Component {
-
   eventAtom: Atom<AppEvent>;
 
   trainingAtom: Atom<Training | null>;
@@ -69,10 +68,7 @@ export class TrainingComponent extends React.Component {
   private view(): JSX.Element {
     const activeClassName: string = this.isActiveTraining() ? 'training--active' : '';
     return (
-      <F.div
-        onClick={() => this.onClick()}
-        className={'training card ' + activeClassName}
-      >
+      <F.div onClick={() => this.onClick()} className={'training card ' + activeClassName}>
         <div className="training__header">
           <ContentEditable
             html={this.training.name}
@@ -151,19 +147,22 @@ export class TrainingComponent extends React.Component {
 
   private onDistanceKeyUp(event: React.KeyboardEvent<HTMLInputElement>): void {
     const inputElement: HTMLInputElement = event.target as HTMLInputElement;
-    const distance: string = inputElement.value.trim();
-    this.eventAtom.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET_DISTANCE, distance));
+    this.eventAtom.set(
+      new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET_DISTANCE, inputElement.value)
+    );
   }
 
   private onPaceKeyUp(event: React.KeyboardEvent<HTMLInputElement>): void {
     const inputElement: HTMLInputElement = event.target as HTMLInputElement;
-    const pace: string = inputElement.value.trim();
-    this.eventAtom.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET_PACE, pace));
+    this.eventAtom.set(
+      new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET_PACE, inputElement.value)
+    );
   }
 
   private onTimeKeyUp(event: React.KeyboardEvent<HTMLInputElement>): void {
     const inputElement: HTMLInputElement = event.target as HTMLInputElement;
-    const time: string = inputElement.value.trim();
-    this.eventAtom.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET_TIME, time));
+    this.eventAtom.set(
+      new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET_TIME, inputElement.value)
+    );
   }
 }
