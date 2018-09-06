@@ -8,6 +8,7 @@ import './TrainingComponent.css';
 import {Training} from 'src/_shared/models';
 import {AppEvent} from 'src/_shared/AppEvent';
 import {AppService} from 'src/_shared/AppService';
+import {DistancePipe} from 'src/_shared/pipes/distance.pipe';
 import {TrainingFormComponent} from './TrainingFormComponent/TrainingFormComponent';
 
 export interface Props {
@@ -65,7 +66,7 @@ export class TrainingComponent extends React.Component<Props> {
 
         <div className="training__data">
           <div className="training__data__single">
-            Distance: <mark>{this.training.distance}</mark>
+            Distance: <mark>{DistancePipe(this.training.distance)}</mark>
             <span className="training__data__additional">km,</span>
           </div>
           <div className="training__data__single">

@@ -2,6 +2,7 @@ import {Atom} from '@grammarly/focal';
 import {Training, Trainings} from './models';
 import {AppEvent} from './AppEvent';
 import {AppModel} from '../AppComponent/AppModel';
+import {DistanceRevertPipe} from 'src/_shared/pipes/distance.pipe';
 
 export class AppService {
   state: Atom<AppModel>;
@@ -93,7 +94,7 @@ export class AppService {
 
   static ACTION_ACTIVE_TRAINING_SET_DISTANCE: string = 'ACTION_ACTIVE_TRAINING_SET_DISTANCE';
   private setActiveTrainingDistance(newDistance: string): void {
-    const distance: number = +(this.clearText(newDistance) || '0') || 0;
+    const distance: number = DistanceRevertPipe(this.clearText(newDistance) || '0') || 0;
     this.changeActiveTrainingProperty('distance', distance);
   }
 

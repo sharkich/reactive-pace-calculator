@@ -7,6 +7,7 @@ import './TrainingFormComponent.css';
 import {Training} from 'src/_shared/models';
 import {AppEvent} from 'src/_shared/AppEvent';
 import {AppService} from 'src/_shared/AppService';
+import {DistancePipe} from 'src/_shared/pipes/distance.pipe';
 import {FormRowComponent} from './FormRowComponent/FormRowComponent';
 
 export interface Props {
@@ -58,6 +59,7 @@ export class TrainingFormComponent extends React.Component<Props> {
             training={training}
             label="Distance:"
             field="distance"
+            value={DistancePipe(training.distance)}
             action={AppService.ACTION_ACTIVE_TRAINING_SET_DISTANCE}
             eventAtom={this.eventAtom}
           />

@@ -12,6 +12,7 @@ export interface Props {
   field: keyof Training;
   isNumber?: boolean;
   action: string;
+  value?: string;
   eventAtom: Atom<AppEvent>;
 }
 
@@ -45,7 +46,7 @@ export class FormRowComponent extends React.Component<Props> {
           <input
             type="text"
             id={`field-${props.field}-${training.id}`}
-            defaultValue={'' + training[props.field]}
+            defaultValue={props.value || '' + training[props.field]}
             onKeyUp={this.onKeyUp}
           />
         </div>
