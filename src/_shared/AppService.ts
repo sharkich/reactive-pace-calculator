@@ -1,8 +1,9 @@
 import {Atom} from '@grammarly/focal';
 
-import {Training, Trainings} from './models';
 import {AppEvent} from './AppEvent';
+import {Training, Trainings} from './models';
 import {AppModel} from '../AppComponent/AppModel';
+import {TimeRevertPipe} from 'src/_shared/pipes/time.pipe';
 import {DistanceRevertPipe} from 'src/_shared/pipes/distance.pipe';
 
 export class AppService {
@@ -101,13 +102,13 @@ export class AppService {
 
   static ACTION_ACTIVE_TRAINING_SET_PACE: string = 'ACTION_ACTIVE_TRAINING_SET_PACE';
   private setActiveTrainingPace(newPace: string): void {
-    const pace: number = +(this.clearText(newPace) || '0') || 0;
+    const pace: number = TimeRevertPipe(this.clearText(newPace) || '0') || 0;
     this.changeActiveTrainingProperty('pace', pace);
   }
 
   static ACTION_ACTIVE_TRAINING_SET_TIME: string = 'ACTION_ACTIVE_TRAINING_SET_TIME';
   private setActiveTrainingTime(newTime: string): void {
-    const time: number = +(this.clearText(newTime) || '0') || 0;
+    const time: number = TimeRevertPipe(this.clearText(newTime) || '0') || 0;
     this.changeActiveTrainingProperty('time', time);
   }
 

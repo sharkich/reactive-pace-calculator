@@ -1,9 +1,6 @@
 import * as moment from 'moment';
 import {Duration} from 'moment';
 
-// ts-lint:disabled
-window['moment'] = moment;
-
 export function TimePipe(input: number): string {
   const duration: Duration = moment.duration({
     seconds: input
@@ -16,6 +13,15 @@ export function TimePipe(input: number): string {
   }
   return `${minutes}:${seconds}`;
 }
+
+export function TimeRevertPipe(input: string): number {
+  if (input.length <= 5) {
+    input = `00:${input}`;
+  }
+  return moment.duration(input).as('seconds');
+}
+
+// Private
 
 function addZero(input: number): string {
   const inputString: string = '' + input;
