@@ -41,6 +41,9 @@ export class AppService {
         case AppService.ACTION_ACTIVE_TRAINING_SET_TIME:
           this.setActiveTrainingTime(payload as string);
           break;
+        case AppService.ACTION_CALCULATE_TRAINING_FIELD:
+          this.calculateTrainingField(payload as {field: string; training: Training});
+          break;
       }
     });
     // this.eventAtom
@@ -110,6 +113,11 @@ export class AppService {
   private setActiveTrainingTime(newTime: string): void {
     const time: number = TimeRevertPipe(this.clearText(newTime) || '0') || 0;
     this.changeActiveTrainingProperty('time', time);
+  }
+
+  static ACTION_CALCULATE_TRAINING_FIELD: string = 'ACTION_CALCULATE_TRAINING_FIELD';
+  private calculateTrainingField(payload: {field: string; training: Training}): void {
+    console.log('calculateTrainingField', payload);
   }
 
   private clearText(inputValue: string): string {

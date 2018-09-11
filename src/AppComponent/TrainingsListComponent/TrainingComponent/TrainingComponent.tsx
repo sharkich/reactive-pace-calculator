@@ -62,20 +62,28 @@ export class TrainingComponent extends React.Component<Props> {
     return (
       <F.div onClick={() => this.onClick()} className={'training card ' + activeClassName}>
         <div className="training__header">
-          <h2 className="training__title">{this.training.name}</h2>
+          <h2 className="training__title">
+            <label htmlFor={`field-name-${this.training.id}`}>{this.training.name}</label>
+          </h2>
         </div>
 
         <div className="training__data">
           <div className="training__data__single">
-            Distance: <mark>{DistancePipe(this.training.distance)}</mark>
-            <span className="training__data__additional">km,</span>
+            <label htmlFor={`field-distance-${this.training.id}`}>
+              Distance: <mark>{DistancePipe(this.training.distance)}</mark>
+              <span className="training__data__additional">km,</span>
+            </label>
           </div>
           <div className="training__data__single">
-            Pace: <mark>{TimePipe(this.training.pace)}</mark>
-            <span className="training__data__additional">min/km</span>,
+            <label htmlFor={`field-pace-${this.training.id}`}>
+              Pace: <mark>{TimePipe(this.training.pace)}</mark>
+              <span className="training__data__additional">min/km</span>,
+            </label>
           </div>
           <div className="training__data__single">
-            Time: <mark>{TimePipe(this.training.time)}</mark>
+            <label htmlFor={`field-time-${this.training.id}`}>
+              Time: <mark>{TimePipe(this.training.time)}</mark>
+            </label>
           </div>
         </div>
 
@@ -91,7 +99,9 @@ export class TrainingComponent extends React.Component<Props> {
 
   private emptyView(training: Training): JSX.Element {
     const key: string = `additional-${training && training.id}`;
-    return <div key={key}>Loading...</div>;
+    return (
+      <div key={key}>Loading...</div>
+    );
   }
 
   private isExistObservableData([training]: Array<Training | null>): boolean {

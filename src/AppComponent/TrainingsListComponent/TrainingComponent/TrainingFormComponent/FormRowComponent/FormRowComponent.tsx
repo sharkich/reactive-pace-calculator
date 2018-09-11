@@ -5,6 +5,7 @@ import './FormRowComponent.css';
 
 import {Training} from 'src/_shared/models';
 import {AppEvent} from 'src/_shared/AppEvent';
+import {AppService} from 'src/_shared/AppService';
 
 export interface Props {
   training: Training;
@@ -13,12 +14,14 @@ export interface Props {
   isNumber?: boolean;
   action: string;
   value?: string;
+  isCalculable?: boolean;
   eventAtom: Atom<AppEvent>;
 }
 
 export class FormRowComponent extends React.Component<Props> {
-
   eventAtom: Atom<AppEvent>;
+  field: string;
+  training: Training;
   isNumberValidation: boolean;
   action: string;
 
@@ -26,6 +29,7 @@ export class FormRowComponent extends React.Component<Props> {
     super(data);
 
     this.onKeyUp = this.onKeyUp.bind(this);
+    this.onCalculateClick = this.onCalculateClick.bind(this);
   }
 
   render(): JSX.Element {
@@ -34,22 +38,30 @@ export class FormRowComponent extends React.Component<Props> {
     this.eventAtom = props.eventAtom;
     this.isNumberValidation = !!props.isNumber;
     this.action = props.action;
+    this.field = props.field;
 
-    const training: Training = props.training;
+    this.training = props.training;
+
+    const calculate: JSX.Element = props.isCalculable ? (
+      <button onClick={this.onCalculateClick}>calculate</button>
+    ) : (
+      <div />
+    );
 
     return (
       <div className="training-form-row">
         <div className="col-1">
-          <label htmlFor={`field-${props.field}-${training.id}`}>{props.label}</label>
+          <label htmlFor={`field-${this.field}-${this.training.id}`}>{props.label}</label>
         </div>
         <div className="col--2">
           <input
             type="text"
-            id={`field-${props.field}-${training.id}`}
-            defaultValue={props.value || '' + training[props.field]}
+            id={`field-${this.field}-${this.training.id}`}
+            defaultValue={props.value || '' + this.training[this.field]}
             onKeyUp={this.onKeyUp}
           />
         </div>
+        <div className="col--3">{calculate}</div>
       </div>
     );
   }
@@ -75,4 +87,10 @@ export class FormRowComponent extends React.Component<Props> {
     return ['Enter', 'Escape'].indexOf(key) === -1;
   }
 
+  private onCalculateClick(): void {
+    this.eventAtom.set(new AppEvent(AppService.ACTION_CALCULATE_TRAINING_FIELD, {
+      field: this.field,
+      training: this.training
+    }));
+  }
 }

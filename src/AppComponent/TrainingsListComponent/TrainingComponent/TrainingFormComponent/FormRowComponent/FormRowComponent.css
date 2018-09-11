@@ -1,5 +1,6 @@
 .training-form-row {
   display: flex;
+  align-items: center;
 }
 
 .training-form-row .col-1 {
@@ -9,6 +10,11 @@
 
 .training-form-row .col--2 {
   flex-grow: 5;
+}
+
+.training-form-row .col--3 {
+  flex-grow: 1;
+  width: 50px;
 }
 
 .training-form-row input[type=text] {

@@ -60,6 +60,7 @@ export class TrainingFormComponent extends React.Component<Props> {
             training={training}
             label="Distance:"
             field="distance"
+            isCalculable={true}
             value={DistancePipe(training.distance)}
             action={AppService.ACTION_ACTIVE_TRAINING_SET_DISTANCE}
             eventAtom={this.eventAtom}
@@ -69,6 +70,7 @@ export class TrainingFormComponent extends React.Component<Props> {
             training={training}
             label="Pace:"
             field="pace"
+            isCalculable={true}
             value={TimePipe(training.pace)}
             action={AppService.ACTION_ACTIVE_TRAINING_SET_PACE}
             eventAtom={this.eventAtom}
@@ -78,6 +80,7 @@ export class TrainingFormComponent extends React.Component<Props> {
             training={training}
             label="Time:"
             field="time"
+            isCalculable={true}
             value={TimePipe(training.time)}
             action={AppService.ACTION_ACTIVE_TRAINING_SET_TIME}
             eventAtom={this.eventAtom}
