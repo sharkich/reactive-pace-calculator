@@ -3,45 +3,40 @@ import {Atom} from '@grammarly/focal';
 import {AppEvent} from './AppEvent';
 import {Training, Trainings} from './models';
 import {AppModel} from '../AppComponent/AppModel';
-import {TimeRevertPipe} from 'src/_shared/pipes/time.pipe';
-import {DistanceRevertPipe} from 'src/_shared/pipes/distance.pipe';
+import {TrainingFormService} from 'src/_shared/TrainingFormService';
 
 export class AppService {
   state: Atom<AppModel>;
   eventAtom: Atom<AppEvent>;
 
+  trainingFormService: TrainingFormService;
+
   constructor(state: Atom<AppModel>, eventAtom: Atom<AppEvent>) {
     this.state = state;
     this.eventAtom = eventAtom;
 
+    this.trainingFormService = new TrainingFormService(this.state, this.eventAtom);
+
     this.eventAtom.subscribe(({event, payload}: AppEvent) => {
-      console.log(event, payload);
       switch (event) {
         case AppService.ACTION_ACTIVE_TRAINING_SET:
+          console.log('ACTION_ACTIVE_TRAINING_SET', payload);
           this.setActiveTraining(payload as Training);
           break;
         case AppService.ACTION_ACTIVE_TRAINING_RESET:
+          console.log('ACTION_ACTIVE_TRAINING_RESET', payload);
           this.resetActiveTraining();
           break;
         case AppService.ACTION_ADD_NEW_TRAINING_ON_TOP:
+          console.log('ACTION_ADD_NEW_TRAINING_ON_TOP', payload);
           this.addNewTrainingOnTop();
           break;
         case AppService.ACTION_ADD_NEW_TRAINING_ON_BOTTOM:
+          console.log('ACTION_ADD_NEW_TRAINING_ON_BOTTOM', payload);
           this.addNewTrainingOnBottom();
           break;
-        case AppService.ACTION_ACTIVE_TRAINING_SET_NAME:
-          this.setActiveTrainingName(payload as string);
-          break;
-        case AppService.ACTION_ACTIVE_TRAINING_SET_DISTANCE:
-          this.setActiveTrainingDistance(payload as string);
-          break;
-        case AppService.ACTION_ACTIVE_TRAINING_SET_PACE:
-          this.setActiveTrainingPace(payload as string);
-          break;
-        case AppService.ACTION_ACTIVE_TRAINING_SET_TIME:
-          this.setActiveTrainingTime(payload as string);
-          break;
         case AppService.ACTION_CALCULATE_TRAINING_FIELD:
+          console.log('ACTION_CALCULATE_TRAINING_FIELD', payload);
           this.calculateTrainingField(payload as {field: string; training: Training});
           break;
       }
@@ -91,61 +86,8 @@ export class AppService {
     });
   }
 
-  static ACTION_ACTIVE_TRAINING_SET_NAME: string = 'ACTION_ACTIVE_TRAINING_SET_NAME';
-  private setActiveTrainingName(newName: string): void {
-    const name: string = this.clearText(newName) || '(noname)';
-    this.changeActiveTrainingProperty('name', name);
-  }
-
-  static ACTION_ACTIVE_TRAINING_SET_DISTANCE: string = 'ACTION_ACTIVE_TRAINING_SET_DISTANCE';
-  private setActiveTrainingDistance(newDistance: string): void {
-    const distance: number = DistanceRevertPipe(this.clearText(newDistance) || '0') || 0;
-    this.changeActiveTrainingProperty('distance', distance);
-  }
-
-  static ACTION_ACTIVE_TRAINING_SET_PACE: string = 'ACTION_ACTIVE_TRAINING_SET_PACE';
-  private setActiveTrainingPace(newPace: string): void {
-    const pace: number = TimeRevertPipe(this.clearText(newPace) || '0') || 0;
-    this.changeActiveTrainingProperty('pace', pace);
-  }
-
-  static ACTION_ACTIVE_TRAINING_SET_TIME: string = 'ACTION_ACTIVE_TRAINING_SET_TIME';
-  private setActiveTrainingTime(newTime: string): void {
-    const time: number = TimeRevertPipe(this.clearText(newTime) || '0') || 0;
-    this.changeActiveTrainingProperty('time', time);
-  }
-
   static ACTION_CALCULATE_TRAINING_FIELD: string = 'ACTION_CALCULATE_TRAINING_FIELD';
   private calculateTrainingField(payload: {field: string; training: Training}): void {
     console.log('calculateTrainingField', payload);
-  }
-
-  private clearText(inputValue: string): string {
-    const div: HTMLDivElement = document.createElement('div');
-    div.innerHTML = inputValue;
-    const text: string = div.textContent || div.innerText || '';
-    return text.trim();
-  }
-
-  private changeActiveTrainingProperty(propertyName: keyof Training, value: any): void {
-    this.state.modify((state: AppModel) => {
-      const newState: AppModel = {...state};
-
-      let activeTraining: Training = {...newState.activeTraining} as Training;
-      activeTraining = new Training(newState.activeTraining);
-
-      activeTraining[propertyName] = value;
-
-      newState.activeTraining = activeTraining;
-
-      const trainings: Trainings = [...state.trainings];
-      const index: number = trainings.findIndex((training: Training) =>
-        training.theSame(activeTraining)
-      );
-      trainings[index] = newState.activeTraining;
-      newState.trainings = trainings;
-
-      return newState;
-    });
   }
 }

@@ -6,10 +6,10 @@ import './TrainingFormComponent.css';
 
 import {Training} from 'src/_shared/models';
 import {AppEvent} from 'src/_shared/AppEvent';
-import {AppService} from 'src/_shared/AppService';
+import {TimePipe} from 'src/_shared/pipes/time.pipe';
 import {DistancePipe} from 'src/_shared/pipes/distance.pipe';
 import {FormRowComponent} from './FormRowComponent/FormRowComponent';
-import {TimePipe} from 'src/_shared/pipes/time.pipe';
+import {TrainingFormService} from 'src/_shared/TrainingFormService';
 
 export interface Props {
   training: Training;
@@ -52,7 +52,7 @@ export class TrainingFormComponent extends React.Component<Props> {
             training={training}
             label="Training name:"
             field="name"
-            action={AppService.ACTION_ACTIVE_TRAINING_SET_NAME}
+            action={TrainingFormService.ACTION_ACTIVE_TRAINING_SET_NAME}
             eventAtom={this.eventAtom}
           />
 
@@ -62,7 +62,7 @@ export class TrainingFormComponent extends React.Component<Props> {
             field="distance"
             isCalculable={true}
             value={DistancePipe(training.distance)}
-            action={AppService.ACTION_ACTIVE_TRAINING_SET_DISTANCE}
+            action={TrainingFormService.ACTION_ACTIVE_TRAINING_SET_DISTANCE}
             eventAtom={this.eventAtom}
           />
 
@@ -72,7 +72,7 @@ export class TrainingFormComponent extends React.Component<Props> {
             field="pace"
             isCalculable={true}
             value={TimePipe(training.pace)}
-            action={AppService.ACTION_ACTIVE_TRAINING_SET_PACE}
+            action={TrainingFormService.ACTION_ACTIVE_TRAINING_SET_PACE}
             eventAtom={this.eventAtom}
           />
 
@@ -82,7 +82,7 @@ export class TrainingFormComponent extends React.Component<Props> {
             field="time"
             isCalculable={true}
             value={TimePipe(training.time)}
-            action={AppService.ACTION_ACTIVE_TRAINING_SET_TIME}
+            action={TrainingFormService.ACTION_ACTIVE_TRAINING_SET_TIME}
             eventAtom={this.eventAtom}
           />
 

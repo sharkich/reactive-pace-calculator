@@ -98,10 +98,7 @@ export class TrainingComponent extends React.Component<Props> {
   }
 
   private emptyView(training: Training): JSX.Element {
-    const key: string = `additional-${training && training.id}`;
-    return (
-      <div key={key}>Loading...</div>
-    );
+    return <div key={`additional-${training && training.id}`}>Loading...</div>;
   }
 
   private isExistObservableData([training]: Array<Training | null>): boolean {
