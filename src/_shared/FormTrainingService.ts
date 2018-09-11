@@ -5,7 +5,7 @@ import {AppModel} from 'src/AppComponent/AppModel';
 import {Atom} from '@grammarly/focal';
 import {AppEvent} from 'src/_shared/AppEvent';
 
-export class TrainingFormService {
+export class FormTrainingService {
 
   state: Atom<AppModel>;
   eventAtom: Atom<AppEvent>;
@@ -16,19 +16,19 @@ export class TrainingFormService {
 
     this.eventAtom.subscribe(({event, payload}: AppEvent) => {
       switch (event) {
-        case TrainingFormService.ACTION_ACTIVE_TRAINING_SET_NAME:
+        case FormTrainingService.ACTION_ACTIVE_TRAINING_SET_NAME:
           console.log('ACTION_ACTIVE_TRAINING_SET_NAME', payload);
           this.setActiveTrainingName(payload as string);
           break;
-        case TrainingFormService.ACTION_ACTIVE_TRAINING_SET_DISTANCE:
+        case FormTrainingService.ACTION_ACTIVE_TRAINING_SET_DISTANCE:
           console.log('ACTION_ACTIVE_TRAINING_SET_DISTANCE', payload);
           this.setActiveTrainingDistance(payload as string);
           break;
-        case TrainingFormService.ACTION_ACTIVE_TRAINING_SET_PACE:
+        case FormTrainingService.ACTION_ACTIVE_TRAINING_SET_PACE:
           console.log('ACTION_ACTIVE_TRAINING_SET_PACE', payload);
           this.setActiveTrainingPace(payload as string);
           break;
-        case TrainingFormService.ACTION_ACTIVE_TRAINING_SET_TIME:
+        case FormTrainingService.ACTION_ACTIVE_TRAINING_SET_TIME:
           console.log('ACTION_ACTIVE_TRAINING_SET_TIME', payload);
           this.setActiveTrainingTime(payload as string);
           break;

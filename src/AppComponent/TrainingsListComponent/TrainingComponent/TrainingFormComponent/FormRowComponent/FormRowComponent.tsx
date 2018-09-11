@@ -5,12 +5,13 @@ import './FormRowComponent.css';
 
 import {Training} from 'src/_shared/models';
 import {AppEvent} from 'src/_shared/AppEvent';
-import {AppService} from 'src/_shared/AppService';
+import {TrainingFields} from 'src/_shared/types/TrainingFieldsType';
+import {CalculateTrainingService} from 'src/_shared/CalculateTrainingService';
 
 export interface Props {
   training: Training;
   label: string;
-  field: keyof Training;
+  field: TrainingFields;
   isNumber?: boolean;
   action: string;
   value?: string;
@@ -88,7 +89,7 @@ export class FormRowComponent extends React.Component<Props> {
   }
 
   private onCalculateClick(): void {
-    this.eventAtom.set(new AppEvent(AppService.ACTION_CALCULATE_TRAINING_FIELD, {
+    this.eventAtom.set(new AppEvent(CalculateTrainingService.ACTION_CALCULATE_TRAINING_FIELD, {
       field: this.field,
       training: this.training
     }));

@@ -3,19 +3,19 @@ import {Atom} from '@grammarly/focal';
 import {AppEvent} from './AppEvent';
 import {Training, Trainings} from './models';
 import {AppModel} from '../AppComponent/AppModel';
-import {TrainingFormService} from 'src/_shared/TrainingFormService';
+import {FormTrainingService} from 'src/_shared/FormTrainingService';
+import {CalculateTrainingService} from 'src/_shared/CalculateTrainingService';
 
 export class AppService {
   state: Atom<AppModel>;
   eventAtom: Atom<AppEvent>;
 
-  trainingFormService: TrainingFormService;
+  trainingFormService: FormTrainingService;
+  calculateTrainingService: CalculateTrainingService;
 
   constructor(state: Atom<AppModel>, eventAtom: Atom<AppEvent>) {
     this.state = state;
     this.eventAtom = eventAtom;
-
-    this.trainingFormService = new TrainingFormService(this.state, this.eventAtom);
 
     this.eventAtom.subscribe(({event, payload}: AppEvent) => {
       switch (event) {
@@ -35,12 +35,13 @@ export class AppService {
           console.log('ACTION_ADD_NEW_TRAINING_ON_BOTTOM', payload);
           this.addNewTrainingOnBottom();
           break;
-        case AppService.ACTION_CALCULATE_TRAINING_FIELD:
-          console.log('ACTION_CALCULATE_TRAINING_FIELD', payload);
-          this.calculateTrainingField(payload as {field: string; training: Training});
-          break;
       }
     });
+
+    this.trainingFormService = new FormTrainingService(this.state, this.eventAtom);
+    this.calculateTrainingService = new CalculateTrainingService(this.state, this.eventAtom);
+
+    // TODO: Function Variant
     // this.eventAtom
     //   .pipe(
     //     filter(({event}: AppEvent) => event === 'TRAINING_SET_ACTIVE')
@@ -84,10 +85,5 @@ export class AppService {
       newTrainings.push(new Training());
       return newTrainings;
     });
-  }
-
-  static ACTION_CALCULATE_TRAINING_FIELD: string = 'ACTION_CALCULATE_TRAINING_FIELD';
-  private calculateTrainingField(payload: {field: string; training: Training}): void {
-    console.log('calculateTrainingField', payload);
   }
 }

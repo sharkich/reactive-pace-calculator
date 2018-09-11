@@ -9,7 +9,7 @@ import {AppEvent} from 'src/_shared/AppEvent';
 import {TimePipe} from 'src/_shared/pipes/time.pipe';
 import {DistancePipe} from 'src/_shared/pipes/distance.pipe';
 import {FormRowComponent} from './FormRowComponent/FormRowComponent';
-import {TrainingFormService} from 'src/_shared/TrainingFormService';
+import {FormTrainingService} from 'src/_shared/FormTrainingService';
 
 export interface Props {
   training: Training;
@@ -52,7 +52,7 @@ export class TrainingFormComponent extends React.Component<Props> {
             training={training}
             label="Training name:"
             field="name"
-            action={TrainingFormService.ACTION_ACTIVE_TRAINING_SET_NAME}
+            action={FormTrainingService.ACTION_ACTIVE_TRAINING_SET_NAME}
             eventAtom={this.eventAtom}
           />
 
@@ -62,7 +62,7 @@ export class TrainingFormComponent extends React.Component<Props> {
             field="distance"
             isCalculable={true}
             value={DistancePipe(training.distance)}
-            action={TrainingFormService.ACTION_ACTIVE_TRAINING_SET_DISTANCE}
+            action={FormTrainingService.ACTION_ACTIVE_TRAINING_SET_DISTANCE}
             eventAtom={this.eventAtom}
           />
 
@@ -72,7 +72,7 @@ export class TrainingFormComponent extends React.Component<Props> {
             field="pace"
             isCalculable={true}
             value={TimePipe(training.pace)}
-            action={TrainingFormService.ACTION_ACTIVE_TRAINING_SET_PACE}
+            action={FormTrainingService.ACTION_ACTIVE_TRAINING_SET_PACE}
             eventAtom={this.eventAtom}
           />
 
@@ -82,7 +82,7 @@ export class TrainingFormComponent extends React.Component<Props> {
             field="time"
             isCalculable={true}
             value={TimePipe(training.time)}
-            action={TrainingFormService.ACTION_ACTIVE_TRAINING_SET_TIME}
+            action={FormTrainingService.ACTION_ACTIVE_TRAINING_SET_TIME}
             eventAtom={this.eventAtom}
           />
 
