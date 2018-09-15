@@ -52,13 +52,7 @@ export class AppService {
   static ACTION_ACTIVE_TRAINING_SET: string = 'ACTION_ACTIVE_TRAINING_SET';
   private setActiveTraining(training: Training): void {
     const activeTrainingAtom: Atom<Training | null> = this.state.lens('activeTraining');
-    activeTrainingAtom.modify((currentActiveTraining: Training) => {
-      let newTraining: Training = currentActiveTraining;
-      if (currentActiveTraining.id !== training.id) {
-        newTraining = training;
-      }
-      return newTraining;
-    });
+    activeTrainingAtom.set(training);
   }
 
   static ACTION_ACTIVE_TRAINING_RESET: string = 'ACTION_ACTIVE_TRAINING_RESET';

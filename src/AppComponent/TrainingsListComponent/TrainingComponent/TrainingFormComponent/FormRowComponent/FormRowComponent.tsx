@@ -95,7 +95,8 @@ export class FormRowComponent extends React.Component<Props> {
     return ['Enter', 'Escape'].indexOf(key) === -1;
   }
 
-  private onCalculateClick(): void {
+  private onCalculateClick(event: React.MouseEvent): void {
+    event.stopPropagation();
     this.eventAtom.set(new AppEvent(CalculateTrainingService.ACTION_CALCULATE_TRAINING_FIELD, {
       field: this.field,
       training: this.training

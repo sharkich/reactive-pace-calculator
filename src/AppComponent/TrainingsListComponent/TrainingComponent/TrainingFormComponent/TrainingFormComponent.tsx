@@ -21,6 +21,12 @@ export interface Props {
 export class TrainingFormComponent extends React.Component<Props> {
   eventAtom: Atom<AppEvent>;
 
+  constructor(data: any) {
+    super(data);
+
+    this.onClick = this.onClick.bind(this);
+  }
+
   render(): JSX.Element {
     const props: Props = this.props as Props;
 
@@ -36,7 +42,7 @@ export class TrainingFormComponent extends React.Component<Props> {
 
   private view(training: Training, time: number): JSX.Element {
     return (
-      <div key={`additional-${training.id}`} className="training-form">
+      <div key={`additional-${training.id}`} className="training-form" onClick={this.onClick}>
         <form onSubmit={(e: FormEvent<HTMLFormElement>) => e.preventDefault()} className="form">
           <FormRowComponent
             training={training}
@@ -91,5 +97,9 @@ export class TrainingFormComponent extends React.Component<Props> {
         </div>
       </div>
     );
+  }
+
+  private onClick(event: React.MouseEvent): void {
+    event.stopPropagation();
   }
 }

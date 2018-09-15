@@ -27,6 +27,12 @@ export class TrainingComponent extends React.Component<Props> {
   training: Training;
   activeTraining: Training | null;
 
+  constructor(data: any) {
+    super(data);
+
+    this.onClick = this.onClick.bind(this);
+  }
+
   render(): JSX.Element {
     const props: Props = this.props as Props;
 
@@ -69,7 +75,7 @@ export class TrainingComponent extends React.Component<Props> {
       <div />
     );
     return (
-      <F.div onClick={() => this.onClick()} className={'training card ' + activeClassName}>
+      <F.div onClick={this.onClick} className={'training card ' + activeClassName}>
         <div className="training__header">
           <h2 className="training__title">
             <label htmlFor={`field-name-${this.training.id}`}>{this.training.name}</label>
@@ -118,9 +124,10 @@ export class TrainingComponent extends React.Component<Props> {
   }
 
   private onClick(): void {
-    if (this.isActiveTraining()) {
-      return;
+    let newActiveTraining: Training | null = null;
+    if (!this.isActiveTraining()) {
+      newActiveTraining = this.training;
     }
-    this.eventAtom.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET, this.training));
+    this.eventAtom.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET, newActiveTraining));
   }
 }
