@@ -1,9 +1,10 @@
 import {Atom} from '@grammarly/focal';
 import {AppModel} from 'src/AppComponent/AppModel';
 import {AppEvent} from 'src/_shared/AppEvent';
-import {Training, Trainings} from 'src/_shared/models';
+import {Training} from 'src/_shared/models';
 import {TrainingFields} from 'src/_shared/types/TrainingFieldsType';
 import {filter} from 'rxjs/operators';
+import {AppService} from 'src/_shared/services/AppService';
 
 export class CalculateTrainingService {
   state: Atom<AppModel>;
@@ -12,7 +13,9 @@ export class CalculateTrainingService {
   constructor(state: Atom<AppModel>, eventAtom: Atom<AppEvent>) {
     this.state = state;
     this.eventAtom = eventAtom;
+  }
 
+  subscribe(): void {
     this.eventAtom
       .pipe(
         filter(
@@ -32,50 +35,43 @@ export class CalculateTrainingService {
     field: TrainingFields;
     training: Training;
   }): void {
-    const newTraining: Training | null = this.getTrainModifyFn(field)(training);
-    if (!newTraining) {
-      return;
-    }
+    const newTraining: Training = CalculateTrainingService.getTrainModifyFn(field)(training);
     newTraining.valid = true;
-    this.state.modify((state: AppModel) => {
-      const newState: AppModel = {...state};
-      const trainings: Trainings = [...state.trainings];
-      const index: number = trainings.findIndex((t: Training) => t.theSame(training));
-      trainings[index] = newTraining as Training;
-      newState.trainings = trainings;
-      newState.activeTraining = newTraining;
-      return newState;
-    });
+    this.eventAtom.set(new AppEvent(AppService.ACTION_MODIFY_TRAINING, newTraining));
   }
 
-  private getTrainModifyFn(field: string): (taining: Training) => Training | null {
+  static getTrainModifyFn(field: string): (training: Training) => Training {
     switch (field) {
       case 'distance':
-        return this.calculateDistance;
+        return CalculateTrainingService.calculateDistance;
       case 'pace':
-        return this.calculatePace;
+        return CalculateTrainingService.calculatePace;
       case 'time':
-        return this.calculateTime;
+        return CalculateTrainingService.calculateTime;
       default:
-        return () => null;
+        return (training: Training) => training;
     }
   }
 
-  private calculateDistance(training: Training): Training {
+  static calculateDistance(training: Training): Training {
     const newTraining: Training = new Training(training);
     newTraining.distance = Math.round((training.time * 1000) / training.pace);
     return newTraining;
   }
 
-  private calculatePace(training: Training): Training {
+  static calculatePace(training: Training): Training {
     const newTraining: Training = new Training(training);
     newTraining.pace = Math.round((training.time * 1000) / training.distance);
     return newTraining;
   }
 
-  private calculateTime(training: Training): Training {
+  static calculateTime(training: Training): Training {
     const newTraining: Training = new Training(training);
     newTraining.time = Math.round((training.distance * training.pace) / 1000);
     return newTraining;
+  }
+
+  static isValidTraining(training: Training): boolean {
+    return Math.abs(training.distance - Math.round((training.time * 1000) / training.pace)) <= 5;
   }
 }

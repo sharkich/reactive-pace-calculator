@@ -10,8 +10,8 @@ export class AppService {
   state: Atom<AppModel>;
   eventAtom: Atom<AppEvent>;
 
-  trainingFormService: FormTrainingService;
-  calculateTrainingService: CalculateTrainingService;
+  private trainingFormService: FormTrainingService;
+  private calculateTrainingService: CalculateTrainingService;
 
   constructor(state: Atom<AppModel>, eventAtom: Atom<AppEvent>) {
     this.state = state;
@@ -31,11 +31,17 @@ export class AppService {
         case AppService.ACTION_ADD_NEW_TRAINING_ON_BOTTOM:
           this.addNewTrainingOnBottom();
           break;
+        case AppService.ACTION_MODIFY_TRAINING:
+          this.modifyTraining(payload as Training);
+          break;
       }
     });
 
     this.trainingFormService = new FormTrainingService(this.state, this.eventAtom);
+    this.trainingFormService.subscribe();
+
     this.calculateTrainingService = new CalculateTrainingService(this.state, this.eventAtom);
+    this.calculateTrainingService.subscribe();
 
     // TODO: Function Variant
     // this.eventAtom
@@ -67,5 +73,18 @@ export class AppService {
   private addNewTrainingOnBottom(): void {
     const trainingsAtom: Atom<Trainings> = this.state.lens('trainings');
     trainingsAtom.modify((trainings: Trainings) => [...trainings, new Training()]);
+  }
+
+  static ACTION_MODIFY_TRAINING: string = 'ACTION_MODIFY_TRAINING';
+  private modifyTraining(training: Training): void {
+    this.state.modify((state: AppModel) => {
+      const newState: AppModel = {...state};
+      const trainings: Trainings = [...state.trainings];
+      const index: number = trainings.findIndex((t: Training) => t.theSame(training));
+      trainings[index] = training;
+      newState.trainings = trainings;
+      newState.activeTraining = training;
+      return newState;
+    });
   }
 }

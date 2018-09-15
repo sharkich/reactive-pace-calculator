@@ -31,12 +31,6 @@ export class FormRowComponent extends React.Component<Props> {
   value: string = '';
   isEdited: boolean = false;
 
-  constructor(data: any) {
-    super(data);
-
-    this.onChange = this.onChange.bind(this);
-  }
-
   render(): JSX.Element {
     const props: Props = this.props as Props;
 
@@ -91,7 +85,7 @@ export class FormRowComponent extends React.Component<Props> {
             className={validateClassName}
             type="text"
             id={`field-${this.field}-${training.id}`}
-            onChange={this.onChange}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => this.onChange(event, training)}
             value={this.value}
           />
         </div>
@@ -100,15 +94,18 @@ export class FormRowComponent extends React.Component<Props> {
     );
   }
 
-  private onChange(event: React.ChangeEvent<HTMLInputElement>): void {
+  private onChange(event: React.ChangeEvent<HTMLInputElement>, training: Training): void {
     const inputElement: HTMLInputElement = event.target as HTMLInputElement;
-    this.edit(inputElement.value);
+    this.edit(inputElement.value, training);
   }
 
-  private edit(value: string): void {
+  private edit(value: string, training: Training): void {
     if (value !== this.value) {
       this.isEdited = true;
-      this.eventAtom.set(new AppEvent(this.action, value));
+      this.eventAtom.set(new AppEvent(this.action, {
+        training,
+        value
+      }));
     }
     this.value = value;
   }
