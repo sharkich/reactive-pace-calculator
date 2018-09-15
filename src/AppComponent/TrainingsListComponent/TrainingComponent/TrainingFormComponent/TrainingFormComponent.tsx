@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {FormEvent} from 'react';
-import {Atom} from '@grammarly/focal';
+import {Atom, F} from '@grammarly/focal';
 // tslint:disable-next-line
 import './TrainingFormComponent.css';
 
@@ -10,14 +10,15 @@ import {TimePipe} from 'src/_shared/pipes/time.pipe';
 import {DistancePipe} from 'src/_shared/pipes/distance.pipe';
 import {FormRowComponent} from './FormRowComponent/FormRowComponent';
 import {FormTrainingService} from 'src/_shared/FormTrainingService';
+import {Observable} from 'rxjs/Observable';
+import {map} from 'rxjs/operators';
 
 export interface Props {
-  training: Training;
+  trainingAtom: Atom<Training>;
   eventAtom: Atom<AppEvent>;
 }
 
 export class TrainingFormComponent extends React.Component<Props> {
-
   eventAtom: Atom<AppEvent>;
 
   render(): JSX.Element {
@@ -25,23 +26,18 @@ export class TrainingFormComponent extends React.Component<Props> {
 
     this.eventAtom = props.eventAtom;
 
-    const training: Training = props.training;
+    const trainingAtom: Atom<Training> = props.trainingAtom;
+    const observable: Observable<JSX.Element> = trainingAtom.pipe(map((training: Training) => this.view(training)));
 
-    return this.view(training);
+    return (
+      <F.div>{observable}</F.div>
+    );
   }
 
   private view(training: Training): JSX.Element {
     return (
-      <div
-        key={`additional-${training.id}`}
-        className="training-form"
-      >
-
-        <form
-          onSubmit={(e: FormEvent<HTMLFormElement>) => e.preventDefault()}
-          className="form"
-        >
-
+      <div key={`additional-${training.id}`} className="training-form">
+        <form onSubmit={(e: FormEvent<HTMLFormElement>) => e.preventDefault()} className="form">
           <FormRowComponent
             training={training}
             label="Training name:"
@@ -79,18 +75,14 @@ export class TrainingFormComponent extends React.Component<Props> {
             action={FormTrainingService.ACTION_ACTIVE_TRAINING_SET_TIME}
             eventAtom={this.eventAtom}
           />
-
         </form>
 
         <div className="training__additional">
           <div className="training__data__single">
-            Name: <span className="mark">{training.name}</span>{' '},
-            Distance: <span className="mark">{training.distance}</span>{' '},
-            Pace: <span className="mark">{training.pace}</span>{' '},
-            Time: <span className="mark">{training.time}</span>{' '},
-
-            Speed:{' '}
-            <span className="mark">x</span>{' '}
+            Name: <span className="mark">{training.name}</span> , Distance:{' '}
+            <span className="mark">{training.distance}</span> , Pace:{' '}
+            <span className="mark">{training.pace}</span> , Time:{' '}
+            <span className="mark">{training.time}</span> , Speed: <span className="mark">x</span>{' '}
             <span className="training__data__additional">km/h</span>,
           </div>
           <div>

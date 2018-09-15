@@ -62,7 +62,7 @@ export class TrainingComponent extends React.Component<Props> {
     const activeForm: JSX.Element = isActive ? (
       <TrainingFormComponent
         // @ts-ignore
-        training={this.training}
+        trainingAtom={this.trainingAtom}
         eventAtom={this.eventAtom}
       />
     ) : (
