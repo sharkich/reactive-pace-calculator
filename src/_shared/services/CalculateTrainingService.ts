@@ -3,6 +3,7 @@ import {AppModel} from 'src/AppComponent/AppModel';
 import {AppEvent} from 'src/_shared/AppEvent';
 import {Training, Trainings} from 'src/_shared/models';
 import {TrainingFields} from 'src/_shared/types/TrainingFieldsType';
+import {filter} from 'rxjs/operators';
 
 export class CalculateTrainingService {
   state: Atom<AppModel>;
@@ -12,13 +13,15 @@ export class CalculateTrainingService {
     this.state = state;
     this.eventAtom = eventAtom;
 
-    this.eventAtom.subscribe(({event, payload}: AppEvent) => {
-      switch (event) {
-        case CalculateTrainingService.ACTION_CALCULATE_TRAINING_FIELD:
-          this.calculateTrainingField(payload as {field: TrainingFields; training: Training});
-          break;
-      }
-    });
+    this.eventAtom
+      .pipe(
+        filter(
+          ({event}: AppEvent) => event === CalculateTrainingService.ACTION_CALCULATE_TRAINING_FIELD
+        )
+      )
+      .subscribe(({payload}: AppEvent) =>
+        this.calculateTrainingField(payload as {field: TrainingFields; training: Training})
+      );
   }
 
   static ACTION_CALCULATE_TRAINING_FIELD: string = 'ACTION_CALCULATE_TRAINING_FIELD';
@@ -29,18 +32,7 @@ export class CalculateTrainingService {
     field: TrainingFields;
     training: Training;
   }): void {
-    let newTraining: Training | null = null;
-    switch (field) {
-      case 'distance':
-        newTraining = this.calculateDistance(training);
-        break;
-      case 'pace':
-        newTraining = this.calculatePace(training);
-        break;
-      case 'time':
-        newTraining = this.calculateTime(training);
-        break;
-    }
+    const newTraining: Training | null = this.getTrainModifyFn(field)(training);
     if (!newTraining) {
       return;
     }
@@ -56,15 +48,28 @@ export class CalculateTrainingService {
     });
   }
 
+  private getTrainModifyFn(field: string): (taining: Training) => Training | null {
+    switch (field) {
+      case 'distance':
+        return this.calculateDistance;
+      case 'pace':
+        return this.calculatePace;
+      case 'time':
+        return this.calculateTime;
+      default:
+        return () => null;
+    }
+  }
+
   private calculateDistance(training: Training): Training {
     const newTraining: Training = new Training(training);
-    newTraining.distance = Math.round(training.time * 1000 / training.pace);
+    newTraining.distance = Math.round((training.time * 1000) / training.pace);
     return newTraining;
   }
 
   private calculatePace(training: Training): Training {
     const newTraining: Training = new Training(training);
-    newTraining.pace = Math.round(training.time * 1000 / training.distance);
+    newTraining.pace = Math.round((training.time * 1000) / training.distance);
     return newTraining;
   }
 

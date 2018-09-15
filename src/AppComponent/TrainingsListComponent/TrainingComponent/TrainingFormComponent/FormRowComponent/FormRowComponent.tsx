@@ -8,7 +8,7 @@ import {AppEvent} from 'src/_shared/AppEvent';
 import {TrainingFields} from 'src/_shared/types/TrainingFieldsType';
 import {CalculateTrainingService} from 'src/_shared/services/CalculateTrainingService';
 import {Observable} from 'rxjs/Observable';
-import {map} from 'rxjs/operators';
+import {filter, map} from 'rxjs/operators';
 
 export interface Props {
   trainingAtom: Atom<Training>;
@@ -40,18 +40,21 @@ export class FormRowComponent extends React.Component<Props> {
   render(): JSX.Element {
     const props: Props = this.props as Props;
 
-    this.eventAtom = props.eventAtom;
-    this.eventAtom.subscribe(({event, payload}: AppEvent) => {
-      switch (event) {
-        case CalculateTrainingService.ACTION_CALCULATE_TRAINING_FIELD:
-          this.calculateField(payload as {field: TrainingFields; training: Training});
-          break;
-      }
-    });
-
     this.isNumberValidation = !!props.isNumber;
     this.action = props.action;
     this.field = props.field;
+
+    this.eventAtom = props.eventAtom;
+    this.eventAtom
+      .pipe(
+        filter(
+          ({event}: AppEvent) => event === CalculateTrainingService.ACTION_CALCULATE_TRAINING_FIELD
+        ),
+        filter(
+          ({payload}: AppEvent) => payload && payload.field === this.field
+        )
+      )
+      .subscribe(this.calculateField.bind(this));
 
     this.trainingAtom = props.trainingAtom;
     const trainingAtom: Atom<Training> = props.trainingAtom;
@@ -120,9 +123,7 @@ export class FormRowComponent extends React.Component<Props> {
     );
   }
 
-  private calculateField({field}: {field: TrainingFields; training: Training}): void {
-    if (field === this.field) {
-      this.isEdited = false;
-    }
+  private calculateField(): void {
+    this.isEdited = false;
   }
 }
