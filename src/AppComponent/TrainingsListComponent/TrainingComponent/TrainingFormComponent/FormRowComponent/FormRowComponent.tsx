@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Atom} from '@grammarly/focal';
+import {Atom, F} from '@grammarly/focal';
 // tslint:disable-next-line
 import './FormRowComponent.css';
 
@@ -7,9 +7,11 @@ import {Training} from 'src/_shared/models';
 import {AppEvent} from 'src/_shared/AppEvent';
 import {TrainingFields} from 'src/_shared/types/TrainingFieldsType';
 import {CalculateTrainingService} from 'src/_shared/services/CalculateTrainingService';
+import {Observable} from 'rxjs/Observable';
+import {map} from 'rxjs/operators';
 
 export interface Props {
-  training: Training;
+  trainingAtom: Atom<Training>;
   label: string;
   field: TrainingFields;
   isNumber?: boolean;
@@ -21,91 +23,106 @@ export interface Props {
 
 export class FormRowComponent extends React.Component<Props> {
   eventAtom: Atom<AppEvent>;
+  trainingAtom: Atom<Training>;
   field: string;
-  training: Training;
   isNumberValidation: boolean;
   action: string;
+
+  value: string = '';
+  isEdited: boolean = false;
 
   constructor(data: any) {
     super(data);
 
     this.onChange = this.onChange.bind(this);
-    this.onKeyUp = this.onKeyUp.bind(this);
-    this.onCalculateClick = this.onCalculateClick.bind(this);
   }
 
   render(): JSX.Element {
     const props: Props = this.props as Props;
 
     this.eventAtom = props.eventAtom;
+    this.eventAtom.subscribe(({event, payload}: AppEvent) => {
+      switch (event) {
+        case CalculateTrainingService.ACTION_CALCULATE_TRAINING_FIELD:
+          this.calculateField(payload as {field: TrainingFields; training: Training});
+          break;
+      }
+    });
+
     this.isNumberValidation = !!props.isNumber;
     this.action = props.action;
     this.field = props.field;
 
-    this.training = props.training;
+    this.trainingAtom = props.trainingAtom;
+    const trainingAtom: Atom<Training> = props.trainingAtom;
+    const observable: Observable<JSX.Element> = trainingAtom.pipe(
+      map((training: Training) => this.view(training))
+    );
 
-    const calculate: JSX.Element = props.isCalculable ? (
-      <button onClick={this.onCalculateClick}>calculate</button>
+    return <F.div>{observable}</F.div>;
+  }
+
+  private view(training: Training): JSX.Element {
+    if (!this.isEdited) {
+      this.value = '' + (this.props.value || training[this.field] || '');
+    }
+
+    const calculate: JSX.Element = this.props.isCalculable ? (
+      <button onClick={(event: React.MouseEvent) => this.onCalculateClick(event, training)}>
+        calculate
+      </button>
     ) : (
       <div />
     );
 
     const validateClassName: string =
-      props.isCalculable && !this.training.valid ? 'invalid' : 'valid';
+      this.props.isCalculable && !training.valid ? 'invalid' : 'valid';
 
     return (
-      <div className="training-form-row">
+      <F.div className="training-form-row">
         <div className="col-1">
-          <label htmlFor={`field-${this.field}-${this.training.id}`}>{props.label}</label>
+          <label htmlFor={`field-${this.field}-${training.id}`}>{this.props.label}</label>
         </div>
         <div className="col--2">
           <input
             className={validateClassName}
             type="text"
-            id={`field-${this.field}-${this.training.id}`}
+            id={`field-${this.field}-${training.id}`}
             onChange={this.onChange}
-            value={props.value || '' + this.training[this.field]}
-            onKeyUp={this.onKeyUp}
+            value={this.value}
           />
         </div>
         <div className="col--3">{calculate}</div>
-      </div>
+      </F.div>
     );
   }
 
   private onChange(event: React.ChangeEvent<HTMLInputElement>): void {
     const inputElement: HTMLInputElement = event.target as HTMLInputElement;
-    this.eventAtom.set(new AppEvent(this.action, inputElement.value));
+    this.edit(inputElement.value);
   }
 
-  private onKeyUp(event: React.KeyboardEvent<HTMLInputElement>): void {
-    if (this.isNumberValidation && !this.isValidNumberKey(event.key)) {
-      event.stopPropagation();
-      return;
+  private edit(value: string): void {
+    if (value !== this.value) {
+      this.isEdited = true;
+      this.eventAtom.set(new AppEvent(this.action, value));
     }
-    if (!this.isValidStringKey(event.key)) {
-      event.stopPropagation();
-      return;
-    }
-    const inputElement: HTMLInputElement = event.target as HTMLInputElement;
-    this.eventAtom.set(new AppEvent(this.action, inputElement.value));
+    this.value = value;
   }
 
-  private isValidNumberKey(key: string): boolean {
-    return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].indexOf(+key) !== -1;
-  }
-
-  private isValidStringKey(key: string): boolean {
-    return ['Enter', 'Escape'].indexOf(key) === -1;
-  }
-
-  private onCalculateClick(event: React.MouseEvent): void {
+  private onCalculateClick(event: React.MouseEvent, training: Training): void {
     event.stopPropagation();
     this.eventAtom.set(
       new AppEvent(CalculateTrainingService.ACTION_CALCULATE_TRAINING_FIELD, {
         field: this.field,
-        training: this.training
+        training: training
       })
     );
+  }
+
+  private calculateField({field}: {field: TrainingFields; training: Training}): void {
+    if (field === this.field) {
+      this.isEdited = false;
+    }
   }
 }

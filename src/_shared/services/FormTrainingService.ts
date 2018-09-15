@@ -1,6 +1,6 @@
 import {DistanceRevertPipe} from 'src/_shared/pipes/distance.pipe';
 import {TimeRevertPipe} from 'src/_shared/pipes/time.pipe';
-import {Training, Trainings} from 'src/_shared/models/index';
+import {Training, Trainings} from 'src/_shared/models';
 import {AppModel} from 'src/AppComponent/AppModel';
 import {Atom} from '@grammarly/focal';
 import {AppEvent} from 'src/_shared/AppEvent';
@@ -33,25 +33,25 @@ export class FormTrainingService {
 
   static ACTION_ACTIVE_TRAINING_SET_NAME: string = 'ACTION_ACTIVE_TRAINING_SET_NAME';
   setActiveTrainingName(newName: string): void {
-    const name: string = this.clearText(newName) || '(noname)';
+    const name: string = this.clearText(newName);
     this.changeActiveTrainingProperty('name', name);
   }
 
   static ACTION_ACTIVE_TRAINING_SET_DISTANCE: string = 'ACTION_ACTIVE_TRAINING_SET_DISTANCE';
-  setActiveTrainingDistance(newDistance: string): void {
-    const distance: number = DistanceRevertPipe(this.clearText(newDistance) || '0') || 0;
+  setActiveTrainingDistance(input: string): void {
+    const distance: number = DistanceRevertPipe(input);
     this.changeActiveTrainingProperty('distance', distance);
   }
 
   static ACTION_ACTIVE_TRAINING_SET_PACE: string = 'ACTION_ACTIVE_TRAINING_SET_PACE';
-  setActiveTrainingPace(newPace: string): void {
-    const pace: number = TimeRevertPipe(this.clearText(newPace) || '0') || 0;
+  setActiveTrainingPace(input: string): void {
+    const pace: number = TimeRevertPipe(input);
     this.changeActiveTrainingProperty('pace', pace);
   }
 
   static ACTION_ACTIVE_TRAINING_SET_TIME: string = 'ACTION_ACTIVE_TRAINING_SET_TIME';
-  setActiveTrainingTime(newTime: string): void {
-    const time: number = TimeRevertPipe(this.clearText(newTime) || '0') || 0;
+  setActiveTrainingTime(input: string): void {
+    const time: number = TimeRevertPipe(input);
     this.changeActiveTrainingProperty('time', time);
   }
 

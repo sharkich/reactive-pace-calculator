@@ -65,15 +65,6 @@ export class TrainingComponent extends React.Component<Props> {
 
   private view(isActive: boolean): JSX.Element {
     const activeClassName: string = this.isActiveTraining() ? 'training--active' : '';
-    const activeForm: JSX.Element = isActive ? (
-      <TrainingFormComponent
-        // @ts-ignore
-        trainingAtom={this.trainingAtom}
-        eventAtom={this.eventAtom}
-      />
-    ) : (
-      <div />
-    );
     return (
       <F.div onClick={this.onClick} className={'training card ' + activeClassName}>
         <div className="training__header">
@@ -102,13 +93,26 @@ export class TrainingComponent extends React.Component<Props> {
           </div>
         </div>
 
-        {activeForm}
+        {this.formView(isActive)}
       </F.div>
     );
   }
 
+  private formView(isActive: boolean): JSX.Element {
+    if (!isActive) {
+    return <div />;
+    }
+    return (
+      <TrainingFormComponent
+        // @ts-ignore
+        trainingAtom={this.trainingAtom}
+        eventAtom={this.eventAtom}
+      />
+    );
+  }
+
   private emptyView(training: Training): JSX.Element {
-    return <div key={`additional-${training && training.id}`}>Loading...</div>;
+    return (<div key={`additional-${training && training.id}`}>Loading...</div>);
   }
 
   private isExistObservableData([training]: Array<Training | null>): boolean {

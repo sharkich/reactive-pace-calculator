@@ -20,6 +20,7 @@ export interface Props {
 
 export class TrainingFormComponent extends React.Component<Props> {
   eventAtom: Atom<AppEvent>;
+  trainingAtom: Atom<Training>;
 
   constructor(data: any) {
     super(data);
@@ -31,21 +32,21 @@ export class TrainingFormComponent extends React.Component<Props> {
     const props: Props = this.props as Props;
 
     this.eventAtom = props.eventAtom;
+    this.trainingAtom = props.trainingAtom;
 
-    const trainingAtom: Atom<Training> = props.trainingAtom;
-    const observable: Observable<JSX.Element> = trainingAtom.pipe(
-      map((training: Training) => this.view(training, training.time))
+    const observable: Observable<JSX.Element> = this.trainingAtom.pipe(
+      map((training: Training) => this.view(training))
     );
 
     return <F.div>{observable}</F.div>;
   }
 
-  private view(training: Training, time: number): JSX.Element {
+  private view(training: Training): JSX.Element {
     return (
-      <div key={`additional-${training.id}`} className="training-form" onClick={this.onClick}>
+      <F.div key={`additional-${training.id}`} className="training-form" onClick={this.onClick}>
         <form onSubmit={(e: FormEvent<HTMLFormElement>) => e.preventDefault()} className="form">
           <FormRowComponent
-            training={training}
+            trainingAtom={this.trainingAtom}
             label="Training name:"
             field="name"
             action={FormTrainingService.ACTION_ACTIVE_TRAINING_SET_NAME}
@@ -53,7 +54,7 @@ export class TrainingFormComponent extends React.Component<Props> {
           />
 
           <FormRowComponent
-            training={training}
+            trainingAtom={this.trainingAtom}
             label="Distance:"
             field="distance"
             isCalculable={true}
@@ -63,7 +64,7 @@ export class TrainingFormComponent extends React.Component<Props> {
           />
 
           <FormRowComponent
-            training={training}
+            trainingAtom={this.trainingAtom}
             label="Pace:"
             field="pace"
             isCalculable={true}
@@ -73,11 +74,11 @@ export class TrainingFormComponent extends React.Component<Props> {
           />
 
           <FormRowComponent
-            training={training}
+            trainingAtom={this.trainingAtom}
             label="Time:"
             field="time"
             isCalculable={true}
-            value={TimePipe(time)}
+            value={TimePipe(training.time)}
             action={FormTrainingService.ACTION_ACTIVE_TRAINING_SET_TIME}
             eventAtom={this.eventAtom}
           />
@@ -95,7 +96,7 @@ export class TrainingFormComponent extends React.Component<Props> {
             <span className="grey"> ID: {training.id}</span>
           </div>
         </div>
-      </div>
+      </F.div>
     );
   }
 

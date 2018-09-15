@@ -1,7 +1,7 @@
 import {Atom} from '@grammarly/focal';
 import {AppModel} from 'src/AppComponent/AppModel';
 import {AppEvent} from 'src/_shared/AppEvent';
-import {Training, Trainings} from 'src/_shared/models/index';
+import {Training, Trainings} from 'src/_shared/models';
 import {TrainingFields} from 'src/_shared/types/TrainingFieldsType';
 
 export class CalculateTrainingService {
@@ -59,14 +59,12 @@ export class CalculateTrainingService {
   private calculateDistance(training: Training): Training {
     const newTraining: Training = new Training(training);
     newTraining.distance = Math.round(training.time * 1000 / training.pace);
-    console.log(newTraining.distance, newTraining);
     return newTraining;
   }
 
   private calculatePace(training: Training): Training {
     const newTraining: Training = new Training(training);
     newTraining.pace = Math.round(training.time * 1000 / training.distance);
-    console.log(newTraining.pace, newTraining);
     return newTraining;
   }
 

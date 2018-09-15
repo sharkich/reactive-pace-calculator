@@ -14,9 +14,9 @@ interface ITraining {
 }
 
 const DEFAULT_DATA: ITraining = {
-  name: '',
-  pace: 0,
-  distance: 0,
+  name: '(noname)',
+  pace: 500.0,
+  distance: 10000,
   time: 0,
   valid: false
 };
@@ -41,7 +41,7 @@ export class Training {
     this.id = data.id || UUIDService.generate();
     this.date = data.date || Date.now();
 
-    this.name = data.name || this.id;
+    this.name = data.name;
 
     this.pace = data.pace;
     this.distance = data.distance;
