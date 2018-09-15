@@ -27,14 +27,14 @@ export class TrainingFormComponent extends React.Component<Props> {
     this.eventAtom = props.eventAtom;
 
     const trainingAtom: Atom<Training> = props.trainingAtom;
-    const observable: Observable<JSX.Element> = trainingAtom.pipe(map((training: Training) => this.view(training)));
-
-    return (
-      <F.div>{observable}</F.div>
+    const observable: Observable<JSX.Element> = trainingAtom.pipe(
+      map((training: Training) => this.view(training, training.time))
     );
+
+    return <F.div>{observable}</F.div>;
   }
 
-  private view(training: Training): JSX.Element {
+  private view(training: Training, time: number): JSX.Element {
     return (
       <div key={`additional-${training.id}`} className="training-form">
         <form onSubmit={(e: FormEvent<HTMLFormElement>) => e.preventDefault()} className="form">
@@ -71,7 +71,7 @@ export class TrainingFormComponent extends React.Component<Props> {
             label="Time:"
             field="time"
             isCalculable={true}
-            value={TimePipe(training.time)}
+            value={TimePipe(time)}
             action={FormTrainingService.ACTION_ACTIVE_TRAINING_SET_TIME}
             eventAtom={this.eventAtom}
           />

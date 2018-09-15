@@ -29,6 +29,7 @@ export class FormRowComponent extends React.Component<Props> {
   constructor(data: any) {
     super(data);
 
+    this.onChange = this.onChange.bind(this);
     this.onKeyUp = this.onKeyUp.bind(this);
     this.onCalculateClick = this.onCalculateClick.bind(this);
   }
@@ -58,13 +59,19 @@ export class FormRowComponent extends React.Component<Props> {
           <input
             type="text"
             id={`field-${this.field}-${this.training.id}`}
-            defaultValue={props.value || '' + this.training[this.field]}
+            onChange={this.onChange}
+            value={props.value || '' + this.training[this.field]}
             onKeyUp={this.onKeyUp}
           />
         </div>
         <div className="col--3">{calculate}</div>
       </div>
     );
+  }
+
+  private onChange(event: React.ChangeEvent<HTMLInputElement>): void {
+    const inputElement: HTMLInputElement = event.target as HTMLInputElement;
+    this.eventAtom.set(new AppEvent(this.action, inputElement.value));
   }
 
   private onKeyUp(event: React.KeyboardEvent<HTMLInputElement>): void {
