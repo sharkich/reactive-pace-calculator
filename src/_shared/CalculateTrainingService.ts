@@ -54,16 +54,16 @@ export class CalculateTrainingService {
   }
 
   private calculateDistance(training: Training): Training {
-    console.log('distance.calculate', training);
     const newTraining: Training = new Training(training);
-    // newTraining.time = Math.round(training.distance * training.pace / 1000);
+    newTraining.distance = Math.round(training.time * 1000 / training.pace);
+    console.log(newTraining.distance, newTraining);
     return newTraining;
   }
 
   private calculatePace(training: Training): Training {
-    console.log('pace.calculate', training);
     const newTraining: Training = new Training(training);
-    // newTraining.time = Math.round(training.distance * training.pace / 1000);
+    newTraining.pace = Math.round(training.time * 1000 / training.distance);
+    console.log(newTraining.pace, newTraining);
     return newTraining;
   }
 
