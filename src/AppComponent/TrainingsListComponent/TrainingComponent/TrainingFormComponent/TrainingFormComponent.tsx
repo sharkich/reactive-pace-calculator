@@ -13,7 +13,6 @@ import {FormTrainingService} from 'src/_shared/FormTrainingService';
 
 export interface Props {
   training: Training;
-  activeTraining: Training | null;
   eventAtom: Atom<AppEvent>;
 }
 
@@ -27,13 +26,8 @@ export class TrainingFormComponent extends React.Component<Props> {
     this.eventAtom = props.eventAtom;
 
     const training: Training = props.training;
-    const activeTraining: Training | null = props.activeTraining;
 
-    if (training && training.theSame(activeTraining)) {
-      return this.view(training);
-    }
-
-    return this.emptyView(training);
+    return this.view(training);
   }
 
   private view(training: Training): JSX.Element {
@@ -105,9 +99,5 @@ export class TrainingFormComponent extends React.Component<Props> {
         </div>
       </div>
     );
-  }
-
-  private emptyView(training: Training): JSX.Element {
-    return <div key={`additional-${training.id}`} />;
   }
 }

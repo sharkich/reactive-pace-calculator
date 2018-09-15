@@ -45,7 +45,7 @@ export class TrainingComponent extends React.Component<Props> {
       map(([training, activeTraining]: Array<Training | null>) => {
         this.training = training as Training;
         this.activeTraining = activeTraining;
-        return this.view();
+        return this.view(this.training.theSame(this.activeTraining));
       })
     );
 
@@ -57,8 +57,17 @@ export class TrainingComponent extends React.Component<Props> {
     return <F.div>{existObservable.pipe(merge(emptyObservable))}</F.div>;
   }
 
-  private view(): JSX.Element {
+  private view(isActive: boolean): JSX.Element {
     const activeClassName: string = this.isActiveTraining() ? 'training--active' : '';
+    const activeForm: JSX.Element = isActive ? (
+      <TrainingFormComponent
+        // @ts-ignore
+        training={this.training}
+        eventAtom={this.eventAtom}
+      />
+    ) : (
+      <div />
+    );
     return (
       <F.div onClick={() => this.onClick()} className={'training card ' + activeClassName}>
         <div className="training__header">
@@ -87,12 +96,7 @@ export class TrainingComponent extends React.Component<Props> {
           </div>
         </div>
 
-        <TrainingFormComponent
-          // @ts-ignore
-          training={this.training}
-          activeTraining={this.activeTraining}
-          eventAtom={this.eventAtom}
-        />
+        {activeForm}
       </F.div>
     );
   }

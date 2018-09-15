@@ -1,7 +1,7 @@
 import {Atom} from '@grammarly/focal';
 import {AppModel} from 'src/AppComponent/AppModel';
 import {AppEvent} from 'src/_shared/AppEvent';
-import {Training} from 'src/_shared/models';
+import {Training, Trainings} from 'src/_shared/models';
 import {TrainingFields} from 'src/_shared/types/TrainingFieldsType';
 
 export class CalculateTrainingService {
@@ -15,7 +15,6 @@ export class CalculateTrainingService {
     this.eventAtom.subscribe(({event, payload}: AppEvent) => {
       switch (event) {
         case CalculateTrainingService.ACTION_CALCULATE_TRAINING_FIELD:
-          console.log('ACTION_CALCULATE_TRAINING_FIELD', payload);
           this.calculateTrainingField(payload as {field: TrainingFields; training: Training});
           break;
       }
@@ -23,30 +22,54 @@ export class CalculateTrainingService {
   }
 
   static ACTION_CALCULATE_TRAINING_FIELD: string = 'ACTION_CALCULATE_TRAINING_FIELD';
-  private calculateTrainingField({field, training}: {field: TrainingFields; training: Training}): void {
+  private calculateTrainingField({
+    field,
+    training
+  }: {
+    field: TrainingFields;
+    training: Training;
+  }): void {
+    let newTraining: Training;
     switch (field) {
       case 'distance':
-        this.calculateDistance(training);
+        newTraining = this.calculateDistance(training);
         break;
       case 'pace':
-        this.calculatePace(training);
+        newTraining = this.calculatePace(training);
         break;
       case 'time':
-        this.calculateTime(training);
+        newTraining = this.calculateTime(training);
         break;
     }
+
+    this.state.modify((state: AppModel) => {
+      const newState: AppModel = {...state};
+      const trainings: Trainings = [...state.trainings];
+      const index: number = trainings.findIndex((t: Training) => t.theSame(training));
+      trainings[index] = newTraining;
+      newState.trainings = trainings;
+      newState.activeTraining = newTraining;
+      return newState;
+    });
   }
 
-  private calculateDistance(training: Training): void {
+  private calculateDistance(training: Training): Training {
     console.log('distance.calculate', training);
+    const newTraining: Training = new Training(training);
+    // newTraining.time = Math.round(training.distance * training.pace / 1000);
+    return newTraining;
   }
 
-  private calculatePace(training: Training): void {
+  private calculatePace(training: Training): Training {
     console.log('pace.calculate', training);
+    const newTraining: Training = new Training(training);
+    // newTraining.time = Math.round(training.distance * training.pace / 1000);
+    return newTraining;
   }
 
-  private calculateTime(training: Training): void {
-    console.log('time.calculate', training);
+  private calculateTime(training: Training): Training {
+    const newTraining: Training = new Training(training);
+    newTraining.time = Math.round((training.distance * training.pace) / 1000);
+    return newTraining;
   }
-
 }
