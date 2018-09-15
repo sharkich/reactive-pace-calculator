@@ -1,10 +1,10 @@
 import {Atom} from '@grammarly/focal';
 
-import {AppEvent} from './AppEvent';
-import {Training, Trainings} from './models';
-import {AppModel} from '../AppComponent/AppModel';
-import {FormTrainingService} from 'src/_shared/FormTrainingService';
-import {CalculateTrainingService} from 'src/_shared/CalculateTrainingService';
+import {AppEvent} from '../AppEvent';
+import {Training, Trainings} from '../models/index';
+import {AppModel} from '../../AppComponent/AppModel';
+import {FormTrainingService} from 'src/_shared/services/FormTrainingService';
+import {CalculateTrainingService} from 'src/_shared/services/CalculateTrainingService';
 
 export class AppService {
   state: Atom<AppModel>;

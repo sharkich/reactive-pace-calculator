@@ -1,7 +1,7 @@
 import {Atom} from '@grammarly/focal';
 import {AppModel} from 'src/AppComponent/AppModel';
 import {AppEvent} from 'src/_shared/AppEvent';
-import {Training, Trainings} from 'src/_shared/models';
+import {Training, Trainings} from 'src/_shared/models/index';
 import {TrainingFields} from 'src/_shared/types/TrainingFieldsType';
 
 export class CalculateTrainingService {
@@ -29,7 +29,7 @@ export class CalculateTrainingService {
     field: TrainingFields;
     training: Training;
   }): void {
-    let newTraining: Training;
+    let newTraining: Training | null = null;
     switch (field) {
       case 'distance':
         newTraining = this.calculateDistance(training);
@@ -41,12 +41,15 @@ export class CalculateTrainingService {
         newTraining = this.calculateTime(training);
         break;
     }
-
+    if (!newTraining) {
+      return;
+    }
+    newTraining.valid = true;
     this.state.modify((state: AppModel) => {
       const newState: AppModel = {...state};
       const trainings: Trainings = [...state.trainings];
       const index: number = trainings.findIndex((t: Training) => t.theSame(training));
-      trainings[index] = newTraining;
+      trainings[index] = newTraining as Training;
       newState.trainings = trainings;
       newState.activeTraining = newTraining;
       return newState;

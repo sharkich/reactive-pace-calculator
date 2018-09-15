@@ -6,7 +6,7 @@ import './FormRowComponent.css';
 import {Training} from 'src/_shared/models';
 import {AppEvent} from 'src/_shared/AppEvent';
 import {TrainingFields} from 'src/_shared/types/TrainingFieldsType';
-import {CalculateTrainingService} from 'src/_shared/CalculateTrainingService';
+import {CalculateTrainingService} from 'src/_shared/services/CalculateTrainingService';
 
 export interface Props {
   training: Training;
@@ -50,6 +50,9 @@ export class FormRowComponent extends React.Component<Props> {
       <div />
     );
 
+    const validateClassName: string =
+      props.isCalculable && !this.training.valid ? 'invalid' : 'valid';
+
     return (
       <div className="training-form-row">
         <div className="col-1">
@@ -57,6 +60,7 @@ export class FormRowComponent extends React.Component<Props> {
         </div>
         <div className="col--2">
           <input
+            className={validateClassName}
             type="text"
             id={`field-${this.field}-${this.training.id}`}
             onChange={this.onChange}
@@ -97,9 +101,11 @@ export class FormRowComponent extends React.Component<Props> {
 
   private onCalculateClick(event: React.MouseEvent): void {
     event.stopPropagation();
-    this.eventAtom.set(new AppEvent(CalculateTrainingService.ACTION_CALCULATE_TRAINING_FIELD, {
-      field: this.field,
-      training: this.training
-    }));
+    this.eventAtom.set(
+      new AppEvent(CalculateTrainingService.ACTION_CALCULATE_TRAINING_FIELD, {
+        field: this.field,
+        training: this.training
+      })
+    );
   }
 }

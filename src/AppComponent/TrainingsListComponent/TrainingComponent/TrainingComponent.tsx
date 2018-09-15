@@ -7,7 +7,7 @@ import './TrainingComponent.css';
 
 import {Training} from 'src/_shared/models';
 import {AppEvent} from 'src/_shared/AppEvent';
-import {AppService} from 'src/_shared/AppService';
+import {AppService} from 'src/_shared/services/AppService';
 import {TimePipe} from 'src/_shared/pipes/time.pipe';
 import {DistancePipe} from 'src/_shared/pipes/distance.pipe';
 import {TrainingFormComponent} from './TrainingFormComponent/TrainingFormComponent';

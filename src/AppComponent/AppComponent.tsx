@@ -5,7 +5,7 @@ import './AppComponent.css';
 import image from '../_static/usain-bolt.jpg';
 
 import {AppEvent} from 'src/_shared/AppEvent';
-import {AppService} from 'src/_shared/AppService';
+import {AppService} from 'src/_shared/services/AppService';
 import {AppModel} from 'src/AppComponent/AppModel';
 import {Training, Trainings} from 'src/_shared/models';
 import {APP_DEFAULT_STATE} from 'src/AppComponent/APP_DEFAULT_STATE';

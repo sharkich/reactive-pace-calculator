@@ -1,4 +1,4 @@
-import {UUIDService} from 'src/_shared/UUIDService';
+import {UUIDService} from 'src/_shared/helpers/UUIDService';
 
 export class AppEvent {
   id: string;

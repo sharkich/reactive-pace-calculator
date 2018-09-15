@@ -6,7 +6,7 @@ import {Atom, F, Lens} from '@grammarly/focal';
 import './TrainingsComponent.css';
 
 import {AppEvent} from 'src/_shared/AppEvent';
-import {AppService} from 'src/_shared/AppService';
+import {AppService} from 'src/_shared/services/AppService';
 import {Training, Trainings} from 'src/_shared/models';
 import {TrainingComponent} from './TrainingComponent/TrainingComponent';
 

@@ -9,7 +9,7 @@ import {AppEvent} from 'src/_shared/AppEvent';
 import {TimePipe} from 'src/_shared/pipes/time.pipe';
 import {DistancePipe} from 'src/_shared/pipes/distance.pipe';
 import {FormRowComponent} from './FormRowComponent/FormRowComponent';
-import {FormTrainingService} from 'src/_shared/FormTrainingService';
+import {FormTrainingService} from 'src/_shared/services/FormTrainingService';
 import {Observable} from 'rxjs/Observable';
 import {map} from 'rxjs/operators';
 

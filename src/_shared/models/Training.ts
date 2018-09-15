@@ -1,4 +1,4 @@
-import {UUIDService} from '../UUIDService';
+import {UUIDService} from '../helpers/UUIDService';
 
 interface ITraining {
   id?: string;
@@ -9,13 +9,16 @@ interface ITraining {
   pace: number;
   distance: number;
   time: number;
+
+  valid?: boolean;
 }
 
 const DEFAULT_DATA: ITraining = {
   name: '',
   pace: 0,
   distance: 0,
-  time: 0
+  time: 0,
+  valid: false
 };
 
 export class Training {
@@ -28,10 +31,13 @@ export class Training {
   public distance: number;
   public time: number;
 
+  public valid: boolean;
+
   constructor(data: ITraining | null = DEFAULT_DATA) {
     if (!data) {
       data = {...DEFAULT_DATA};
     }
+
     this.id = data.id || UUIDService.generate();
     this.date = data.date || Date.now();
 
@@ -40,6 +46,8 @@ export class Training {
     this.pace = data.pace;
     this.distance = data.distance;
     this.time = data.time;
+
+    this.valid = !!data.valid;
   }
 
   theSame(training: Training | null): boolean {

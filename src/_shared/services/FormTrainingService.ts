@@ -1,12 +1,11 @@
 import {DistanceRevertPipe} from 'src/_shared/pipes/distance.pipe';
 import {TimeRevertPipe} from 'src/_shared/pipes/time.pipe';
-import {Training, Trainings} from 'src/_shared/models';
+import {Training, Trainings} from 'src/_shared/models/index';
 import {AppModel} from 'src/AppComponent/AppModel';
 import {Atom} from '@grammarly/focal';
 import {AppEvent} from 'src/_shared/AppEvent';
 
 export class FormTrainingService {
-
   state: Atom<AppModel>;
   eventAtom: Atom<AppEvent>;
 
@@ -17,19 +16,15 @@ export class FormTrainingService {
     this.eventAtom.subscribe(({event, payload}: AppEvent) => {
       switch (event) {
         case FormTrainingService.ACTION_ACTIVE_TRAINING_SET_NAME:
-          console.log('ACTION_ACTIVE_TRAINING_SET_NAME', payload);
           this.setActiveTrainingName(payload as string);
           break;
         case FormTrainingService.ACTION_ACTIVE_TRAINING_SET_DISTANCE:
-          console.log('ACTION_ACTIVE_TRAINING_SET_DISTANCE', payload);
           this.setActiveTrainingDistance(payload as string);
           break;
         case FormTrainingService.ACTION_ACTIVE_TRAINING_SET_PACE:
-          console.log('ACTION_ACTIVE_TRAINING_SET_PACE', payload);
           this.setActiveTrainingPace(payload as string);
           break;
         case FormTrainingService.ACTION_ACTIVE_TRAINING_SET_TIME:
-          console.log('ACTION_ACTIVE_TRAINING_SET_TIME', payload);
           this.setActiveTrainingTime(payload as string);
           break;
       }
@@ -75,6 +70,9 @@ export class FormTrainingService {
       activeTraining = new Training(newState.activeTraining);
 
       activeTraining[propertyName] = value;
+      if (['distance', 'pace', 'time'].indexOf(propertyName) !== -1) {
+        activeTraining.valid = this.isValidTraining(activeTraining);
+      }
 
       newState.activeTraining = activeTraining;
 
@@ -87,5 +85,9 @@ export class FormTrainingService {
 
       return newState;
     });
+  }
+
+  private isValidTraining(training: Training): boolean {
+    return Math.abs(training.distance - Math.round((training.time * 1000) / training.pace)) <= 5;
   }
 }

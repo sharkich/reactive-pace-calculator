@@ -20,3 +20,7 @@
 .training-form-row input[type=text] {
   font-size: 16pt;
 }
+
+.invalid {
+  color: darkred;
+}
