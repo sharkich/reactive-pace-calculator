@@ -21,7 +21,8 @@
   justify-content: space-around;
 }
 
-.mark, mark {
+.mark,
+mark {
   background: inherit;
 }
 
@@ -29,12 +30,13 @@
   background: #eee;
 }
 
-.training--active .mark, .training--active mark,
-.training--active *[contenteditable=true]{
+.training--active .mark,
+.training--active mark,
+.training--active *[contenteditable='true'] {
   background: yellow;
 }
 
-.training--active *[contenteditable=true]:focus {
+.training--active *[contenteditable='true']:focus {
   border: none;
   outline-width: 0;
   outline: none;

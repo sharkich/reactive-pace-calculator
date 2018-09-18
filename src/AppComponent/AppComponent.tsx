@@ -5,24 +5,23 @@ import './AppComponent.css';
 import image from '../_static/usain-bolt.jpg';
 
 import {AppEvent} from 'src/_shared/AppEvent';
-import {AppService} from 'src/_shared/services/AppService';
 import {AppModel} from 'src/AppComponent/AppModel';
 import {Training, Trainings} from 'src/_shared/models';
+import {AppService} from 'src/_shared/services/AppService';
 import {APP_DEFAULT_STATE} from 'src/AppComponent/APP_DEFAULT_STATE';
 import {TrainingsComponent} from './TrainingsListComponent/TrainingsComponent';
 
 export class AppComponent extends React.Component {
-
   stateAtom: Atom<AppModel> = Atom.create(new AppModel(APP_DEFAULT_STATE));
   eventAtom: Atom<AppEvent> = Atom.create(new AppEvent('init'));
-  service: AppService = new AppService(this.stateAtom, this.eventAtom);
+  appService: AppService = new AppService(this.stateAtom, this.eventAtom);
 
   componentDidMount(): void {
-    this.service.subscribe();
+    this.appService.subscribe();
   }
 
   componentWillUnmount(): void {
-    this.service.unsubscribe();
+    this.appService.unsubscribe();
   }
 
   render(): JSX.Element {
@@ -46,7 +45,9 @@ export class AppComponent extends React.Component {
         <footer className="app__footer">
           <img src={image} className="app__footer__image" alt="Usain Bolt" />
           <br />
-          <span className="small grey">&copy; Usain Bolt snapped by Cameron Spencer for Getty Images</span>
+          <span className="small grey">
+            &copy; Usain Bolt snapped by Cameron Spencer for Getty Images
+          </span>
         </footer>
       </F.div>
     );

@@ -1,13 +1,13 @@
 import * as React from 'react';
 import {Observable} from 'rxjs/Observable';
-import {filter, map, merge} from 'rxjs/operators';
 import {Atom, F, Lens} from '@grammarly/focal';
+import {filter, map, merge} from 'rxjs/operators';
 // tslint:disable-next-line
 import './TrainingsComponent.css';
 
 import {AppEvent} from 'src/_shared/AppEvent';
-import {AppService} from 'src/_shared/services/AppService';
 import {Training, Trainings} from 'src/_shared/models';
+import {AppService} from 'src/_shared/services/AppService';
 import {TrainingComponent} from './TrainingComponent/TrainingComponent';
 
 interface Props {
@@ -22,7 +22,6 @@ enum NewTrainingPosition {
 }
 
 export class TrainingsComponent extends React.Component<Props> {
-
   eventAtom: Atom<AppEvent>;
 
   trainingsAtom: Atom<Trainings>;
@@ -63,13 +62,17 @@ export class TrainingsComponent extends React.Component<Props> {
     return (
       <F.div className="trainings-list--not-empty">
         <div className="trainings-list__header">
-          <button onClick={() => this.onAddTrainingClick(NewTrainingPosition.Top)}>Add training</button>
+          <button onClick={() => this.onAddTrainingClick(NewTrainingPosition.Top)}>
+            Add training
+          </button>
         </div>
 
         {this.renderTrainingsComponents(trainings)}
 
         <div className="trainings-list__footer">
-          <button onClick={() => this.onAddTrainingClick(NewTrainingPosition.Bottom)}>Add training</button>
+          <button onClick={() => this.onAddTrainingClick(NewTrainingPosition.Bottom)}>
+            Add training
+          </button>
         </div>
       </F.div>
     );
@@ -101,9 +104,7 @@ export class TrainingsComponent extends React.Component<Props> {
   }
 
   private emptyView(): JSX.Element {
-    return (
-      <div className="trainings-list--empty">No Trainings</div>
-    );
+    return <div className="trainings-list--empty">No Trainings</div>;
   }
 
   private isExistObservableData(trainings: Trainings): boolean {

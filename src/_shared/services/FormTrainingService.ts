@@ -6,7 +6,6 @@ import {TimeRevertPipe} from 'src/_shared/pipes/time.pipe';
 import {Training, Trainings} from 'src/_shared/models';
 import {AppModel} from 'src/AppComponent/AppModel';
 import {AppEvent} from 'src/_shared/AppEvent';
-import {StringsHelper} from 'src/_shared/helpers/StringsHelper';
 import {CalculateTrainingService} from 'src/_shared/services/CalculateTrainingService';
 import {AppService} from 'src/_shared/services/AppService';
 
@@ -47,8 +46,7 @@ export class FormTrainingService {
 
   static ACTION_ACTIVE_TRAINING_SET_NAME: string = 'ACTION_ACTIVE_TRAINING_SET_NAME';
   setActiveTrainingName({value, training}: {value: string; training: Training}): void {
-    const name: string = StringsHelper.clearText(value);
-    this.changeActiveTrainingProperty('name', name, training);
+    this.changeActiveTrainingProperty('name', value, training);
   }
 
   static ACTION_ACTIVE_TRAINING_SET_DISTANCE: string = 'ACTION_ACTIVE_TRAINING_SET_DISTANCE';

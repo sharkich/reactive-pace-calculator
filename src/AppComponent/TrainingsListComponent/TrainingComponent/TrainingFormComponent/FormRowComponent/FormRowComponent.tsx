@@ -1,8 +1,8 @@
 import * as React from 'react';
+import {Subject} from 'rxjs/Rx';
 import {Atom, F} from '@grammarly/focal';
 import {Observable} from 'rxjs/Observable';
 import {filter, map} from 'rxjs/operators';
-import {Subject} from 'rxjs/Rx';
 // tslint:disable-next-line
 import './FormRowComponent.css';
 
@@ -64,12 +64,8 @@ export class FormRowComponent extends React.Component<Props> {
   private subscribe(): void {
     this.eventAtom
       .pipe(
-        filter(
-          ({event}: AppEvent) => event === CalculateTrainingService.ACTION_CALCULATE_TRAINING_FIELD
-        ),
-        filter(
-          ({payload}: AppEvent) => payload && payload.field === this.field
-        )
+        filter(CalculateTrainingService.isCalculateTrainingFieldEvent),
+        filter(({payload}: AppEvent) => payload && payload.field === this.field)
       )
       .takeUntil(this.destroy$)
       .subscribe(this.calculateField.bind(this));
@@ -101,7 +97,9 @@ export class FormRowComponent extends React.Component<Props> {
             className={validateClassName}
             type="text"
             id={`field-${this.field}-${training.id}`}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => this.onChange(event, training)}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+              this.onChange(event, training)
+            }
             value={this.value}
           />
         </div>
@@ -118,10 +116,12 @@ export class FormRowComponent extends React.Component<Props> {
   private edit(value: string, training: Training): void {
     if (value !== this.value) {
       this.isEdited = true;
-      this.eventAtom.set(new AppEvent(this.action, {
-        training,
-        value
-      }));
+      this.eventAtom.set(
+        new AppEvent(this.action, {
+          training,
+          value
+        })
+      );
     }
     this.value = value;
   }

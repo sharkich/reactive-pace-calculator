@@ -49,6 +49,9 @@ export class CalculateTrainingService {
     newTraining.valid = true;
     this.eventAtom.set(new AppEvent(AppService.ACTION_MODIFY_TRAINING, newTraining));
   }
+  static isCalculateTrainingFieldEvent({event}: AppEvent): boolean {
+    return event === CalculateTrainingService.ACTION_CALCULATE_TRAINING_FIELD;
+  }
 
   static getTrainModifyFn(field: string): (training: Training) => Training {
     switch (field) {

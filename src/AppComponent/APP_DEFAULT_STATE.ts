@@ -10,19 +10,19 @@ const DEFAULT_TRAININGS: Trainings = [
   }),
   new Training({
     name: 'Half Marathon',
-    pace: 6 * 60 + 30,
+    pace: 5 * 60 + 30,
     distance: 21097,
-    time: 2 * 60 * 60
+    time: 1 * 60 * 60 + 58 * 60 + 11
   }),
   new Training({
     name: 'Marathon',
-    pace: 6 * 60 + 45,
+    pace: 6 * 60 + 31,
     distance: 42195,
     time: 4 * 60 * 60
   })
 ];
 
 export const APP_DEFAULT_STATE: AppState = {
-  activeTraining: DEFAULT_TRAININGS[1],
+  activeTraining: null,
   trainings: [...DEFAULT_TRAININGS]
 };

@@ -7,8 +7,8 @@ import './TrainingComponent.css';
 
 import {Training} from 'src/_shared/models';
 import {AppEvent} from 'src/_shared/AppEvent';
-import {AppService} from 'src/_shared/services/AppService';
 import {TimePipe} from 'src/_shared/pipes/time.pipe';
+import {AppService} from 'src/_shared/services/AppService';
 import {DistancePipe} from 'src/_shared/pipes/distance.pipe';
 import {TrainingFormComponent} from './TrainingFormComponent/TrainingFormComponent';
 
@@ -100,7 +100,7 @@ export class TrainingComponent extends React.Component<Props> {
 
   private formView(isActive: boolean): JSX.Element {
     if (!isActive) {
-    return <div />;
+      return <div />;
     }
     return (
       <TrainingFormComponent
@@ -112,7 +112,7 @@ export class TrainingComponent extends React.Component<Props> {
   }
 
   private emptyView(training: Training): JSX.Element {
-    return (<div key={`additional-${training && training.id}`}>Loading...</div>);
+    return <div key={`additional-${training && training.id}`}>Loading...</div>;
   }
 
   private isExistObservableData([training]: Array<Training | null>): boolean {
