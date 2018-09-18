@@ -1,14 +1,14 @@
-import {Atom} from '@grammarly/focal';
-import {Subject} from 'rxjs/Rx';
 import * as R from 'ramda';
+import {Subject} from 'rxjs/Rx';
+import {Atom} from '@grammarly/focal';
 
-import {DistanceRevertPipe} from 'src/_shared/pipes/distance.pipe';
-import {TimeRevertPipe} from 'src/_shared/pipes/time.pipe';
-import {Training, Trainings} from 'src/_shared/models';
-import {AppState} from 'src/AppComponent/AppState';
 import {AppEvent} from 'src/_shared/AppEvent';
-import {CalculateTrainingService} from 'src/_shared/services/CalculateTrainingService';
+import {AppState} from 'src/AppComponent/AppState';
+import {Training, Trainings} from 'src/_shared/models';
+import {TimeRevertPipe} from 'src/_shared/pipes/time.pipe';
 import {AppService} from 'src/_shared/services/AppService';
+import {DistanceRevertPipe} from 'src/_shared/pipes/distance.pipe';
+import {CalculateTrainingService} from 'src/_shared/services/CalculateTrainingService';
 
 export class FormTrainingService {
   state: Atom<AppState>;

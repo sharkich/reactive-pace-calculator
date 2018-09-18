@@ -1,9 +1,9 @@
-import {Atom} from '@grammarly/focal';
 import {Subject} from 'rxjs/Rx';
+import {Atom} from '@grammarly/focal';
 
 import {AppEvent} from '../AppEvent';
-import {Training, Trainings} from '../models/index';
 import {AppState} from 'src/AppComponent/AppState';
+import {Training, Trainings} from '../models/index';
 import {FormTrainingService} from 'src/_shared/services/FormTrainingService';
 import {CalculateTrainingService} from 'src/_shared/services/CalculateTrainingService';
 
