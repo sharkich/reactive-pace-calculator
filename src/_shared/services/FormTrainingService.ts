@@ -46,53 +46,54 @@ export class FormTrainingService {
 
   static ACTION_ACTIVE_TRAINING_SET_NAME: string = 'ACTION_ACTIVE_TRAINING_SET_NAME';
   setActiveTrainingName({value, training}: {value: string; training: Training}): void {
-    this.changeActiveTrainingProperty('name', value, training);
+    this.changeActiveTrainingProperty(value, training)('name');
   }
 
   static ACTION_ACTIVE_TRAINING_SET_DISTANCE: string = 'ACTION_ACTIVE_TRAINING_SET_DISTANCE';
   setActiveTrainingDistance({value, training}: {value: string; training: Training}): void {
     const distance: number = DistanceRevertPipe(value);
-    this.changeActiveTrainingProperty('distance', distance, training);
+    this.changeActiveTrainingProperty(distance, training)('distance');
   }
 
   static ACTION_ACTIVE_TRAINING_SET_PACE: string = 'ACTION_ACTIVE_TRAINING_SET_PACE';
   setActiveTrainingPace({value, training}: {value: string; training: Training}): void {
     const pace: number = TimeRevertPipe(value);
-    this.changeActiveTrainingProperty('pace', pace, training);
+    this.changeActiveTrainingProperty(pace, training)('pace');
   }
 
   static ACTION_ACTIVE_TRAINING_SET_TIME: string = 'ACTION_ACTIVE_TRAINING_SET_TIME';
   setActiveTrainingTime({value, training}: {value: string; training: Training}): void {
     const time: number = TimeRevertPipe(value);
-    this.changeActiveTrainingProperty('time', time, training);
+    this.changeActiveTrainingProperty(time, training)('time');
   }
 
   private changeActiveTrainingProperty(
-    propertyName: keyof Training,
     value: any,
     training: Training
-  ): void {
-    this.eventAtom.set(new AppEvent(AppService.ACTION_MODIFY_TRAINING, training));
-    this.state.modify((state: AppModel) => {
-      const newState: AppModel = {...state};
+  ): (propertyName: keyof Training) => void {
+    return (propertyName: keyof Training): void => {
+      this.eventAtom.set(new AppEvent(AppService.ACTION_MODIFY_TRAINING, training));
+      this.state.modify((state: AppModel) => {
+        const newState: AppModel = {...state};
 
-      let activeTraining: Training = {...newState.activeTraining} as Training;
-      activeTraining = new Training(newState.activeTraining);
+        let activeTraining: Training = {...newState.activeTraining} as Training;
+        activeTraining = new Training(newState.activeTraining);
 
-      activeTraining[propertyName] = value;
-      if (['distance', 'pace', 'time'].indexOf(propertyName) !== -1) {
-        activeTraining.valid = CalculateTrainingService.isValidTraining(activeTraining);
-      }
+        activeTraining[propertyName] = value;
+        if (['distance', 'pace', 'time'].indexOf(propertyName) !== -1) {
+          activeTraining.valid = CalculateTrainingService.isValidTraining(activeTraining);
+        }
 
-      newState.activeTraining = activeTraining;
+        newState.activeTraining = activeTraining;
 
-      const trainings: Trainings = [...state.trainings];
-      const index: number = trainings.findIndex((t: Training) => t.theSame(activeTraining));
-      trainings[index] = newState.activeTraining;
-      newState.trainings = trainings;
+        const trainings: Trainings = [...state.trainings];
+        const index: number = trainings.findIndex((t: Training) => t.theSame(activeTraining));
+        trainings[index] = newState.activeTraining;
+        newState.trainings = trainings;
 
-      return newState;
-    });
-    // TODO: Put data to DB
+        return newState;
+      });
+      // TODO: Put data to DB
+    };
   }
 }
