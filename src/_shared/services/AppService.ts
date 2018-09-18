@@ -3,12 +3,12 @@ import {Subject} from 'rxjs/Rx';
 
 import {AppEvent} from '../AppEvent';
 import {Training, Trainings} from '../models/index';
-import {AppModel} from 'src/AppComponent/AppModel';
+import {AppState} from 'src/AppComponent/AppState';
 import {FormTrainingService} from 'src/_shared/services/FormTrainingService';
 import {CalculateTrainingService} from 'src/_shared/services/CalculateTrainingService';
 
 export class AppService {
-  state: Atom<AppModel>;
+  state: Atom<AppState>;
   eventAtom: Atom<AppEvent>;
 
   private trainingFormService: FormTrainingService;
@@ -16,7 +16,7 @@ export class AppService {
 
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(state: Atom<AppModel>, eventAtom: Atom<AppEvent>) {
+  constructor(state: Atom<AppState>, eventAtom: Atom<AppEvent>) {
     this.state = state;
     this.eventAtom = eventAtom;
     this.trainingFormService = new FormTrainingService(this.state, this.eventAtom);
@@ -86,8 +86,8 @@ export class AppService {
 
   static ACTION_MODIFY_TRAINING: string = 'ACTION_MODIFY_TRAINING';
   private modifyTraining(training: Training): void {
-    this.state.modify((state: AppModel) => {
-      const newState: AppModel = {...state};
+    this.state.modify((state: AppState) => {
+      const newState: AppState = {...state};
       const trainings: Trainings = [...state.trainings];
       const index: number = trainings.findIndex((t: Training) => t.theSame(training));
       trainings[index] = training;

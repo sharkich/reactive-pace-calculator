@@ -1,7 +1,7 @@
 import {Atom} from '@grammarly/focal';
 import {Subject} from 'rxjs/Rx';
 
-import {AppModel} from 'src/AppComponent/AppModel';
+import {AppState} from 'src/AppComponent/AppState';
 import {AppEvent} from 'src/_shared/AppEvent';
 import {Training} from 'src/_shared/models';
 import {TrainingFields} from 'src/_shared/types/TrainingFieldsType';
@@ -9,12 +9,12 @@ import {filter} from 'rxjs/operators';
 import {AppService} from 'src/_shared/services/AppService';
 
 export class CalculateTrainingService {
-  state: Atom<AppModel>;
+  state: Atom<AppState>;
   eventAtom: Atom<AppEvent>;
 
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(state: Atom<AppModel>, eventAtom: Atom<AppEvent>) {
+  constructor(state: Atom<AppState>, eventAtom: Atom<AppEvent>) {
     this.state = state;
     this.eventAtom = eventAtom;
   }

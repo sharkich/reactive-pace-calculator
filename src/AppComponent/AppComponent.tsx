@@ -5,20 +5,20 @@ import './AppComponent.css';
 import image from '../_static/usain-bolt.jpg';
 
 import {AppEvent} from 'src/_shared/AppEvent';
-import {AppModel} from 'src/AppComponent/AppModel';
+import {AppState} from 'src/AppComponent/AppState';
 import {Training, Trainings} from 'src/_shared/models';
 import {AppService} from 'src/_shared/services/AppService';
 import {APP_DEFAULT_STATE} from 'src/AppComponent/APP_DEFAULT_STATE';
 import {TrainingsComponent} from './TrainingsListComponent/TrainingsComponent';
 
 export class AppComponent extends React.Component {
-  stateAtom: Atom<AppModel>;
+  stateAtom: Atom<AppState>;
   eventAtom: Atom<AppEvent>;
   appService: AppService;
 
   componentWillMount(): void {
     // TODO: Get data from DB
-    this.stateAtom = Atom.create(new AppModel(APP_DEFAULT_STATE));
+    this.stateAtom = Atom.create(new AppState(APP_DEFAULT_STATE));
     this.eventAtom = Atom.create(new AppEvent('init'));
     this.appService = new AppService(this.stateAtom, this.eventAtom);
   }

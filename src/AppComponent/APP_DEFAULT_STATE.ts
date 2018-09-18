@@ -1,4 +1,4 @@
-import {AppState} from './AppState';
+import {AppStateInterface} from './AppState.interface';
 import {Training, Trainings} from '../_shared/models';
 
 const DEFAULT_TRAININGS: Trainings = [
@@ -22,7 +22,7 @@ const DEFAULT_TRAININGS: Trainings = [
   })
 ];
 
-export const APP_DEFAULT_STATE: AppState = {
+export const APP_DEFAULT_STATE: AppStateInterface = {
   activeTraining: null,
   trainings: [...DEFAULT_TRAININGS]
 };

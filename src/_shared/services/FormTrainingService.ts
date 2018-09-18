@@ -5,18 +5,18 @@ import * as R from 'ramda';
 import {DistanceRevertPipe} from 'src/_shared/pipes/distance.pipe';
 import {TimeRevertPipe} from 'src/_shared/pipes/time.pipe';
 import {Training, Trainings} from 'src/_shared/models';
-import {AppModel} from 'src/AppComponent/AppModel';
+import {AppState} from 'src/AppComponent/AppState';
 import {AppEvent} from 'src/_shared/AppEvent';
 import {CalculateTrainingService} from 'src/_shared/services/CalculateTrainingService';
 import {AppService} from 'src/_shared/services/AppService';
 
 export class FormTrainingService {
-  state: Atom<AppModel>;
+  state: Atom<AppState>;
   eventAtom: Atom<AppEvent>;
 
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(state: Atom<AppModel>, eventAtom: Atom<AppEvent>) {
+  constructor(state: Atom<AppState>, eventAtom: Atom<AppEvent>) {
     this.state = state;
     this.eventAtom = eventAtom;
   }
@@ -74,8 +74,8 @@ export class FormTrainingService {
   ): (field: keyof Training) => void {
     return (field: keyof Training): void => {
       this.eventAtom.set(new AppEvent(AppService.ACTION_MODIFY_TRAINING, training));
-      this.state.modify((state: AppModel) => {
-        const newState: AppModel = {...state};
+      this.state.modify((state: AppState) => {
+        const newState: AppState = {...state};
 
         let activeTraining: Training = {...newState.activeTraining} as Training;
         activeTraining = new Training(newState.activeTraining);
