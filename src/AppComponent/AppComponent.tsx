@@ -17,6 +17,14 @@ export class AppComponent extends React.Component {
   eventAtom: Atom<AppEvent> = Atom.create(new AppEvent('init'));
   service: AppService = new AppService(this.stateAtom, this.eventAtom);
 
+  componentDidMount(): void {
+    this.service.subscribe();
+  }
+
+  componentWillUnmount(): void {
+    this.service.unsubscribe();
+  }
+
   render(): JSX.Element {
     const activeTrainingAtom: Atom<Training | null> = this.stateAtom.lens('activeTraining');
     const trainingsAtom: Atom<Trainings> = this.stateAtom.lens('trainings');

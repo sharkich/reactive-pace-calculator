@@ -137,7 +137,6 @@ export class FormRowComponent extends React.Component<Props> {
   }
 
   private calculateField(): void {
-    console.log('1');
     this.isEdited = false;
   }
 }

@@ -1,8 +1,10 @@
+import {Atom} from '@grammarly/focal';
+import {Subject} from 'rxjs/Rx';
+
 import {DistanceRevertPipe} from 'src/_shared/pipes/distance.pipe';
 import {TimeRevertPipe} from 'src/_shared/pipes/time.pipe';
 import {Training, Trainings} from 'src/_shared/models';
 import {AppModel} from 'src/AppComponent/AppModel';
-import {Atom} from '@grammarly/focal';
 import {AppEvent} from 'src/_shared/AppEvent';
 import {StringsHelper} from 'src/_shared/helpers/StringsHelper';
 import {CalculateTrainingService} from 'src/_shared/services/CalculateTrainingService';
@@ -12,13 +14,15 @@ export class FormTrainingService {
   state: Atom<AppModel>;
   eventAtom: Atom<AppEvent>;
 
+  private destroy$: Subject<boolean> = new Subject<boolean>();
+
   constructor(state: Atom<AppModel>, eventAtom: Atom<AppEvent>) {
     this.state = state;
     this.eventAtom = eventAtom;
   }
 
   subscribe(): void {
-    this.eventAtom.subscribe(({event, payload}: AppEvent) => {
+    this.eventAtom.takeUntil(this.destroy$).subscribe(({event, payload}: AppEvent) => {
       switch (event) {
         case FormTrainingService.ACTION_ACTIVE_TRAINING_SET_NAME:
           this.setActiveTrainingName(payload as {value: string; training: Training});
@@ -34,6 +38,11 @@ export class FormTrainingService {
           break;
       }
     });
+  }
+
+  unsubscribe(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 
   static ACTION_ACTIVE_TRAINING_SET_NAME: string = 'ACTION_ACTIVE_TRAINING_SET_NAME';

@@ -1,4 +1,6 @@
 import {Atom} from '@grammarly/focal';
+import {Subject} from 'rxjs/Rx';
+
 import {AppModel} from 'src/AppComponent/AppModel';
 import {AppEvent} from 'src/_shared/AppEvent';
 import {Training} from 'src/_shared/models';
@@ -9,6 +11,8 @@ import {AppService} from 'src/_shared/services/AppService';
 export class CalculateTrainingService {
   state: Atom<AppModel>;
   eventAtom: Atom<AppEvent>;
+
+  private destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(state: Atom<AppModel>, eventAtom: Atom<AppEvent>) {
     this.state = state;
@@ -22,9 +26,15 @@ export class CalculateTrainingService {
           ({event}: AppEvent) => event === CalculateTrainingService.ACTION_CALCULATE_TRAINING_FIELD
         )
       )
+      .takeUntil(this.destroy$)
       .subscribe(({payload}: AppEvent) =>
         this.calculateTrainingField(payload as {field: TrainingFields; training: Training})
       );
+  }
+
+  unsubscribe(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 
   static ACTION_CALCULATE_TRAINING_FIELD: string = 'ACTION_CALCULATE_TRAINING_FIELD';

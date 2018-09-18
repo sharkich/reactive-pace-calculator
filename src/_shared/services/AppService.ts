@@ -1,4 +1,5 @@
 import {Atom} from '@grammarly/focal';
+import {Subject} from 'rxjs/Rx';
 
 import {AppEvent} from '../AppEvent';
 import {Training, Trainings} from '../models/index';
@@ -13,28 +14,17 @@ export class AppService {
   private trainingFormService: FormTrainingService;
   private calculateTrainingService: CalculateTrainingService;
 
+  private destroy$: Subject<boolean> = new Subject<boolean>();
+
   constructor(state: Atom<AppModel>, eventAtom: Atom<AppEvent>) {
     this.state = state;
-
     this.eventAtom = eventAtom;
-    this.subscribe();
-
     this.trainingFormService = new FormTrainingService(this.state, this.eventAtom);
-    this.trainingFormService.subscribe();
-
     this.calculateTrainingService = new CalculateTrainingService(this.state, this.eventAtom);
-    this.calculateTrainingService.subscribe();
-
-    // TODO: Function Variant
-    // this.eventAtom
-    //   .pipe(
-    //     filter(({event}: AppEvent) => event === 'TRAINING_SET_ACTIVE')
-    //   )
-    //   .subscribe(({payload}: AppEvent) => this.setActiveTraining(payload as Training));
   }
 
   subscribe(): void {
-    this.eventAtom.subscribe(({event, payload}: AppEvent) => {
+    this.eventAtom.takeUntil(this.destroy$).subscribe(({event, payload}: AppEvent) => {
       switch (event) {
         case AppService.ACTION_ACTIVE_TRAINING_SET:
           this.setActiveTraining(payload as Training);
@@ -53,6 +43,21 @@ export class AppService {
           break;
       }
     });
+    // TODO: Function Variant
+    // this.eventAtom
+    //   .pipe(
+    //     filter(({event}: AppEvent) => event === 'TRAINING_SET_ACTIVE')
+    //   )
+    //   .subscribe(({payload}: AppEvent) => this.setActiveTraining(payload as Training));
+    this.trainingFormService.subscribe();
+    this.calculateTrainingService.subscribe();
+  }
+
+  unsubscribe(): void {
+    this.trainingFormService.unsubscribe();
+    this.calculateTrainingService.unsubscribe();
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 
   static ACTION_ACTIVE_TRAINING_SET: string = 'ACTION_ACTIVE_TRAINING_SET';
