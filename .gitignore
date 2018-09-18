@@ -17,6 +17,7 @@
 .env.production.local
 .idea
 *.old*
+.firebase
 ~*
 
 npm-debug.log*
