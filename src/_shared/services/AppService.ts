@@ -75,13 +75,17 @@ export class AppService {
   static ACTION_ADD_NEW_TRAINING_ON_TOP: string = 'ACTION_ADD_NEW_TRAINING_ON_TOP';
   private addNewTrainingOnTop(): void {
     const trainingsAtom: Atom<Trainings> = this.state.lens('trainings');
-    trainingsAtom.modify((trainings: Trainings) => [new Training(), ...trainings]);
+    const newTraining: Training = new Training();
+    trainingsAtom.modify((trainings: Trainings) => [newTraining, ...trainings]);
+    this.eventAtom.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET, newTraining));
   }
 
   static ACTION_ADD_NEW_TRAINING_ON_BOTTOM: string = 'ACTION_ADD_NEW_TRAINING_ON_BOTTOM';
   private addNewTrainingOnBottom(): void {
     const trainingsAtom: Atom<Trainings> = this.state.lens('trainings');
-    trainingsAtom.modify((trainings: Trainings) => [...trainings, new Training()]);
+    const newTraining: Training = new Training();
+    trainingsAtom.modify((trainings: Trainings) => [...trainings, newTraining]);
+    this.eventAtom.set(new AppEvent(AppService.ACTION_ACTIVE_TRAINING_SET, newTraining));
   }
 
   static ACTION_MODIFY_TRAINING: string = 'ACTION_MODIFY_TRAINING';
