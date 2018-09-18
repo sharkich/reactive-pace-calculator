@@ -48,6 +48,7 @@ export class CalculateTrainingService {
     const newTraining: Training = CalculateTrainingService.getTrainModifyFn(field)(training);
     newTraining.valid = true;
     this.eventAtom.set(new AppEvent(AppService.ACTION_MODIFY_TRAINING, newTraining));
+    // TODO: Put data to DB
   }
   static isCalculateTrainingFieldEvent({event}: AppEvent): boolean {
     return event === CalculateTrainingService.ACTION_CALCULATE_TRAINING_FIELD;

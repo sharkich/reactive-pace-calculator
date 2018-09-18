@@ -12,9 +12,16 @@ import {APP_DEFAULT_STATE} from 'src/AppComponent/APP_DEFAULT_STATE';
 import {TrainingsComponent} from './TrainingsListComponent/TrainingsComponent';
 
 export class AppComponent extends React.Component {
-  stateAtom: Atom<AppModel> = Atom.create(new AppModel(APP_DEFAULT_STATE));
-  eventAtom: Atom<AppEvent> = Atom.create(new AppEvent('init'));
-  appService: AppService = new AppService(this.stateAtom, this.eventAtom);
+  stateAtom: Atom<AppModel>;
+  eventAtom: Atom<AppEvent>;
+  appService: AppService;
+
+  componentWillMount(): void {
+    // TODO: Get data from DB
+    this.stateAtom = Atom.create(new AppModel(APP_DEFAULT_STATE));
+    this.eventAtom = Atom.create(new AppEvent('init'));
+    this.appService = new AppService(this.stateAtom, this.eventAtom);
+  }
 
   componentDidMount(): void {
     this.appService.subscribe();

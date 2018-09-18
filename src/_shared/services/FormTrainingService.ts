@@ -93,5 +93,6 @@ export class FormTrainingService {
 
       return newState;
     });
+    // TODO: Put data to DB
   }
 }
