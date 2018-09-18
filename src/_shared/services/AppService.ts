@@ -17,6 +17,23 @@ export class AppService {
     this.state = state;
 
     this.eventAtom = eventAtom;
+    this.subscribe();
+
+    this.trainingFormService = new FormTrainingService(this.state, this.eventAtom);
+    this.trainingFormService.subscribe();
+
+    this.calculateTrainingService = new CalculateTrainingService(this.state, this.eventAtom);
+    this.calculateTrainingService.subscribe();
+
+    // TODO: Function Variant
+    // this.eventAtom
+    //   .pipe(
+    //     filter(({event}: AppEvent) => event === 'TRAINING_SET_ACTIVE')
+    //   )
+    //   .subscribe(({payload}: AppEvent) => this.setActiveTraining(payload as Training));
+  }
+
+  subscribe(): void {
     this.eventAtom.subscribe(({event, payload}: AppEvent) => {
       switch (event) {
         case AppService.ACTION_ACTIVE_TRAINING_SET:
@@ -36,19 +53,6 @@ export class AppService {
           break;
       }
     });
-
-    this.trainingFormService = new FormTrainingService(this.state, this.eventAtom);
-    this.trainingFormService.subscribe();
-
-    this.calculateTrainingService = new CalculateTrainingService(this.state, this.eventAtom);
-    this.calculateTrainingService.subscribe();
-
-    // TODO: Function Variant
-    // this.eventAtom
-    //   .pipe(
-    //     filter(({event}: AppEvent) => event === 'TRAINING_SET_ACTIVE')
-    //   )
-    //   .subscribe(({payload}: AppEvent) => this.setActiveTraining(payload as Training));
   }
 
   static ACTION_ACTIVE_TRAINING_SET: string = 'ACTION_ACTIVE_TRAINING_SET';

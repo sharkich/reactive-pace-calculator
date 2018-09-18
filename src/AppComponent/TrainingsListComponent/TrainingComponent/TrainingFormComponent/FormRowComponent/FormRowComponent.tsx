@@ -1,5 +1,8 @@
 import * as React from 'react';
 import {Atom, F} from '@grammarly/focal';
+import {Observable} from 'rxjs/Observable';
+import {filter, map} from 'rxjs/operators';
+import {Subject} from 'rxjs/Rx';
 // tslint:disable-next-line
 import './FormRowComponent.css';
 
@@ -7,8 +10,6 @@ import {Training} from 'src/_shared/models';
 import {AppEvent} from 'src/_shared/AppEvent';
 import {TrainingFields} from 'src/_shared/types/TrainingFieldsType';
 import {CalculateTrainingService} from 'src/_shared/services/CalculateTrainingService';
-import {Observable} from 'rxjs/Observable';
-import {filter, map} from 'rxjs/operators';
 
 export interface Props {
   trainingAtom: Atom<Training>;
@@ -31,6 +32,17 @@ export class FormRowComponent extends React.Component<Props> {
   value: string = '';
   isEdited: boolean = false;
 
+  private destroy$: Subject<boolean> = new Subject<boolean>();
+
+  componentDidMount(): void {
+    this.subscribe();
+  }
+
+  componentWillUnmount(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
+  }
+
   render(): JSX.Element {
     const props: Props = this.props as Props;
 
@@ -39,6 +51,17 @@ export class FormRowComponent extends React.Component<Props> {
     this.field = props.field;
 
     this.eventAtom = props.eventAtom;
+
+    this.trainingAtom = props.trainingAtom;
+    const trainingAtom: Atom<Training> = props.trainingAtom;
+    const observable: Observable<JSX.Element> = trainingAtom.pipe(
+      map((training: Training) => this.view(training))
+    );
+
+    return <F.div>{observable}</F.div>;
+  }
+
+  private subscribe(): void {
     this.eventAtom
       .pipe(
         filter(
@@ -48,15 +71,8 @@ export class FormRowComponent extends React.Component<Props> {
           ({payload}: AppEvent) => payload && payload.field === this.field
         )
       )
+      .takeUntil(this.destroy$)
       .subscribe(this.calculateField.bind(this));
-
-    this.trainingAtom = props.trainingAtom;
-    const trainingAtom: Atom<Training> = props.trainingAtom;
-    const observable: Observable<JSX.Element> = trainingAtom.pipe(
-      map((training: Training) => this.view(training))
-    );
-
-    return <F.div>{observable}</F.div>;
   }
 
   private view(training: Training): JSX.Element {
@@ -121,6 +137,7 @@ export class FormRowComponent extends React.Component<Props> {
   }
 
   private calculateField(): void {
+    console.log('1');
     this.isEdited = false;
   }
 }

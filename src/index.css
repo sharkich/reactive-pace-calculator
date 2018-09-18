@@ -72,6 +72,15 @@ dl dd {
 }
 
 /**
+Root
+ */
+
+#root {
+  width: 600px;
+  margin: 0 auto;
+}
+
+/**
 App
  */
 
