@@ -1,5 +1,6 @@
 import {Atom} from '@grammarly/focal';
 import {Subject} from 'rxjs/Rx';
+import * as R from 'ramda';
 
 import {DistanceRevertPipe} from 'src/_shared/pipes/distance.pipe';
 import {TimeRevertPipe} from 'src/_shared/pipes/time.pipe';
@@ -70,8 +71,8 @@ export class FormTrainingService {
   private changeActiveTrainingProperty(
     value: any,
     training: Training
-  ): (propertyName: keyof Training) => void {
-    return (propertyName: keyof Training): void => {
+  ): (field: keyof Training) => void {
+    return (field: keyof Training): void => {
       this.eventAtom.set(new AppEvent(AppService.ACTION_MODIFY_TRAINING, training));
       this.state.modify((state: AppModel) => {
         const newState: AppModel = {...state};
@@ -79,10 +80,13 @@ export class FormTrainingService {
         let activeTraining: Training = {...newState.activeTraining} as Training;
         activeTraining = new Training(newState.activeTraining);
 
-        activeTraining[propertyName] = value;
-        if (['distance', 'pace', 'time'].indexOf(propertyName) !== -1) {
-          activeTraining.valid = CalculateTrainingService.isValidTraining(activeTraining);
-        }
+        activeTraining[field] = value;
+        R.pipe(
+          R.when(
+            (fields: string[]) => fields.indexOf(field) === -1,
+            () => (activeTraining.valid = CalculateTrainingService.isValidTraining(activeTraining))
+          )
+        )(['distance', 'pace', 'time']);
 
         newState.activeTraining = activeTraining;
 

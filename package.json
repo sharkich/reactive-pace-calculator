@@ -5,6 +5,7 @@
   "dependencies": {
     "@grammarly/focal": "^0.7.0",
     "moment": "^2.22.2",
+    "ramda": "^0.25.0",
     "rc-time-picker": "^3.4.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
@@ -23,6 +24,7 @@
     "@reactivex/rxjs": "^6.2.2",
     "@types/jest": "^23.3.1",
     "@types/node": "^10.7.1",
+    "@types/ramda": "^0.25.38",
     "@types/react": "^16.4.11",
     "@types/react-dom": "^16.0.7",
     "@types/react-redux": "^6.0.6",

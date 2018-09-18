@@ -45,7 +45,7 @@ export class CalculateTrainingService {
     field: TrainingFields;
     training: Training;
   }): void {
-    const newTraining: Training = CalculateTrainingService.getTrainModifyFn(field)(training);
+    const newTraining: Training = CalculateTrainingService.getTrainModifyFn(training)(field);
     newTraining.valid = true;
     this.eventAtom.set(new AppEvent(AppService.ACTION_MODIFY_TRAINING, newTraining));
     // TODO: Put data to DB
@@ -54,17 +54,19 @@ export class CalculateTrainingService {
     return event === CalculateTrainingService.ACTION_CALCULATE_TRAINING_FIELD;
   }
 
-  static getTrainModifyFn(field: string): (training: Training) => Training {
-    switch (field) {
-      case 'distance':
-        return CalculateTrainingService.calculateDistance;
-      case 'pace':
-        return CalculateTrainingService.calculatePace;
-      case 'time':
-        return CalculateTrainingService.calculateTime;
-      default:
-        return (training: Training) => training;
-    }
+  static getTrainModifyFn(training: Training): (field: string) => Training {
+    return (field: string): Training => {
+      switch (field) {
+        case 'distance':
+          return CalculateTrainingService.calculateDistance(training);
+        case 'pace':
+          return CalculateTrainingService.calculatePace(training);
+        case 'time':
+          return CalculateTrainingService.calculateTime(training);
+        default:
+          return training;
+      }
+    };
   }
 
   static calculateDistance(training: Training): Training {
